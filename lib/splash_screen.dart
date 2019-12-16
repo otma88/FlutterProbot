@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'main.dart';
+import 'trainer_mode.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -30,7 +30,7 @@ class SplashScreenState extends State<SplashScreen> {
   }
 
   onDoneLoading() async {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => MyApp()));
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (context) => TrainerMode()));
   }
 
   @override
