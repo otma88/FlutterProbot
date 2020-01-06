@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 
-
 class TrainerMode extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -19,7 +17,6 @@ class TrainerMode extends StatelessWidget {
 class TrainerModePage extends StatefulWidget {
   TrainerModePage({Key key, this.title}) : super(key: key);
 
-
   final String title;
 
   @override
@@ -27,17 +24,53 @@ class TrainerModePage extends StatefulWidget {
 }
 
 class _TrainerModePageState extends State<TrainerModePage> {
-
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
-          image: DecorationImage(
-              image: AssetImage('images/logo_shadow.png'),
-              fit: BoxFit.fill,
-          )
+            image: DecorationImage(
+          image: AssetImage('images/logo_shadow.png'),
+          fit: BoxFit.fill,
+        )),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: Row(
+            children: <Widget>[
+              Expanded(
+                flex: 1,
+                child: Container(
+                  child: Icon(
+                    Icons.arrow_back,
+                    size: 50.0,
+                    color: Color.fromRGBO(255, 255, 255, 0.9),
+                  ),
+                ),
+              ),
+              Expanded(
+                flex: 10,
+                child: Container(
+                  child: Text(
+                    'TRAINER MODE',
+                    style: TextStyle(
+                        fontSize: 55.0,
+                        fontFamily: 'Barlow',
+                        color: Color(0xFF191926),
+                        fontWeight: FontWeight.bold),
+                  ),
+                ),
+              ),
+              Expanded(
+                  flex: 1,
+                  child: Container(
+                    child: Icon(
+                      Icons.dehaze,
+                      size: 50.0,
+                      color: Color.fromRGBO(255, 255, 255, 0.9),
+                    ),
+                  ))
+            ],
+          ),
         ),
       ),
     );
