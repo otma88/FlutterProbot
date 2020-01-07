@@ -33,44 +33,84 @@ class _TrainerModePageState extends State<TrainerModePage> {
           image: AssetImage('images/logo_shadow.png'),
           fit: BoxFit.fill,
         )),
-        child: Padding(
-          padding: const EdgeInsets.all(12.0),
-          child: Row(
-            children: <Widget>[
-              Expanded(
-                flex: 1,
-                child: Container(
-                  child: Icon(
-                    Icons.arrow_back,
-                    size: 50.0,
-                    color: Color.fromRGBO(255, 255, 255, 0.9),
-                  ),
-                ),
-              ),
-              Expanded(
-                flex: 10,
-                child: Container(
-                  child: Text(
-                    'TRAINER MODE',
-                    style: TextStyle(
-                        fontSize: 55.0,
-                        fontFamily: 'Barlow',
-                        color: Color(0xFF191926),
-                        fontWeight: FontWeight.bold),
-                  ),
-                ),
-              ),
-              Expanded(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            Row(
+              children: <Widget>[
+                Expanded(
                   flex: 1,
                   child: Container(
                     child: Icon(
-                      Icons.dehaze,
+                      Icons.arrow_back,
                       size: 50.0,
                       color: Color.fromRGBO(255, 255, 255, 0.9),
                     ),
-                  ))
-            ],
-          ),
+                  ),
+                ),
+                Expanded(
+                  flex: 10,
+                  child: Container(
+                    child: Text(
+                      'TRAINER MODE',
+                      style: TextStyle(
+                          fontSize: 55.0,
+                          fontFamily: 'Barlow',
+                          color: Color(0xFF191926),
+                          fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+                Expanded(
+                    flex: 1,
+                    child: Container(
+                      child: Icon(
+                        Icons.dehaze,
+                        size: 50.0,
+                        color: Color.fromRGBO(255, 255, 255, 0.9),
+                      ),
+                    ))
+              ],
+            ),
+            Row(
+              children: <Widget>[
+                Card(
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'QUICK KICK',
+                        style: TextStyle(fontSize: 25.0),
+                      ),
+                      Icon(
+                        Icons.account_balance,
+                        size: 50.0,
+                      )
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'SEASON SHOOTOUT',
+                        style: TextStyle(fontSize: 25.0),
+                      )
+                    ],
+                  ),
+                ),
+                Card(
+                  child: Row(
+                    children: <Widget>[
+                      Text(
+                        'DUEL DESIGNER',
+                        style: TextStyle(fontSize: 25.0),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            )
+          ],
         ),
       ),
     );
