@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'menu_card.dart';
+import 'card_content.dart';
 
 class TrainerMode extends StatelessWidget {
   @override
@@ -74,40 +76,35 @@ class _TrainerModePageState extends State<TrainerModePage> {
             ),
             Row(
               children: <Widget>[
-                Card(
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'QUICK KICK',
-                        style: TextStyle(fontSize: 25.0),
+                Expanded(
+                    child: Row(
+                  children: <Widget>[
+                    Expanded(
+                        child: GestureDetector(
+                      onTap: () {},
+                      child: MenuCard(
+                        colour: Colors.blueGrey,
+                        cardChild: CardContent(title, icon),
                       ),
-                      Icon(
-                        Icons.account_balance,
-                        size: 50.0,
-                      )
-                    ],
-                  ),
-                ),
-                Card(
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'SEASON SHOOTOUT',
-                        style: TextStyle(fontSize: 25.0),
-                      )
-                    ],
-                  ),
-                ),
-                Card(
-                  child: Row(
-                    children: <Widget>[
-                      Text(
-                        'DUEL DESIGNER',
-                        style: TextStyle(fontSize: 25.0),
-                      )
-                    ],
-                  ),
-                )
+                    )),
+                    Expanded(
+                        child: GestureDetector(
+                      onTap: () {},
+                      child: MenuCard(
+                        colour: Colors.blueGrey,
+                        cardChild: Text('DUEL DESIGNER'),
+                      ),
+                    )),
+                    Expanded(
+                        child: GestureDetector(
+                      onTap: () {},
+                      child: MenuCard(
+                        colour: Colors.blueGrey,
+                        cardChild: Text('DUEL DESIGNER'),
+                      ),
+                    ))
+                  ],
+                ))
               ],
             )
           ],
