@@ -1,6 +1,12 @@
 import 'package:flutter/material.dart';
 import 'menu_card.dart';
 import 'card_content.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'probot_icons_icons.dart';
+import 'probot_params_icons.dart';
+import 'quick_kick.dart';
+
+const cardColor = Color(0xFF464655);
 
 class TrainerMode extends StatelessWidget {
   @override
@@ -38,41 +44,44 @@ class _TrainerModePageState extends State<TrainerModePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
-            Row(
-              children: <Widget>[
-                Expanded(
-                  flex: 1,
-                  child: Container(
-                    child: Icon(
-                      Icons.arrow_back,
-                      size: 50.0,
-                      color: Color.fromRGBO(255, 255, 255, 0.9),
-                    ),
-                  ),
-                ),
-                Expanded(
-                  flex: 10,
-                  child: Container(
-                    child: Text(
-                      'TRAINER MODE',
-                      style: TextStyle(
-                          fontSize: 55.0,
-                          fontFamily: 'Barlow',
-                          color: Color(0xFF191926),
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ),
-                Expanded(
+            Padding(
+              padding: const EdgeInsets.fromLTRB(2.0, 20.0, 2.0, 2.0),
+              child: Row(
+                children: <Widget>[
+                  Expanded(
                     flex: 1,
                     child: Container(
                       child: Icon(
-                        Icons.dehaze,
+                        Icons.arrow_back,
                         size: 50.0,
                         color: Color.fromRGBO(255, 255, 255, 0.9),
                       ),
-                    ))
-              ],
+                    ),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: Container(
+                      child: Text(
+                        'TRAINER MODE',
+                        style: TextStyle(
+                            fontSize: 55.0,
+                            fontFamily: 'Barlow',
+                            color: Color(0xFF191926),
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                      flex: 1,
+                      child: Container(
+                        child: Icon(
+                          Icons.dehaze,
+                          size: 50.0,
+                          color: Color.fromRGBO(255, 255, 255, 0.9),
+                        ),
+                      ))
+                ],
+              ),
             ),
             Row(
               children: <Widget>[
@@ -80,27 +89,42 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     child: Row(
                   children: <Widget>[
                     Expanded(
-                        child: GestureDetector(
-                      onTap: () {},
+                        child: RaisedButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => QuickKickPage()));
+                      },
                       child: MenuCard(
-                        colour: Colors.blueGrey,
-                        cardChild: CardContent(title, icon),
+                        colour: cardColor,
+                        cardChild: CardContent(
+                            label: "QUICK KICK", icon: ProbotIcons.ball),
+                        description: 'Fully automated, hassle free practice.',
                       ),
                     )),
                     Expanded(
                         child: GestureDetector(
                       onTap: () {},
                       child: MenuCard(
-                        colour: Colors.blueGrey,
-                        cardChild: Text('DUEL DESIGNER'),
+                        colour: cardColor,
+                        cardChild: CardContent(
+                          label: "PLAYERS",
+                          icon: ProbotIcons.trophy,
+                        ),
+                        description: "Add players.",
                       ),
                     )),
                     Expanded(
                         child: GestureDetector(
                       onTap: () {},
                       child: MenuCard(
-                        colour: Colors.blueGrey,
-                        cardChild: Text('DUEL DESIGNER'),
+                        colour: cardColor,
+                        cardChild: CardContent(
+                          label: "DUEL DESIGNER",
+                          icon: ProbotIcons.params,
+                        ),
+                        description: "Practice against designated opponent.",
                       ),
                     ))
                   ],

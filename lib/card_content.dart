@@ -1,28 +1,35 @@
 import 'package:flutter/material.dart';
 
 class CardContent extends StatelessWidget {
-  final String title;
+  final String label;
   final IconData icon;
 
-  CardContent(this.title, this.icon);
+  CardContent({this.label, this.icon});
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          title,
-          style: TextStyle(fontSize: 50.0),
-        ),
-        SizedBox(
-          width: 15.0,
-        ),
-        Icon(
-          icon,
-          size: 55.0,
-        ),
-      ],
+    return Padding(
+      padding: const EdgeInsets.all(15.0),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Flexible(
+            child: Text(
+              label,
+              style: TextStyle(
+                  color: Color(0xFF9999AC),
+                  fontSize: 40.0,
+                  fontWeight: FontWeight.bold),
+            ),
+          ),
+          Icon(
+            icon,
+            size: 80.0,
+            color: Color(0xFF3FA9F5),
+          ),
+        ],
+      ),
     );
   }
 }
