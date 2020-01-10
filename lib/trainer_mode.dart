@@ -89,8 +89,8 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     child: Row(
                   children: <Widget>[
                     Expanded(
-                        child: RaisedButton(
-                      onPressed: () {
+                        child: GestureDetector(
+                      onTap: () {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
