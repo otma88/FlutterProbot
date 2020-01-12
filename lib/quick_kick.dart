@@ -319,18 +319,22 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Row(
+                                child: Column(
+                                  mainAxisAlignment: MainAxisAlignment.center,
                                   children: <Widget>[
                                     Column(
                                       children: <Widget>[
                                         SizedBox(
-                                          height: 100,
-                                        ),
+                                          height: 300,
+                                        )
                                       ],
                                     ),
                                     Column(
                                       children: <Widget>[
-                                        Icon(Icons.battery_full)
+                                        Icon(
+                                          Icons.battery_full,
+                                          color: Color(0xFF464655),
+                                        )
                                       ],
                                     )
                                   ],
@@ -342,12 +346,81 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         ),
                         Expanded(
                           child: Column(
+                            children: <Widget>[],
+                          ),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: Column(
                             children: <Widget>[
                               Container(
-                                child: Image.asset(
-                                  "images/silueta-active.png",
-                                  fit: BoxFit.fill,
-                                  height: 400,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "images/silueta-active.png",
+                                      fit: BoxFit.fill,
+                                      height: 400,
+                                    ),
+                                    Positioned(
+                                        bottom: 110,
+                                        left: 40,
+                                        child: Text(
+                                          "2",
+                                          style: TextStyle(
+                                              color: Color(0xFF338BCA),
+                                              fontSize: 35.0),
+                                        )),
+                                    Positioned(
+                                      bottom: 25,
+                                      left: 32,
+                                      child: Container(
+                                        height: 65,
+                                        width: 35,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFF338BCA),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFF338BCA),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             ],
@@ -358,10 +431,73 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Image.asset(
-                                  "images/silueta-active.png",
-                                  fit: BoxFit.fill,
-                                  height: 400,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "images/silueta-active.png",
+                                      fit: BoxFit.fill,
+                                      height: 400,
+                                    ),
+                                    Positioned(
+                                        bottom: 110,
+                                        left: 40,
+                                        child: Text(
+                                          "3",
+                                          style: TextStyle(
+                                              color: Color(0xFF338BCA),
+                                              fontSize: 35.0),
+                                        )),
+                                    Positioned(
+                                      bottom: 25,
+                                      left: 32,
+                                      child: Container(
+                                        height: 65,
+                                        width: 35,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFFFFFFF),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             ],
@@ -372,10 +508,73 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Image.asset(
-                                  "images/silueta-active.png",
-                                  fit: BoxFit.fill,
-                                  height: 400,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "images/silueta-active.png",
+                                      fit: BoxFit.fill,
+                                      height: 400,
+                                    ),
+                                    Positioned(
+                                        bottom: 110,
+                                        left: 40,
+                                        child: Text(
+                                          "4",
+                                          style: TextStyle(
+                                              color: Color(0xFF338BCA),
+                                              fontSize: 35.0),
+                                        )),
+                                    Positioned(
+                                      bottom: 25,
+                                      left: 32,
+                                      child: Container(
+                                        height: 65,
+                                        width: 35,
+                                        child: Column(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          children: <Widget>[
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFF338BCA),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFF338BCA),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFF338BCA),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            ),
+                                            Row(
+                                              children: <Widget>[
+                                                Container(
+                                                  color: Color(0xFFC70056),
+                                                  width: 35,
+                                                  height: 10,
+                                                ),
+                                              ],
+                                            )
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
                               )
                             ],
@@ -386,24 +585,33 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Image.asset(
-                                  "images/silueta-active.png",
-                                  fit: BoxFit.fill,
-                                  height: 400,
-                                ),
-                              )
-                            ],
-                          ),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          child: Column(
-                            children: <Widget>[
-                              Container(
-                                child: Image.asset(
-                                  "images/silueta-disabled.png",
-                                  fit: BoxFit.fill,
-                                  height: 400,
+                                child: Stack(
+                                  children: <Widget>[
+                                    Image.asset(
+                                      "images/silueta-disabled.png",
+                                      fit: BoxFit.fill,
+                                      height: 400,
+                                    ),
+                                    Positioned(
+                                        bottom: 110,
+                                        left: 40,
+                                        child: Text(
+                                          "5",
+                                          style: TextStyle(
+                                              color: Color(0xFF191926),
+                                              fontSize: 35.0),
+                                        )),
+                                    Positioned(
+                                      child: Text(
+                                        "DETACHED",
+                                        style: TextStyle(
+                                            fontSize: 12.0,
+                                            color: Color(0xFF191926)),
+                                      ),
+                                      bottom: 310,
+                                      left: 18,
+                                    )
+                                  ],
                                 ),
                               )
                             ],
