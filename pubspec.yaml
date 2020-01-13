@@ -46,6 +46,8 @@ flutter:
     - images/background_logo.png
     - images/logo.png
     - images/logo_shadow.png
+    - images/silueta-active.png
+    - images/silueta-disabled.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
@@ -64,6 +66,8 @@ flutter:
         - asset: fonts/Barlow-Bold.otf
         - asset: fonts/Barlow-Medium.otf
         - asset: fonts/Barlow-SemiBold.otf
+    - family: BarlowCondensed
+      fonts:
         - asset: fonts/BarlowCondensed-Light.otf
         - asset: fonts/BarlowCondensed-Medium.otf
         - asset: fonts/BarlowCondensed-SemiBold.otf
