@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:probot/quick_kick_active_siluete.dart';
+import 'package:probot/quick_kick_inactive_siluete.dart';
+import 'package:probot/quick_kick_siluete.dart';
+
+const kInactiveSiluete = 'images/silueta-disabled.png';
+const kActiveSiluete = 'images/silueta-active.png';
 
 class QuickKick extends StatelessWidget {
   @override
@@ -18,6 +24,20 @@ String dropdownValue = 'EASY';
 
 class _QuickKickPageState extends State<QuickKickPage> {
   var _value = "1";
+  bool isActiveSiluete1;
+  bool isActiveSiluete2;
+  bool isActiveSiluete3;
+  bool isActiveSiluete4;
+  bool isActiveSiluete5;
+
+  @override
+  void initState() {
+    isActiveSiluete1 = false;
+    isActiveSiluete2 = false;
+    isActiveSiluete3 = false;
+    isActiveSiluete4 = false;
+    isActiveSiluete5 = false;
+  }
 
   DropdownButton _difficultyItems() => DropdownButton<String>(
         underline: SizedBox(),
@@ -346,83 +366,25 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         ),
                         Expanded(
                           child: Column(
-                            children: <Widget>[],
-                          ),
-                          flex: 2,
-                        ),
-                        Expanded(
-                          child: Column(
                             children: <Widget>[
                               Container(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "images/silueta-active.png",
-                                      fit: BoxFit.fill,
-                                      height: 400,
-                                    ),
-                                    Positioned(
-                                        bottom: 110,
-                                        left: 40,
-                                        child: Text(
-                                          "2",
-                                          style: TextStyle(
-                                              color: Color(0xFF338BCA),
-                                              fontSize: 35.0),
-                                        )),
-                                    Positioned(
-                                      bottom: 25,
-                                      left: 32,
-                                      child: Container(
-                                        height: 65,
-                                        width: 35,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFF338BCA),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFF338BCA),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
+                                  child: QuickKickSiluete(
+                                      onPress: () {
+                                        setState(() {
+                                          isActiveSiluete1 == false
+                                              ? isActiveSiluete1 = true
+                                              : isActiveSiluete1 = false;
+                                        });
+                                      },
+                                      siluete: isActiveSiluete1 == true
+                                          ? QuickKickActiveSiluete(
+                                              image: kActiveSiluete,
+                                              number: "1",
+                                              batteryLevel: 1)
+                                          : QuickKickInactiveSiluete(
+                                              image: kInactiveSiluete,
+                                              number: "1",
+                                            )))
                             ],
                           ),
                           flex: 2,
@@ -431,75 +393,23 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "images/silueta-active.png",
-                                      fit: BoxFit.fill,
-                                      height: 400,
-                                    ),
-                                    Positioned(
-                                        bottom: 110,
-                                        left: 40,
-                                        child: Text(
-                                          "3",
-                                          style: TextStyle(
-                                              color: Color(0xFF338BCA),
-                                              fontSize: 35.0),
-                                        )),
-                                    Positioned(
-                                      bottom: 25,
-                                      left: 32,
-                                      child: Container(
-                                        height: 65,
-                                        width: 35,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFFFFFFF),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
+                                  child: QuickKickSiluete(
+                                      onPress: () {
+                                        setState(() {
+                                          isActiveSiluete2 == false
+                                              ? isActiveSiluete2 = true
+                                              : isActiveSiluete2 = false;
+                                        });
+                                      },
+                                      siluete: isActiveSiluete2 == true
+                                          ? QuickKickActiveSiluete(
+                                              image: kActiveSiluete,
+                                              number: "2",
+                                              batteryLevel: 2)
+                                          : QuickKickInactiveSiluete(
+                                              image: kInactiveSiluete,
+                                              number: "2",
+                                            )))
                             ],
                           ),
                           flex: 2,
@@ -508,75 +418,23 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "images/silueta-active.png",
-                                      fit: BoxFit.fill,
-                                      height: 400,
-                                    ),
-                                    Positioned(
-                                        bottom: 110,
-                                        left: 40,
-                                        child: Text(
-                                          "4",
-                                          style: TextStyle(
-                                              color: Color(0xFF338BCA),
-                                              fontSize: 35.0),
-                                        )),
-                                    Positioned(
-                                      bottom: 25,
-                                      left: 32,
-                                      child: Container(
-                                        height: 65,
-                                        width: 35,
-                                        child: Column(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFF338BCA),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFF338BCA),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFF338BCA),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            ),
-                                            Row(
-                                              children: <Widget>[
-                                                Container(
-                                                  color: Color(0xFFC70056),
-                                                  width: 35,
-                                                  height: 10,
-                                                ),
-                                              ],
-                                            )
-                                          ],
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              )
+                                  child: QuickKickSiluete(
+                                      onPress: () {
+                                        setState(() {
+                                          isActiveSiluete3 == false
+                                              ? isActiveSiluete3 = true
+                                              : isActiveSiluete3 = false;
+                                        });
+                                      },
+                                      siluete: isActiveSiluete3 == true
+                                          ? QuickKickActiveSiluete(
+                                              image: kActiveSiluete,
+                                              number: "3",
+                                              batteryLevel: 3)
+                                          : QuickKickInactiveSiluete(
+                                              image: kInactiveSiluete,
+                                              number: "3",
+                                            )))
                             ],
                           ),
                           flex: 2,
@@ -585,35 +443,48 @@ class _QuickKickPageState extends State<QuickKickPage> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                child: Stack(
-                                  children: <Widget>[
-                                    Image.asset(
-                                      "images/silueta-disabled.png",
-                                      fit: BoxFit.fill,
-                                      height: 400,
-                                    ),
-                                    Positioned(
-                                        bottom: 110,
-                                        left: 40,
-                                        child: Text(
-                                          "5",
-                                          style: TextStyle(
-                                              color: Color(0xFF191926),
-                                              fontSize: 35.0),
-                                        )),
-                                    Positioned(
-                                      child: Text(
-                                        "DETACHED",
-                                        style: TextStyle(
-                                            fontSize: 12.0,
-                                            color: Color(0xFF191926)),
-                                      ),
-                                      bottom: 310,
-                                      left: 18,
-                                    )
-                                  ],
-                                ),
-                              )
+                                  child: QuickKickSiluete(
+                                      onPress: () {
+                                        setState(() {
+                                          isActiveSiluete4 == false
+                                              ? isActiveSiluete4 = true
+                                              : isActiveSiluete4 = false;
+                                        });
+                                      },
+                                      siluete: isActiveSiluete4 == true
+                                          ? QuickKickActiveSiluete(
+                                              image: kActiveSiluete,
+                                              number: "4",
+                                              batteryLevel: 4)
+                                          : QuickKickInactiveSiluete(
+                                              image: kInactiveSiluete,
+                                              number: "4",
+                                            )))
+                            ],
+                          ),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                  child: QuickKickSiluete(
+                                      onPress: () {
+                                        setState(() {
+                                          isActiveSiluete5 == false
+                                              ? isActiveSiluete5 = true
+                                              : isActiveSiluete5 = false;
+                                        });
+                                      },
+                                      siluete: isActiveSiluete5 == true
+                                          ? QuickKickActiveSiluete(
+                                              image: kActiveSiluete,
+                                              number: "5",
+                                              batteryLevel: 4)
+                                          : QuickKickInactiveSiluete(
+                                              image: kInactiveSiluete,
+                                              number: "5",
+                                            )))
                             ],
                           ),
                           flex: 2,
