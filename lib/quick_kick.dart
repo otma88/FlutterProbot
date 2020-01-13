@@ -5,6 +5,15 @@ import 'package:probot/quick_kick_siluete.dart';
 
 const kInactiveSiluete = 'images/silueta-disabled.png';
 const kActiveSiluete = 'images/silueta-active.png';
+const heightEasy = '170-180cm';
+const heightMedium = '180-190cm';
+const heightHard = '190-200cm';
+const jumpEasy = '30-40cm';
+const jumpMedium = '40-50cm';
+const jumpHard = '50-60cm';
+const occurrenceEasy = '60-70%';
+const occurrenceMedium = '70-80%';
+const occurrenceHard = '80-90%';
 
 class QuickKick extends StatelessWidget {
   @override
@@ -29,6 +38,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
   bool isActiveSiluete3;
   bool isActiveSiluete4;
   bool isActiveSiluete5;
+  String labelPlayerHeight = heightEasy;
+  String labelJumpHeight = jumpEasy;
+  String labelJumpOccurrence = occurrenceEasy;
 
   @override
   void initState() {
@@ -99,6 +111,19 @@ class _QuickKickPageState extends State<QuickKickPage> {
         onChanged: (value) {
           setState(() {
             _value = value;
+            if (_value == "1") {
+              labelPlayerHeight = heightEasy;
+              labelJumpHeight = jumpEasy;
+              labelJumpOccurrence = occurrenceEasy;
+            } else if (_value == "2") {
+              labelPlayerHeight = heightMedium;
+              labelJumpHeight = jumpMedium;
+              labelJumpOccurrence = occurrenceMedium;
+            } else if (_value == "3") {
+              labelPlayerHeight = heightHard;
+              labelJumpHeight = jumpHard;
+              labelJumpOccurrence = occurrenceHard;
+            }
           });
         },
         value: _value,
@@ -106,7 +131,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
         elevation: 6,
         style: TextStyle(
             fontSize: 25.0,
-            fontWeight: FontWeight.w300,
+            fontFamily: 'BarlowCondensed',
             color: Color(0xFF9999AC)),
       );
 
@@ -146,8 +171,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
                               child: Text(
                                 "QUICK KICK",
                                 style: TextStyle(
-                                    fontSize: 50.0,
+                                    fontSize: 70.0,
                                     color: Color(0xFF9999AC),
+                                    fontFamily: 'BarlowCondensed',
                                     fontWeight: FontWeight.bold),
                               ),
                             )
@@ -163,7 +189,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
                               child: Text(
                                 "Select difficulty:",
                                 style: TextStyle(
-                                    color: Color(0xFF464655), fontSize: 18.0),
+                                    color: Color(0xFF464655),
+                                    fontSize: 18.0,
+                                    fontFamily: 'BarlowCondensed'),
                               ),
                               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                             ),
@@ -258,7 +286,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        "170-180cm",
+                                        labelPlayerHeight,
                                         style: TextStyle(fontSize: 20.0),
                                       )
                                     ],
@@ -287,7 +315,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        "30-40 cm",
+                                        labelJumpHeight,
                                         style: TextStyle(fontSize: 20.0),
                                       )
                                     ],
@@ -316,7 +344,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        "60-70%",
+                                        labelJumpOccurrence,
                                         style: TextStyle(fontSize: 20.0),
                                       )
                                     ],

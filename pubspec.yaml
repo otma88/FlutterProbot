@@ -66,6 +66,8 @@ flutter:
         - asset: fonts/Barlow-Bold.otf
         - asset: fonts/Barlow-Medium.otf
         - asset: fonts/Barlow-SemiBold.otf
+    - family: BarlowCondensed
+      fonts:
         - asset: fonts/BarlowCondensed-Light.otf
         - asset: fonts/BarlowCondensed-Medium.otf
         - asset: fonts/BarlowCondensed-SemiBold.otf
