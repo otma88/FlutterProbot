@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:probot/duel_designer.dart';
 import 'menu_card.dart';
 import 'card_content.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'probot_icons_icons.dart';
 import 'probot_params_icons.dart';
 import 'quick_kick.dart';
+import 'package:flutter/services.dart';
 
 const cardColor = Color(0xFF464655);
 
@@ -32,6 +34,15 @@ class TrainerModePage extends StatefulWidget {
 }
 
 class _TrainerModePageState extends State<TrainerModePage> {
+  @override
+  void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -117,7 +128,12 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     )),
                     Expanded(
                         child: GestureDetector(
-                      onTap: () {},
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => DuelDesignerPage()));
+                      },
                       child: MenuCard(
                         colour: cardColor,
                         cardChild: CardContent(

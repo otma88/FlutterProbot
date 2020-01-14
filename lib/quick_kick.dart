@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:probot/quick_kick_active_siluete.dart';
 import 'package:probot/quick_kick_inactive_siluete.dart';
 import 'package:probot/quick_kick_siluete.dart';
+import 'package:flutter/services.dart';
 
 const kInactiveSiluete = 'images/silueta-disabled.png';
 const kActiveSiluete = 'images/silueta-active.png';
@@ -44,6 +45,12 @@ class _QuickKickPageState extends State<QuickKickPage> {
 
   @override
   void initState() {
+    super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
+
     isActiveSiluete1 = false;
     isActiveSiluete2 = false;
     isActiveSiluete3 = false;
@@ -147,7 +154,6 @@ class _QuickKickPageState extends State<QuickKickPage> {
                 padding: const EdgeInsets.fromLTRB(10.0, 20.0, 2.0, 2.0),
                 child: Container(
                   color: Color(0xFF2D2D3C),
-                  width: 300.0,
                   child: Column(
                     children: <Widget>[
                       Container(
