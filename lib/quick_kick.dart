@@ -178,6 +178,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 "QUICK KICK",
                                 style: TextStyle(
                                     fontSize: 70.0,
+                                    height: 1,
                                     color: Color(0xFF9999AC),
                                     fontFamily: 'BarlowCondensed',
                                     fontWeight: FontWeight.bold),

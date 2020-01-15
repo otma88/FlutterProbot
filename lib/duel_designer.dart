@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'countries.dart';
+import 'clubs.dart';
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -15,6 +17,109 @@ class DuelDesignerPage extends StatefulWidget {
 }
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
+  List<Country> _countries = Country.getCountries();
+  List<DropdownMenuItem<Country>> _dropdownCountryItems;
+  Country _selectedCountry;
+
+  List<Club> _clubs = Club.getClubs();
+  List<DropdownMenuItem<Club>> _dropdownClubItems;
+  Club _selectedClub;
+
+  @override
+  void initState() {
+    _dropdownCountryItems = buildDropdownCountryItems(_countries);
+    _selectedCountry = _dropdownCountryItems[0].value;
+    _dropdownClubItems = buildDropdownClubItems(_clubs);
+    _selectedClub = _dropdownClubItems[0].value;
+    super.initState();
+  }
+
+  List<DropdownMenuItem<Country>> buildDropdownCountryItems(List countries) {
+    List<DropdownMenuItem<Country>> items = List();
+    for (Country country in countries) {
+      items.add(
+        DropdownMenuItem(
+          value: country,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: <Widget>[
+              Image.asset('images/croatia-flag.png'),
+              SizedBox(
+                width: 10.0,
+              ),
+              Text(country.name)
+            ],
+          ),
+        ),
+      );
+    }
+    return items;
+  }
+
+  List<DropdownMenuItem<Club>> buildDropdownClubItems(List clubs) {
+    List<DropdownMenuItem<Club>> items = List();
+    for (Club club in clubs) {
+      items.add(DropdownMenuItem(
+        value: club,
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Image.asset(
+              'images/dinamo.jpg',
+              height: 20.0,
+              width: 20.0,
+            ),
+            SizedBox(
+              width: 10.0,
+            ),
+            Text(club.name),
+          ],
+        ),
+      ));
+    }
+    return items;
+  }
+
+  onChangeCountryItem(Country selectedCountry) {
+    setState(() {
+      _selectedCountry = selectedCountry;
+    });
+  }
+
+  onChangeClubItem(Club selectedClub) {
+    setState(() {
+      _selectedClub = selectedClub;
+    });
+  }
+
+  DropdownButton _selectLegaue() => DropdownButton<Country>(
+        underline: SizedBox(),
+        icon: SizedBox(),
+        items: buildDropdownCountryItems(_countries),
+        onChanged: onChangeCountryItem,
+        value: _selectedCountry,
+        isExpanded: true,
+        elevation: 6,
+        style: TextStyle(
+            fontSize: 25.0,
+            fontFamily: 'BarlowCondensed',
+            color: Color(0xFF9999AC)),
+      );
+
+  DropdownButton _selectClub() => DropdownButton<Club>(
+        underline: SizedBox(),
+        icon: SizedBox(),
+        items: buildDropdownClubItems(_clubs),
+        onChanged: onChangeClubItem,
+        value: _selectedClub,
+        isExpanded: true,
+        elevation: 6,
+        style: TextStyle(
+            fontSize: 25.0,
+            fontFamily: 'BarlowCondensed',
+            color: Color(0xFF9999AC)),
+      );
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,7 +136,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     child: Column(
                       children: <Widget>[
                         Container(
-                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 80.0),
+                          margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 70.0),
                           child: Row(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: <Widget>[
@@ -52,6 +157,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   "DUEL DESIGNER",
                                   style: TextStyle(
                                     fontSize: 70.0,
+                                    height: 1,
                                     color: Color(0xFF9999AC),
                                     fontFamily: 'BarlowCondensed',
                                     fontWeight: FontWeight.bold,
@@ -77,9 +183,200 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       fontFamily: 'BarlowCondensed'),
                                 ),
                               ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.fromLTRB(
+                                          10.0, 7.0, 5.0, 7.0),
+                                      child: Container(child: _selectLegaue()),
+                                      decoration: BoxDecoration(boxShadow: [
+                                        BoxShadow(
+                                            color: Color(0xFF000000),
+                                            blurRadius: 5.0,
+                                            offset: Offset(5.0, 5.0))
+                                      ], color: Color(0xFF464655)),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 63.0,
+                                    color: Color(0xFF242432),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 17.0,
+                              ),
+                              Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Container(
+                                      padding: EdgeInsets.fromLTRB(
+                                          10.0, 7.0, 5.0, 7.0),
+                                      child: Container(child: _selectClub()),
+                                      decoration: BoxDecoration(boxShadow: [
+                                        BoxShadow(
+                                            color: Color(0xFF000000),
+                                            blurRadius: 5.0,
+                                            offset: Offset(5.0, 5.0))
+                                      ], color: Color(0xFF464655)),
+                                    ),
+                                  ),
+                                  Container(
+                                    height: 63.0,
+                                    color: Color(0xFF242432),
+                                    child: Icon(Icons.keyboard_arrow_down),
+                                  )
+                                ],
+                              ),
+                              SizedBox(
+                                height: 17.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    0.0, 0.0, 24.0, 0.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(9.0),
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  'LOAD',
+                                                  style: TextStyle(
+                                                      fontSize: 25.0,
+                                                      color: Color(0xFF9999AC),
+                                                      fontFamily:
+                                                          'BarlowCondensed'),
+                                                ),
+                                                Text('SAVED PRESET',
+                                                    style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        color:
+                                                            Color(0xFF9999AC),
+                                                        fontFamily:
+                                                            'BarlowCondensed'))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        color: Color(0xFF242432),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              SizedBox(
+                                height: 17.0,
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.fromLTRB(
+                                    0.0, 0.0, 24.0, 0.0),
+                                child: Row(
+                                  children: <Widget>[
+                                    Expanded(
+                                      child: Container(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(9.0),
+                                          child: GestureDetector(
+                                            onTap: () {},
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: <Widget>[
+                                                Text(
+                                                  'SAVE',
+                                                  style: TextStyle(
+                                                      fontSize: 25.0,
+                                                      color: Color(0xFF9999AC),
+                                                      fontFamily:
+                                                          'BarlowCondensed'),
+                                                ),
+                                                Text('THIS SETUP',
+                                                    style: TextStyle(
+                                                        fontSize: 15.0,
+                                                        color:
+                                                            Color(0xFF9999AC),
+                                                        fontFamily:
+                                                            'BarlowCondensed'))
+                                              ],
+                                            ),
+                                          ),
+                                        ),
+                                        color: Color(0xFF242432),
+                                      ),
+                                    ),
+                                    SizedBox(
+                                      width: 15.0,
+                                    ),
+                                    Expanded(
+                                        child: Container(
+                                      decoration: BoxDecoration(
+                                          //color: Color(0xFF3FA9F5),
+                                          boxShadow: [
+                                            BoxShadow(
+                                                color: Color(0xFF000000),
+                                                blurRadius: 8.0,
+                                                offset: Offset(7.0, 7.0))
+                                          ]),
+                                      child: Padding(
+                                        padding: const EdgeInsets.all(8.0),
+                                        child: RaisedButton(
+                                          color: Color(0xFF3FA9F5),
+                                          padding: EdgeInsets.all(0.0),
+                                          onPressed: null,
+                                          child: Text(
+                                            'START',
+                                            style: TextStyle(
+                                                fontSize: 20.0,
+                                                color: Color(0xFF282832),
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                        ),
+                                      ),
+                                    ))
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
-                        )
+                        ),
+//                        Expanded(
+//                            child: Align(
+//                          alignment: FractionalOffset.bottomRight,
+//                          child: Padding(
+//                            padding: const EdgeInsets.all(40.0),
+//                            child: RaisedButton(
+//                              padding: EdgeInsets.all(0.0),
+//                              onPressed: null,
+//                              child: Container(
+//                                padding: EdgeInsets.all(20.0),
+//                                decoration: BoxDecoration(
+//                                    color: Color(0xFF3FA9F5),
+//                                    boxShadow: [
+//                                      BoxShadow(
+//                                          color: Color(0xFF000000),
+//                                          blurRadius: 8.0,
+//                                          offset: Offset(7.0, 7.0))
+//                                    ]),
+//                                child: Text(
+//                                  'START',
+//                                  style: TextStyle(
+//                                      fontSize: 30.0,
+//                                      color: Color(0xFF282832),
+//                                      fontWeight: FontWeight.bold),
+//                                ),
+//                              ),
+//                            ),
+//                          ),
+//                        ))
                       ],
                     ),
                   ),
