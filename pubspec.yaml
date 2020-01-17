@@ -81,6 +81,10 @@ flutter:
     - family: ProbotParams
       fonts:
         - asset: icons/ProbotParams.ttf
+
+    - family: ProbotTriangle
+      fonts:
+        - asset: icons/ProbotTriangle.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:probot/probot_triangle_icons.dart';
 import 'countries.dart';
 import 'clubs.dart';
+import 'quick_kick_siluete.dart';
+import 'quick_kick_inactive_siluete.dart';
+import 'quick_kick_active_siluete.dart';
+import 'quick_kick.dart';
 
 const kPlayerParamTextStyle =
     TextStyle(fontFamily: 'BarlowCondensed', fontSize: 30.0);
@@ -34,6 +39,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   List<Club> _clubs = Club.getClubs();
   List<DropdownMenuItem<Club>> _dropdownClubItems;
   Club _selectedClub;
+
+  bool isActiveSiluete1;
+  bool isActiveSiluete2;
+  bool isActiveSiluete3;
+  bool isActiveSiluete4;
+  bool isActiveSiluete5;
 
   @override
   void initState() {
@@ -560,17 +571,273 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                       child: Column(
                         children: <Widget>[
                           Expanded(
+                            flex: 1,
                             child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              //verticalDirection: VerticalDirection.down,
                               children: <Widget>[
                                 Expanded(
-                                    child: Icon(FontAwesomeIcons.addressBook)),
-                                Expanded(child: Icon(FontAwesomeIcons.star))
+                                  child: SizedBox(),
+                                  flex: 1,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Color(0xFF191926),
+                                    size: 60.0,
+                                  ),
+                                  flex: 2,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Color(0xFF191926),
+                                    size: 60.0,
+                                  ),
+                                  flex: 2,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Color(0xFF191926),
+                                    size: 60.0,
+                                  ),
+                                  flex: 2,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Color(0xFF191926),
+                                    size: 60.0,
+                                  ),
+                                  flex: 2,
+                                ),
+                                Expanded(
+                                  child: Icon(
+                                    FontAwesomeIcons.caretDown,
+                                    color: Color(0xFF191926),
+                                    size: 60.0,
+                                  ),
+                                  flex: 2,
+                                ),
                               ],
                             ),
-                          )
+                          ),
+                          Expanded(
+                              flex: 5,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                    child: Column(
+                                      children: <Widget>[
+                                        Padding(
+                                          padding:
+                                              const EdgeInsets.only(top: 60.0),
+                                          child: Icon(
+                                            FontAwesomeIcons.user,
+                                            color: Color(0xFF464655),
+                                          ),
+                                        ),
+                                        SizedBox(
+                                          height: 250,
+                                        ),
+                                        Icon(
+                                          Icons.battery_full,
+                                          color: Color(0xFF464655),
+                                        )
+                                      ],
+                                    ),
+                                    flex: 1,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                            child: QuickKickSiluete(
+                                                onPress: () {
+                                                  setState(() {
+                                                    isActiveSiluete1 == false
+                                                        ? isActiveSiluete1 =
+                                                            true
+                                                        : isActiveSiluete1 =
+                                                            false;
+                                                  });
+                                                },
+                                                siluete: isActiveSiluete1 ==
+                                                        true
+                                                    ? QuickKickActiveSiluete(
+                                                        image: kActiveSiluete,
+                                                        number: "1",
+                                                        batteryLevel: 1)
+                                                    : QuickKickInactiveSiluete(
+                                                        image: kInactiveSiluete,
+                                                        number: "1",
+                                                      )))
+                                      ],
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                            child: QuickKickSiluete(
+                                                onPress: () {
+                                                  setState(() {
+                                                    isActiveSiluete2 == false
+                                                        ? isActiveSiluete2 =
+                                                            true
+                                                        : isActiveSiluete2 =
+                                                            false;
+                                                  });
+                                                },
+                                                siluete: isActiveSiluete2 ==
+                                                        true
+                                                    ? QuickKickActiveSiluete(
+                                                        image: kActiveSiluete,
+                                                        number: "2",
+                                                        batteryLevel: 2)
+                                                    : QuickKickInactiveSiluete(
+                                                        image: kInactiveSiluete,
+                                                        number: "2",
+                                                      )))
+                                      ],
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                            child: QuickKickSiluete(
+                                                onPress: () {
+                                                  setState(() {
+                                                    isActiveSiluete3 == false
+                                                        ? isActiveSiluete3 =
+                                                            true
+                                                        : isActiveSiluete3 =
+                                                            false;
+                                                  });
+                                                },
+                                                siluete: isActiveSiluete3 ==
+                                                        true
+                                                    ? QuickKickActiveSiluete(
+                                                        image: kActiveSiluete,
+                                                        number: "3",
+                                                        batteryLevel: 3)
+                                                    : QuickKickInactiveSiluete(
+                                                        image: kInactiveSiluete,
+                                                        number: "3",
+                                                      )))
+                                      ],
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                            child: QuickKickSiluete(
+                                                onPress: () {
+                                                  setState(() {
+                                                    isActiveSiluete4 == false
+                                                        ? isActiveSiluete4 =
+                                                            true
+                                                        : isActiveSiluete4 =
+                                                            false;
+                                                  });
+                                                },
+                                                siluete: isActiveSiluete4 ==
+                                                        true
+                                                    ? QuickKickActiveSiluete(
+                                                        image: kActiveSiluete,
+                                                        number: "4",
+                                                        batteryLevel: 4)
+                                                    : QuickKickInactiveSiluete(
+                                                        image: kInactiveSiluete,
+                                                        number: "4",
+                                                      )))
+                                      ],
+                                    ),
+                                    flex: 2,
+                                  ),
+                                  Expanded(
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: <Widget>[
+                                        Container(
+                                            child: QuickKickSiluete(
+                                                onPress: () {
+                                                  setState(() {
+                                                    isActiveSiluete5 == false
+                                                        ? isActiveSiluete5 =
+                                                            true
+                                                        : isActiveSiluete5 =
+                                                            false;
+                                                  });
+                                                },
+                                                siluete: isActiveSiluete5 ==
+                                                        true
+                                                    ? QuickKickActiveSiluete(
+                                                        image: kActiveSiluete,
+                                                        number: "5",
+                                                        batteryLevel: 4)
+                                                    : QuickKickInactiveSiluete(
+                                                        image: kInactiveSiluete,
+                                                        number: "5",
+                                                      )))
+                                      ],
+                                    ),
+                                    flex: 2,
+                                  ),
+                                ],
+                              )),
+                          Expanded(
+                              flex: 1,
+                              child: Padding(
+                                padding: const EdgeInsets.only(
+                                    left: 120.0, right: 60.0),
+                                child: Container(
+                                    child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: <Widget>[
+                                    Container(
+                                      child: SizedBox(
+                                        width: 70,
+                                        height: 20,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              left: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.white),
+                                              bottom: BorderSide(
+                                                  width: 1,
+                                                  color: Colors.white))),
+                                    ),
+                                    Container(
+                                        child: Row(
+                                      children: <Widget>[
+                                        Icon(FontAwesomeIcons.stackExchange),
+                                        Text(
+                                          'tap on player to SUBSTITUTE',
+                                          style: TextStyle(fontSize: 15.0),
+                                        ),
+                                      ],
+                                    )),
+                                    SizedBox(
+                                      width: 100,
+                                    )
+                                  ],
+                                )),
+                              ))
                         ],
                       ),
-                    )
+                    ),
                   ],
                 ),
               ),
