@@ -1,6 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'countries.dart';
 import 'clubs.dart';
+
+const kPlayerParamTextStyle =
+    TextStyle(fontFamily: 'BarlowCondensed', fontSize: 30.0);
+
+const kPlayerParamDisabled = Text(
+  '-',
+  style: TextStyle(
+      fontSize: 30.0, fontFamily: 'BarlowCondensed', color: Color(0xFF707070)),
+);
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -317,27 +327,31 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       width: 15.0,
                                     ),
                                     Expanded(
-                                        child: Container(
-                                      decoration: BoxDecoration(
-                                          //color: Color(0xFF3FA9F5),
-                                          boxShadow: [
-                                            BoxShadow(
-                                                color: Color(0xFF000000),
-                                                blurRadius: 8.0,
-                                                offset: Offset(7.0, 7.0))
-                                          ]),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
                                         child: RaisedButton(
-                                          color: Color(0xFF3FA9F5),
-                                          padding: EdgeInsets.all(0.0),
-                                          onPressed: null,
-                                          child: Text(
-                                            'START',
-                                            style: TextStyle(
+                                      padding: EdgeInsets.all(0.0),
+                                      onPressed: null,
+                                      child: Container(
+                                        padding: EdgeInsets.all(20.0),
+                                        decoration: BoxDecoration(
+                                            color: Color(0xFF464655),
+                                            boxShadow: [
+                                              BoxShadow(
+                                                  color: Color(0xFF000000),
+                                                  blurRadius: 8.0,
+                                                  offset: Offset(7.0, 7.0))
+                                            ]),
+                                        child: Padding(
+                                          padding: const EdgeInsets.fromLTRB(
+                                              15.0, 0.0, 15.0, 0.0),
+                                          child: Container(
+                                            child: Text(
+                                              'START',
+                                              style: TextStyle(
                                                 fontSize: 20.0,
-                                                color: Color(0xFF282832),
-                                                fontWeight: FontWeight.bold),
+                                                color: Color(0xFF9999AC),
+                                                fontWeight: FontWeight.bold,
+                                              ),
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -387,6 +401,178 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
               flex: 4,
               child: Container(
                 color: Color(0xFF242432),
+                child: Column(
+                  children: <Widget>[
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: Color(0xFF191926),
+                        child: Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: Column(
+                                children: <Widget>[
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0.0, 50.0, 0.0, 10.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.arrow_upward,
+                                                size: 30.0,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "183 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "190 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "183 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              kPlayerParamDisabled
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              kPlayerParamDisabled
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  ),
+                                  Padding(
+                                    padding: const EdgeInsets.fromLTRB(
+                                        0.0, 10.0, 0.0, 10.0),
+                                    child: Row(
+                                      children: <Widget>[
+                                        Expanded(
+                                          flex: 1,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Icon(
+                                                Icons.accessibility_new,
+                                                size: 30.0,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "45 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "40 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              Text(
+                                                "48 cm",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              kPlayerParamDisabled
+                                            ],
+                                          ),
+                                        ),
+                                        Expanded(
+                                          flex: 2,
+                                          child: Column(
+                                            children: <Widget>[
+                                              kPlayerParamDisabled
+                                            ],
+                                          ),
+                                        )
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ),
+                            )
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 3,
+                      child: Column(
+                        children: <Widget>[
+                          Expanded(
+                            child: Row(
+                              children: <Widget>[
+                                Expanded(
+                                    child: Icon(FontAwesomeIcons.addressBook)),
+                                Expanded(child: Icon(FontAwesomeIcons.star))
+                              ],
+                            ),
+                          )
+                        ],
+                      ),
+                    )
+                  ],
+                ),
               ),
             )
           ],
