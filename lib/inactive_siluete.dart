@@ -32,8 +32,9 @@ class InactiveSiluete extends StatelessWidget {
               "DETACHED",
               style: TextStyle(
                   fontSize: 15.0,
-                  color: Color(0xFF191926),
-                  fontFamily: 'BarlowCondensed'),
+                  color: Color(0xFF464655),
+                  fontFamily: 'BarlowCondensed',
+                  fontWeight: FontWeight.bold),
             ),
             top: 63,
             left: 22,

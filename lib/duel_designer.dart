@@ -8,6 +8,7 @@ import 'active_siluete_quick_kick.dart';
 import 'active_siluete_duel_designer.dart';
 import 'start_button.dart';
 import 'constants.dart';
+import 'package:flutter/services.dart';
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -45,6 +46,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     _dropdownClubItems = buildDropdownClubItems(_clubs);
     _selectedClub = _dropdownClubItems[0].value;
     super.initState();
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
   }
 
   List<DropdownMenuItem<Country>> buildDropdownCountryItems(List countries) {
