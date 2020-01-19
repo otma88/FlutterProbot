@@ -50,6 +50,9 @@ flutter:
     - images/silueta-disabled.png
     - images/croatia-flag.png
     - images/dinamo.jpg
+    - images/dd-silueta.png
+    - images/kragna.png
+    - images/dres.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

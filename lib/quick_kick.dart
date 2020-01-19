@@ -1,20 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:probot/quick_kick_active_siluete.dart';
-import 'package:probot/quick_kick_inactive_siluete.dart';
+import 'package:probot/active_siluete_quick_kick.dart';
+import 'package:probot/inactive_siluete.dart';
 import 'package:probot/quick_kick_siluete.dart';
 import 'package:flutter/services.dart';
-
-const kInactiveSiluete = 'images/silueta-disabled.png';
-const kActiveSiluete = 'images/silueta-active.png';
-const heightEasy = '170-180cm';
-const heightMedium = '180-190cm';
-const heightHard = '190-200cm';
-const jumpEasy = '30-40cm';
-const jumpMedium = '40-50cm';
-const jumpHard = '50-60cm';
-const occurrenceEasy = '60-70%';
-const occurrenceMedium = '70-80%';
-const occurrenceHard = '80-90%';
+import 'constants.dart';
 
 class QuickKick extends StatelessWidget {
   @override
@@ -412,11 +401,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                         });
                                       },
                                       siluete: isActiveSiluete1 == true
-                                          ? QuickKickActiveSiluete(
-                                              image: kActiveSiluete,
+                                          ? ActiveSilueteQuickKick(
+                                              image: kQKActiveSiluete,
                                               number: "1",
-                                              batteryLevel: 1)
-                                          : QuickKickInactiveSiluete(
+                                              batteryLevel: 1,
+                                              numAndEmptyIndicatorColor:
+                                                  emptyIndicatorQK,
+                                            )
+                                          : InactiveSiluete(
                                               image: kInactiveSiluete,
                                               number: "1",
                                             )))
@@ -437,11 +429,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                         });
                                       },
                                       siluete: isActiveSiluete2 == true
-                                          ? QuickKickActiveSiluete(
-                                              image: kActiveSiluete,
+                                          ? ActiveSilueteQuickKick(
+                                              image: kQKActiveSiluete,
                                               number: "2",
-                                              batteryLevel: 2)
-                                          : QuickKickInactiveSiluete(
+                                              batteryLevel: 2,
+                                              numAndEmptyIndicatorColor:
+                                                  emptyIndicatorQK,
+                                            )
+                                          : InactiveSiluete(
                                               image: kInactiveSiluete,
                                               number: "2",
                                             )))
@@ -462,11 +457,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                         });
                                       },
                                       siluete: isActiveSiluete3 == true
-                                          ? QuickKickActiveSiluete(
-                                              image: kActiveSiluete,
+                                          ? ActiveSilueteQuickKick(
+                                              image: kQKActiveSiluete,
                                               number: "3",
-                                              batteryLevel: 3)
-                                          : QuickKickInactiveSiluete(
+                                              batteryLevel: 3,
+                                              numAndEmptyIndicatorColor:
+                                                  emptyIndicatorQK,
+                                            )
+                                          : InactiveSiluete(
                                               image: kInactiveSiluete,
                                               number: "3",
                                             )))
@@ -487,11 +485,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                         });
                                       },
                                       siluete: isActiveSiluete4 == true
-                                          ? QuickKickActiveSiluete(
-                                              image: kActiveSiluete,
+                                          ? ActiveSilueteQuickKick(
+                                              image: kQKActiveSiluete,
                                               number: "4",
-                                              batteryLevel: 4)
-                                          : QuickKickInactiveSiluete(
+                                              batteryLevel: 4,
+                                              numAndEmptyIndicatorColor:
+                                                  emptyIndicatorQK,
+                                            )
+                                          : InactiveSiluete(
                                               image: kInactiveSiluete,
                                               number: "4",
                                             )))
@@ -512,11 +513,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                         });
                                       },
                                       siluete: isActiveSiluete5 == true
-                                          ? QuickKickActiveSiluete(
-                                              image: kActiveSiluete,
+                                          ? ActiveSilueteQuickKick(
+                                              image: kQKActiveSiluete,
                                               number: "5",
-                                              batteryLevel: 4)
-                                          : QuickKickInactiveSiluete(
+                                              batteryLevel: 4,
+                                              numAndEmptyIndicatorColor:
+                                                  emptyIndicatorQK,
+                                            )
+                                          : InactiveSiluete(
                                               image: kInactiveSiluete,
                                               number: "5",
                                             )))

@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
+import 'constants.dart';
 
-const whiteIndicator = Color(0xFFFFFFFF);
-const emptyIndicator = Color(0xFF338BCA);
-const redIndicator = Color(0xFFC70056);
-
-class QuickKickActiveSiluete extends StatelessWidget {
+class ActiveSilueteQuickKick extends StatelessWidget {
   final String image;
   final String number;
   final int batteryLevel;
+  final Color numAndEmptyIndicatorColor;
 
-  QuickKickActiveSiluete({this.image, this.number, this.batteryLevel});
+  ActiveSilueteQuickKick(
+      {this.image,
+      this.number,
+      this.batteryLevel,
+      this.numAndEmptyIndicatorColor});
 
   @override
   Widget build(BuildContext context) {
@@ -22,11 +24,15 @@ class QuickKickActiveSiluete extends StatelessWidget {
             height: 400,
           ),
           Positioned(
-              bottom: 110,
+              bottom: 105,
               left: 40,
               child: Text(
                 number,
-                style: TextStyle(color: Color(0xFF338BCA), fontSize: 35.0),
+                style: TextStyle(
+                    color: numAndEmptyIndicatorColor,
+                    fontSize: 30.0,
+                    fontWeight: FontWeight.w500,
+                    fontFamily: 'BarlowCondensed'),
               )),
           Positioned(
             bottom: 25,
@@ -40,8 +46,9 @@ class QuickKickActiveSiluete extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color:
-                            batteryLevel == 4 ? whiteIndicator : emptyIndicator,
+                        color: batteryLevel == 4
+                            ? whiteIndicator
+                            : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -52,7 +59,7 @@ class QuickKickActiveSiluete extends StatelessWidget {
                       Container(
                         color: batteryLevel == 3 || batteryLevel == 4
                             ? whiteIndicator
-                            : emptyIndicator,
+                            : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -65,7 +72,7 @@ class QuickKickActiveSiluete extends StatelessWidget {
                                 batteryLevel == 3 ||
                                 batteryLevel == 4
                             ? whiteIndicator
-                            : emptyIndicator,
+                            : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),

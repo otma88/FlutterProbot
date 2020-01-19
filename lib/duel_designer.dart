@@ -1,21 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:probot/probot_triangle_icons.dart';
 import 'countries.dart';
 import 'clubs.dart';
 import 'quick_kick_siluete.dart';
-import 'quick_kick_inactive_siluete.dart';
-import 'quick_kick_active_siluete.dart';
-import 'quick_kick.dart';
-
-const kPlayerParamTextStyle =
-    TextStyle(fontFamily: 'BarlowCondensed', fontSize: 30.0);
-
-const kPlayerParamDisabled = Text(
-  '-',
-  style: TextStyle(
-      fontSize: 30.0, fontFamily: 'BarlowCondensed', color: Color(0xFF707070)),
-);
+import 'inactive_siluete.dart';
+import 'active_siluete_quick_kick.dart';
+import 'active_siluete_duel_designer.dart';
+import 'start_button.dart';
+import 'constants.dart';
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -338,35 +330,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       width: 15.0,
                                     ),
                                     Expanded(
-                                        child: RaisedButton(
-                                      padding: EdgeInsets.all(0.0),
-                                      onPressed: null,
-                                      child: Container(
-                                        padding: EdgeInsets.all(20.0),
-                                        decoration: BoxDecoration(
-                                            color: Color(0xFF464655),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                  color: Color(0xFF000000),
-                                                  blurRadius: 8.0,
-                                                  offset: Offset(7.0, 7.0))
-                                            ]),
-                                        child: Padding(
-                                          padding: const EdgeInsets.fromLTRB(
-                                              15.0, 0.0, 15.0, 0.0),
-                                          child: Container(
-                                            child: Text(
-                                              'START',
-                                              style: TextStyle(
-                                                fontSize: 20.0,
-                                                color: Color(0xFF9999AC),
-                                                fontWeight: FontWeight.bold,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ))
+                                        child: StartButton(
+                                            onTap: null, buttonTitle: "START"))
                                   ],
                                 ),
                               ),
@@ -666,11 +631,26 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 },
                                                 siluete: isActiveSiluete1 ==
                                                         true
-                                                    ? QuickKickActiveSiluete(
-                                                        image: kActiveSiluete,
+                                                    ? ActiveSilueteDuelDesigner(
+                                                        image: kDDActiveSiluete,
                                                         number: "1",
-                                                        batteryLevel: 1)
-                                                    : QuickKickInactiveSiluete(
+                                                        batteryLevel: 1,
+                                                        numAndEmptyIndicatorColor:
+                                                            emptyIndicatorDD,
+                                                        playerName: "SILVA",
+                                                        playerNumber: "2",
+                                                        kragna:
+                                                            Color(0xFFFF0000),
+                                                        shirtColor:
+                                                            Color(0xFF243479),
+                                                        playerNameColor:
+                                                            Colors.white,
+                                                        playerNumberColor:
+                                                            Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            Colors.white,
+                                                      )
+                                                    : InactiveSiluete(
                                                         image: kInactiveSiluete,
                                                         number: "1",
                                                       )))
@@ -695,11 +675,26 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 },
                                                 siluete: isActiveSiluete2 ==
                                                         true
-                                                    ? QuickKickActiveSiluete(
-                                                        image: kActiveSiluete,
+                                                    ? ActiveSilueteDuelDesigner(
+                                                        image: kDDActiveSiluete,
                                                         number: "2",
-                                                        batteryLevel: 2)
-                                                    : QuickKickInactiveSiluete(
+                                                        batteryLevel: 2,
+                                                        numAndEmptyIndicatorColor:
+                                                            emptyIndicatorDD,
+                                                        playerName: "MEUNIER",
+                                                        playerNumber: "12",
+                                                        kragna:
+                                                            Color(0xFFFF0000),
+                                                        shirtColor:
+                                                            Color(0xFF243479),
+                                                        playerNameColor:
+                                                            Colors.white,
+                                                        playerNumberColor:
+                                                            Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            Colors.white,
+                                                      )
+                                                    : InactiveSiluete(
                                                         image: kInactiveSiluete,
                                                         number: "2",
                                                       )))
@@ -724,11 +719,26 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 },
                                                 siluete: isActiveSiluete3 ==
                                                         true
-                                                    ? QuickKickActiveSiluete(
-                                                        image: kActiveSiluete,
+                                                    ? ActiveSilueteDuelDesigner(
+                                                        image: kDDActiveSiluete,
                                                         number: "3",
-                                                        batteryLevel: 3)
-                                                    : QuickKickInactiveSiluete(
+                                                        batteryLevel: 3,
+                                                        numAndEmptyIndicatorColor:
+                                                            emptyIndicatorDD,
+                                                        playerName: "KIMPEMBE",
+                                                        playerNumber: "4",
+                                                        kragna:
+                                                            Color(0xFFFF0000),
+                                                        shirtColor:
+                                                            Color(0xFF243479),
+                                                        playerNameColor:
+                                                            Colors.white,
+                                                        playerNumberColor:
+                                                            Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            Colors.white,
+                                                      )
+                                                    : InactiveSiluete(
                                                         image: kInactiveSiluete,
                                                         number: "3",
                                                       )))
@@ -753,11 +763,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 },
                                                 siluete: isActiveSiluete4 ==
                                                         true
-                                                    ? QuickKickActiveSiluete(
-                                                        image: kActiveSiluete,
+                                                    ? ActiveSilueteDuelDesigner(
+                                                        image: kDDActiveSiluete,
                                                         number: "4",
-                                                        batteryLevel: 4)
-                                                    : QuickKickInactiveSiluete(
+                                                        batteryLevel: 4,
+                                                        numAndEmptyIndicatorColor:
+                                                            emptyIndicatorDD,
+                                                      )
+                                                    : InactiveSiluete(
                                                         image: kInactiveSiluete,
                                                         number: "4",
                                                       )))
@@ -782,11 +795,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 },
                                                 siluete: isActiveSiluete5 ==
                                                         true
-                                                    ? QuickKickActiveSiluete(
-                                                        image: kActiveSiluete,
+                                                    ? ActiveSilueteDuelDesigner(
+                                                        image: kDDActiveSiluete,
                                                         number: "5",
-                                                        batteryLevel: 4)
-                                                    : QuickKickInactiveSiluete(
+                                                        batteryLevel: 4,
+                                                        numAndEmptyIndicatorColor:
+                                                            emptyIndicatorDD,
+                                                      )
+                                                    : InactiveSiluete(
                                                         image: kInactiveSiluete,
                                                         number: "5",
                                                       )))
@@ -800,38 +816,58 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                               flex: 1,
                               child: Padding(
                                 padding: const EdgeInsets.only(
-                                    left: 120.0, right: 60.0),
+                                    left: 120.0, right: 57.0),
                                 child: Container(
                                     child: Row(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: <Widget>[
                                     Container(
                                       child: SizedBox(
-                                        width: 70,
+                                        width: 100,
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
                                           border: Border(
                                               left: BorderSide(
                                                   width: 1,
-                                                  color: Colors.white),
+                                                  color: Color(0xFF9999AC)),
                                               bottom: BorderSide(
                                                   width: 1,
-                                                  color: Colors.white))),
+                                                  color: Color(0xFF9999AC)))),
                                     ),
                                     Container(
                                         child: Row(
                                       children: <Widget>[
-                                        Icon(FontAwesomeIcons.stackExchange),
+                                        Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: Icon(
+                                            FontAwesomeIcons.exchangeAlt,
+                                            color: Color(0xFF9999AC),
+                                          ),
+                                        ),
                                         Text(
                                           'tap on player to SUBSTITUTE',
-                                          style: TextStyle(fontSize: 15.0),
+                                          style: TextStyle(
+                                              fontSize: 20.0,
+                                              color: Color(0xFF9999AC)),
                                         ),
                                       ],
                                     )),
-                                    SizedBox(
-                                      width: 100,
-                                    )
+                                    Container(
+                                      margin: EdgeInsets.only(left: 10.0),
+                                      child: SizedBox(
+                                        width: 92,
+                                        height: 20,
+                                      ),
+                                      decoration: BoxDecoration(
+                                          border: Border(
+                                              right: BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xFF9999AC)),
+                                              bottom: BorderSide(
+                                                  width: 1,
+                                                  color: Color(0xFF9999AC)))),
+                                    ),
                                   ],
                                 )),
                               ))
