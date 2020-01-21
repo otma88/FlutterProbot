@@ -395,7 +395,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                 children: <Widget>[
                                   Padding(
                                     padding: const EdgeInsets.fromLTRB(
-                                        0.0, 50.0, 0.0, 10.0),
+                                        0.0, 35.0, 0.0, 10.0),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
@@ -537,7 +537,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                       ),
                     ),
                     Expanded(
-                      flex: 3,
+                      flex: 4,
                       child: Column(
                         children: <Widget>[
                           Expanded(
