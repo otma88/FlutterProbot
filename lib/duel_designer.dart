@@ -774,6 +774,18 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         batteryLevel: 4,
                                                         numAndEmptyIndicatorColor:
                                                             emptyIndicatorDD,
+                                                        playerName: "PONGRAC",
+                                                        playerNumber: "1",
+                                                        kragna:
+                                                            Color(0xFFFF0000),
+                                                        shirtColor:
+                                                            Color(0xFF243479),
+                                                        playerNameColor:
+                                                            Colors.white,
+                                                        playerNumberColor:
+                                                            Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -806,6 +818,18 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         batteryLevel: 4,
                                                         numAndEmptyIndicatorColor:
                                                             emptyIndicatorDD,
+                                                        playerName: "RAZUM",
+                                                        playerNumber: "10",
+                                                        kragna:
+                                                            Color(0xFFFF0000),
+                                                        shirtColor:
+                                                            Color(0xFF243479),
+                                                        playerNameColor:
+                                                            Colors.white,
+                                                        playerNumberColor:
+                                                            Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
