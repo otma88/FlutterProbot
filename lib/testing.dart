@@ -3,6 +3,7 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'dart:io';
+import 'package:flutter_svg/flutter_svg.dart';
 
 void main() => runApp(MaterialApp(
       title: "Hospital Management",
@@ -17,22 +18,26 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   String _mySelection;
 
-  final String url = 'http://probot-backend.test:88/api/auth/leagues';
+  final String url = 'http://probot-backend.test/api/auth/leagues';
   final String accessToken =
-      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6ImQ1ODE3NmZjNmU4ZjZiNTdhOTkyNTFkNjMzN2Y0OTg5OTFmY2FjODRlNzNmMThmYzllYTQyZmUwYjY3NDMxMjZhM2UwYjNmODA2OTkzYzQ4In0.eyJhdWQiOiIyIiwianRpIjoiZDU4MTc2ZmM2ZThmNmI1N2E5OTI1MWQ2MzM3ZjQ5ODk5MWZjYWM4NGU3M2YxOGZjOWVhNDJmZTBiNjc0MzEyNmEzZTBiM2Y4MDY5OTNjNDgiLCJpYXQiOjE1Nzk4NTExMTQsIm5iZiI6MTU3OTg1MTExNCwiZXhwIjoxNjExNDczNTE0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.FbycSmizotdOEC6zll8QTmH8filtAzj8oiJ8Qp8XGyP5NUMEs5V3fO48f86coxeijw5iK_BmnGTy7ag_hIRNAmpcCCyZPVXxyWtvpHCCiqbAFRtpwx7U4NAObXIX2P8JL45DGKocYNjRv6PGDKfwB3_y7G8WeilU8UFZfyYiGva48Td6R7cKzpRSs8tMxZ1Ivqed4PAizHvuf1tLoxk1ESrfqxTwogBFfLLFfE0OIGq2feSaDRYUN-rDjNJ7GkxA_PS_x_zTye9oHt2CSQoyNgYGXHG_cViKYZf09DQjVGp0HPttnYSu0O2lFW7_-3mjfNjIggTyJiACU-HshEBJtdR51U0T4xob6C64wF4BKxJfRci7KlxFlCDOER1i41nroyhgF5roX26P89ZvX5WyPAL-j9xxoznjxoWXmr4SA4jgiYJI8BykT40z2ZVkaSU8Js2p-zMPBOMNnKuOchK17LtTTKTdzzvdd0KNp4bWKjk6CUsvfMeXt5uq2poKKeadjGbkfxZhOdwY1L_aUvLNLgmRQaCa_NdT-_lzo-t447XF4a9AxJ5U4_dBXXATrUetAEwokVmrYLFiLixDQdB1yplVTeoik9qPr8cVlM9M4zjOqEWzsW3rFQh-TmLo472Z0ABja1-PC5NGPi49KbcRGClaAufC5NooZOlUChzc9tY';
+      'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiIsImp0aSI6IjZhYzY2NzMyZWM2NGQxYTI0YTJjNmYwMGI5NzQ3ODYxMDM2MDZmNjM4MDlkY2U3OThlOWIxOWRmMTM3ZTg5NjdiNjBjMTYxM2ViNDcyMzI0In0.eyJhdWQiOiIyIiwianRpIjoiNmFjNjY3MzJlYzY0ZDFhMjRhMmM2ZjAwYjk3NDc4NjEwMzYwNmY2MzgwOWRjZTc5OGU5YjE5ZGYxMzdlODk2N2I2MGMxNjEzZWI0NzIzMjQiLCJpYXQiOjE1Nzk5NjE5NzQsIm5iZiI6MTU3OTk2MTk3NCwiZXhwIjoxNjExNTg0Mzc0LCJzdWIiOiIxIiwic2NvcGVzIjpbXX0.ra7PGAVjLKqLcdJJMSPS3YxM4-gLOjpzPqNKYe5u0FbmP_PYYPjmIkuk2x6q72Q3WlqaoIfGmMRlEigt7asBTGqwOd5i2uex8DnLs6zo1kO2YRtcp6wGoK0LY8HIcSc_OeUooyJJwSeyvSosju5velIMVpnGrIfFOxgGQ7EOBS0d3JDqX7vQF5KqKByKpopEK-QgY0Ca8eUMRyR9FV8N7Y2VCgjMAEHueXfpximpbG0_RQAHu76ROl3zKO-m6IusdAL7j2286gEjgYTEoxaHUnuxJ2qLFHHn7BWqkb6Dg-8uOxi_MOGgK1iwoaujaZGlE7wdgqLznRcsa8EKdTcH7uM64uu6OZsLbfX0S6mY-AljZZGG3l5XscsE8bMwRB2Ua1stisCnyx6_5yubzvrkVne02sEx9dCmnYotLo-mKSH_fP-GeAqETFOm0wwfo8oYVQm5CJcocirjOAxDkgwk6Bi7_b6Ak_VJfpCB3u1VqIwb7YBzKkEF-gSBS6i8MkplOMIzR5rUZbwdFrhf0oLHwWV1YXneoT8HHd5Og1yYbpwqJLl-aaBF9CFXdx0OH5JyMpK5QzLcc37iOAk6t0m87p_v6DzPC-LnY4V0Fl31JWxuFjt_-5YoiIbcKny-kK6qeQROC1IMPbHv9helgk1vv70O6_EzLcu-nO5JT8Pn8gA';
 
-  List data = List(); //edited line
+  List leagues = List(); //edited line
 
   Future<String> getSWData() async {
-    var res = await http.get(Uri.encodeFull(url),
-        headers: {HttpHeaders.authorizationHeader: accessToken});
-    var resBody = json.decode(res.body);
-
-    setState(() {
-      data = resBody;
+    var res = await http.get(Uri.encodeFull(url), headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $accessToken",
     });
 
-    print(resBody);
+    Map<String, dynamic> map = jsonDecode(res.body);
+    List<dynamic> data = map["data"];
+
+    setState(() {
+      leagues = data;
+    });
+
+    print(leagues);
 
     return "Sucess";
   }
@@ -51,9 +56,18 @@ class _MyAppState extends State<MyApp> {
       ),
       body: new Center(
         child: new DropdownButton(
-          items: data.map((item) {
+          items: leagues.map((item) {
             return new DropdownMenuItem(
-              child: new Text(item['item_name']),
+              child: Row(
+                children: <Widget>[
+                  SvgPicture.network(
+                    item['flag'],
+                    width: 50,
+                    height: 50,
+                  ),
+                  Text(item['name']),
+                ],
+              ),
               value: item['id'].toString(),
             );
           }).toList(),

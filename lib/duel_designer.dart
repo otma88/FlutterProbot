@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'countries.dart';
+import 'leagues.dart';
 import 'clubs.dart';
 import 'quick_kick_siluete.dart';
 import 'inactive_siluete.dart';
-import 'active_siluete_quick_kick.dart';
 import 'active_siluete_duel_designer.dart';
 import 'start_button.dart';
 import 'constants.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -25,9 +25,10 @@ class DuelDesignerPage extends StatefulWidget {
 }
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
-  List<Country> _countries = Country.getCountries();
-  List<DropdownMenuItem<Country>> _dropdownCountryItems;
-  Country _selectedCountry;
+  String _mySelection;
+  List _leagues = List();
+  List<DropdownMenuItem<League>> _dropdownLeaguesItems;
+  League _selectedCountry;
 
   List<Club> _clubs = Club.getClubs();
   List<DropdownMenuItem<Club>> _dropdownClubItems;
@@ -39,40 +40,54 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete4;
   bool isActiveSiluete5;
 
+  void getLeaguesData() async {
+    try {
+      var data = await League().getLeagues();
+      setState(() {
+        _leagues = data;
+        print(_leagues);
+      });
+    } catch (e) {
+      print(e);
+    }
+  }
+
   @override
   void initState() {
-    _dropdownCountryItems = buildDropdownCountryItems(_countries);
-    _selectedCountry = _dropdownCountryItems[0].value;
+    //  _dropdownLeaguesItems = buildDropdownLeaguesItems(_leagues);
+//    _selectedCountry = _dropdownLeaguesItems[0].value;
     _dropdownClubItems = buildDropdownClubItems(_clubs);
     _selectedClub = _dropdownClubItems[0].value;
     super.initState();
+    this.getLeaguesData();
+    //_mySelection = _leagues?.elementAt(0) ?? "";
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
   }
 
-  List<DropdownMenuItem<Country>> buildDropdownCountryItems(List countries) {
-    List<DropdownMenuItem<Country>> items = List();
-    for (Country country in countries) {
-      items.add(
-        DropdownMenuItem(
-          value: country,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Image.asset('images/croatia-flag.png'),
-              SizedBox(
-                width: 10.0,
-              ),
-              Text(country.name)
-            ],
-          ),
-        ),
-      );
-    }
-    return items;
-  }
+//  List<DropdownMenuItem<League>> buildDropdownLeaguesItems(List leagues) {
+//    List<DropdownMenuItem<League>> items = List();
+//    for (League league in leagues) {
+//      items.add(
+//        DropdownMenuItem(
+//          value: league,
+//          child: Row(
+//            mainAxisAlignment: MainAxisAlignment.start,
+//            children: <Widget>[
+//              Image.asset('images/croatia-flag.png'),
+//              SizedBox(
+//                width: 10.0,
+//              ),
+//              Text(league.name)
+//            ],
+//          ),
+//        ),
+//      );
+//    }
+//    return items;
+//  }
 
   List<DropdownMenuItem<Club>> buildDropdownClubItems(List clubs) {
     List<DropdownMenuItem<Club>> items = List();
@@ -98,7 +113,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     return items;
   }
 
-  onChangeCountryItem(Country selectedCountry) {
+  onChangeLeagueItem(League selectedCountry) {
     setState(() {
       _selectedCountry = selectedCountry;
     });
@@ -110,12 +125,34 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     });
   }
 
-  DropdownButton _selectLegaue() => DropdownButton<Country>(
+  DropdownButton _selectLegaue() => DropdownButton<String>(
         underline: SizedBox(),
         icon: SizedBox(),
-        items: buildDropdownCountryItems(_countries),
-        onChanged: onChangeCountryItem,
-        value: _selectedCountry,
+        items: _leagues.map((item) {
+          return DropdownMenuItem(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: <Widget>[
+                SvgPicture.network(
+                  item['flag'],
+                  width: 20.0,
+                  height: 20.0,
+                ),
+                SizedBox(
+                  width: 10.0,
+                ),
+                Text(item['name']),
+              ],
+            ),
+            value: item["id"].toString(),
+          );
+        }).toList(),
+        onChanged: (newVal) {
+          setState(() {
+            _mySelection = newVal;
+          });
+        },
+        value: _mySelection,
         isExpanded: true,
         elevation: 6,
         style: TextStyle(
