@@ -9,6 +9,10 @@ import 'start_button.dart';
 import 'constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'constants.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'dart:io';
 
 class DuelDesigner extends StatelessWidget {
   @override
@@ -25,6 +29,8 @@ class DuelDesignerPage extends StatefulWidget {
 }
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
+  League _selectedLeague;
+  final String urlLeagueApi = 'http://10.0.2.2:88/api/auth/leagues';
   String _mySelection;
   List _leagues = List();
   List<DropdownMenuItem<League>> _dropdownLeaguesItems;
@@ -40,17 +46,32 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete4;
   bool isActiveSiluete5;
 
-  void getLeaguesData() async {
-    try {
-      var data = await League().getLeagues();
-      setState(() {
-        _leagues = data;
-        print(_leagues);
-      });
-    } catch (e) {
-      print(e);
+  Future<List<League>> _fetchLeagues() async {
+    var response = await http.get(urlLeagueApi);
+
+    if (response.statusCode == 200) {
+      final items = jsonDecode(response.body).cast<Map<String, dynamic>>();
+      List<League> listOfLeagues = items.map<League>((json) {
+        return League.fromJson(json);
+      }).toList();
+
+      return listOfLeagues;
+    } else {
+      throw Exception('Failed to fetch leagues');
     }
   }
+
+//  void getLeaguesData() async {
+//    try {
+//      var data = await League().getLeagues();
+//      setState(() {
+//        _leagues = data;
+//        print(_leagues);
+//      });
+//    } catch (e) {
+//      print(e);
+//    }
+//  }
 
   @override
   void initState() {
@@ -59,7 +80,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     _dropdownClubItems = buildDropdownClubItems(_clubs);
     _selectedClub = _dropdownClubItems[0].value;
     super.initState();
-    this.getLeaguesData();
+    //  this.getLeaguesData();
     //_mySelection = _leagues?.elementAt(0) ?? "";
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -125,41 +146,87 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     });
   }
 
-  DropdownButton _selectLegaue() => DropdownButton<String>(
-        underline: SizedBox(),
-        icon: SizedBox(),
-        items: _leagues.map((item) {
-          return DropdownMenuItem(
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: <Widget>[
-                SvgPicture.network(
-                  item['flag'],
-                  width: 20.0,
-                  height: 20.0,
-                ),
-                SizedBox(
-                  width: 10.0,
-                ),
-                Text(item['name']),
-              ],
-            ),
-            value: item["id"].toString(),
-          );
-        }).toList(),
-        onChanged: (newVal) {
-          setState(() {
-            _mySelection = newVal;
-          });
-        },
-        value: _mySelection,
-        isExpanded: true,
-        elevation: 6,
-        style: TextStyle(
-            fontSize: 25.0,
-            fontFamily: 'BarlowCondensed',
-            color: Color(0xFF9999AC)),
-      );
+  Widget LeaguesDropdown() {
+    return Container(
+      child: FutureBuilder(
+          future: _fetchLeagues(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Padding(
+                padding: const EdgeInsets.all(15.0),
+                child: Text("Nema podataka"),
+              );
+            }
+            return DropdownButton<League>(
+              underline: SizedBox(),
+              icon: SizedBox(),
+              items: snapshot.data
+                  .map((league) => DropdownMenuItem(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: <Widget>[
+                            SvgPicture.network(league.flag),
+                            SizedBox(
+                              width: 10.0,
+                            ),
+                            Text(league.name)
+                          ],
+                        ),
+                        value: league,
+                      ))
+                  .toList(),
+              onChanged: (League value) {
+                setState(() {
+                  _selectedLeague = value;
+                });
+              },
+              value: _selectedLeague,
+              isExpanded: true,
+              elevation: 6,
+              style: TextStyle(
+                  fontSize: 25.0,
+                  fontFamily: 'BarlowCondensed',
+                  color: Color(0xFF9999AC)),
+            );
+          }),
+    );
+  }
+
+//  DropdownButton _selectLegaue() => DropdownButton<String>(
+//        underline: SizedBox(),
+//        icon: SizedBox(),
+//        items: _leagues.map((item) {
+//          return DropdownMenuItem(
+//            child: Row(
+//              mainAxisAlignment: MainAxisAlignment.start,
+//              children: <Widget>[
+//                SvgPicture.network(
+//                  item['flag'],
+//                  width: 20.0,
+//                  height: 20.0,
+//                ),
+//                SizedBox(
+//                  width: 10.0,
+//                ),
+//                Text(item['name']),
+//              ],
+//            ),
+//            value: item["id"].toString(),
+//          );
+//        }).toList(),
+//        onChanged: (newVal) {
+//          setState(() {
+//            _mySelection = newVal;
+//          });
+//        },
+//        value: _mySelection,
+//        isExpanded: true,
+//        elevation: 6,
+//        style: TextStyle(
+//            fontSize: 25.0,
+//            fontFamily: 'BarlowCondensed',
+//            color: Color(0xFF9999AC)),
+//      );
 
   DropdownButton _selectClub() => DropdownButton<Club>(
         underline: SizedBox(),
@@ -244,7 +311,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(
                                           10.0, 7.0, 5.0, 7.0),
-                                      child: Container(child: _selectLegaue()),
+                                      child:
+                                          Container(child: LeaguesDropdown()),
                                       decoration: BoxDecoration(boxShadow: [
                                         BoxShadow(
                                             color: Color(0xFF000000),
