@@ -30,7 +30,7 @@ class DuelDesignerPage extends StatefulWidget {
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
   League _selectedLeague;
-  final String urlLeagueApi = 'http://10.0.2.2:88/api/auth/leagues';
+  final String urlLeagueApi = 'http://probot-backend.test/api/auth/leagues';
   String _mySelection;
   List _leagues = List();
   List<DropdownMenuItem<League>> _dropdownLeaguesItems;
@@ -47,10 +47,13 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete5;
 
   Future<List<League>> _fetchLeagues() async {
-    var response = await http.get(urlLeagueApi);
+    var response = await http.get(urlLeagueApi, headers: {
+      HttpHeaders.contentTypeHeader: "application/json",
+      HttpHeaders.authorizationHeader: "Bearer $accessToken"
+    });
 
     if (response.statusCode == 200) {
-      final items = jsonDecode(response.body).cast<Map<String, dynamic>>();
+      final items = json.decode(response.body).cast<String, dynamic>();
       List<League> listOfLeagues = items.map<League>((json) {
         return League.fromJson(json);
       }).toList();
@@ -151,6 +154,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
       child: FutureBuilder(
           future: _fetchLeagues(),
           builder: (context, snapshot) {
+            print(snapshot);
             if (!snapshot.hasData) {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -161,7 +165,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
               underline: SizedBox(),
               icon: SizedBox(),
               items: snapshot.data
-                  .map((league) => DropdownMenuItem(
+                  .map<DropdownMenuItem<String>>((league) => DropdownMenuItem(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
