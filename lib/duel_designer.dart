@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'leagues.dart';
@@ -52,16 +53,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
       HttpHeaders.authorizationHeader: "Bearer $accessToken"
     });
 
-    if (response.statusCode == 200) {
-      final items = json.decode(response.body).cast<String, dynamic>();
-      List<League> listOfLeagues = items.map<League>((json) {
-        return League.fromJson(json);
-      }).toList();
+    return compute(parseLeagues, response.body);
+  }
 
-      return listOfLeagues;
-    } else {
-      throw Exception('Failed to fetch leagues');
-    }
+  List<League> parseLeagues(String responseBody) {
+    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
+    return parsed.map<League>((json) => League.fromJson(json)).toList();
   }
 
 //  void getLeaguesData() async {

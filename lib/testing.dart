@@ -6,7 +6,7 @@ import 'dart:io';
 import 'package:flutter_svg/flutter_svg.dart';
 
 void main() => runApp(MaterialApp(
-      title: "Hospital Management",
+      title: "Testing casting",
       home: MyApp(),
     ));
 
@@ -76,7 +76,6 @@ class _MyAppState extends State<MyApp> {
               _mySelection = newVal;
             });
           },
-          value: _mySelection,
         ),
       ),
     );

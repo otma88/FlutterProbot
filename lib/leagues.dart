@@ -16,11 +16,11 @@ class League {
 //    return data = map["data"];
 //  }
 
-  final String id;
-  final String country_id;
+  final int id;
+  final int country_id;
   final String name;
   final String country_code;
-  final String season;
+  final int season;
   final String logo;
   final String flag;
   final String created_at;
@@ -39,14 +39,14 @@ class League {
 
   factory League.fromJson(Map<String, dynamic> json) {
     return League(
-        id: json['id'].toString(),
-        country_id: json['country_id'].toString(),
-        name: json['name'],
-        country_code: json['country_code'],
-        season: json['season'].toString(),
-        logo: json['logo'],
-        flag: json['flag'],
-        created_at: json['created_at'],
-        updated_at: json['updated_at']);
+        id: json['id'] as int,
+        country_id: json['country_id'] as int,
+        name: json['name'] as String,
+        country_code: json['country_code'] as String,
+        season: json['season'] as int,
+        logo: json['logo'] as String,
+        flag: json['flag'] as String,
+        created_at: json['created_at'] as String,
+        updated_at: json['updated_at'] as String);
   }
 }
