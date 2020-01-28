@@ -15,6 +15,22 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
+Future<List<League>> _fetchLeagues(http.Client client) async {
+  var response = await client.get(urlLeagueApi, headers: {
+    HttpHeaders.contentTypeHeader: "application/json",
+    HttpHeaders.authorizationHeader: "Bearer $accessToken"
+  });
+
+  return compute(parseLeagues, response.body);
+}
+
+List<League> parseLeagues(String responseBody) {
+  final parsed = jsonDecode(responseBody);
+  Map<String, dynamic> pas = parsed;
+  print(pas['data']);
+  return pas['data'].map<League>((json) => League.fromJson(json)).toList();
+}
+
 class DuelDesigner extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -31,7 +47,6 @@ class DuelDesignerPage extends StatefulWidget {
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
   League _selectedLeague;
-  final String urlLeagueApi = 'http://probot-backend.test/api/auth/leagues';
   String _mySelection;
   List _leagues = List();
   List<DropdownMenuItem<League>> _dropdownLeaguesItems;
@@ -46,20 +61,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete3;
   bool isActiveSiluete4;
   bool isActiveSiluete5;
-
-  Future<List<League>> _fetchLeagues() async {
-    var response = await http.get(urlLeagueApi, headers: {
-      HttpHeaders.contentTypeHeader: "application/json",
-      HttpHeaders.authorizationHeader: "Bearer $accessToken"
-    });
-
-    return compute(parseLeagues, response.body);
-  }
-
-  List<League> parseLeagues(String responseBody) {
-    final parsed = jsonDecode(responseBody).cast<Map<String, dynamic>>();
-    return parsed.map<League>((json) => League.fromJson(json)).toList();
-  }
 
 //  void getLeaguesData() async {
 //    try {
@@ -148,10 +149,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
 
   Widget LeaguesDropdown() {
     return Container(
-      child: FutureBuilder(
-          future: _fetchLeagues(),
+      child: FutureBuilder<List<League>>(
+          future: _fetchLeagues(http.Client()),
           builder: (context, snapshot) {
-            print(snapshot);
+            print(snapshot.data);
             if (!snapshot.hasData) {
               return Padding(
                 padding: const EdgeInsets.all(15.0),
@@ -162,11 +163,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
               underline: SizedBox(),
               icon: SizedBox(),
               items: snapshot.data
-                  .map<DropdownMenuItem<String>>((league) => DropdownMenuItem(
+                  .map<DropdownMenuItem<League>>((league) => DropdownMenuItem(
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.start,
                           children: <Widget>[
-                            SvgPicture.network(league.flag),
+                            SvgPicture.network(
+                              league.flag,
+                              width: 20,
+                              height: 20,
+                            ),
                             SizedBox(
                               width: 10.0,
                             ),
@@ -181,7 +186,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                   _selectedLeague = value;
                 });
               },
-              value: _selectedLeague,
+              value: _selectedLeague = snapshot.data[0],
               isExpanded: true,
               elevation: 6,
               style: TextStyle(
