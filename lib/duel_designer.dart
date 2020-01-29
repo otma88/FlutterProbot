@@ -10,13 +10,12 @@ import 'start_button.dart';
 import 'constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'constants.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'dart:io';
 
 Future<List<League>> _fetchLeagues(http.Client client) async {
-  var response = await client.get(urlLeagueApi, headers: {
+  var response = await client.get(URL_LEAGUE_API, headers: {
     HttpHeaders.contentTypeHeader: "application/json",
     HttpHeaders.authorizationHeader: "Bearer $accessToken"
   });
@@ -24,10 +23,19 @@ Future<List<League>> _fetchLeagues(http.Client client) async {
   return compute(parseLeagues, response.body);
 }
 
+//Future<List<Club>> _fetchClubsByLeagueID(
+//    http.Client client, int leagueID) async {
+//  var response = await client.get(URL_CLUBS_API, headers: {
+//    HttpHeaders.contentTypeHeader: "application/json",
+//    HttpHeaders.authorizationHeader: "Bearer $accessToken"
+//  });
+//
+//  return compute(parseLeagues, response.body);
+//}
+
 List<League> parseLeagues(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print(pas['data']);
   return pas['data'].map<League>((json) => League.fromJson(json)).toList();
 }
 
@@ -47,12 +55,10 @@ class DuelDesignerPage extends StatefulWidget {
 
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
   League _selectedLeague;
-  String _mySelection;
-  List _leagues = List();
+  Future<List<League>> _leagues;
   List<DropdownMenuItem<League>> _dropdownLeaguesItems;
-  League _selectedCountry;
 
-  List<Club> _clubs = Club.getClubs();
+  //List<Club> _clubs = Club.getClubs();
   List<DropdownMenuItem<Club>> _dropdownClubItems;
   Club _selectedClub;
 
@@ -62,54 +68,17 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete4;
   bool isActiveSiluete5;
 
-//  void getLeaguesData() async {
-//    try {
-//      var data = await League().getLeagues();
-//      setState(() {
-//        _leagues = data;
-//        print(_leagues);
-//      });
-//    } catch (e) {
-//      print(e);
-//    }
-//  }
-
   @override
   void initState() {
-    //  _dropdownLeaguesItems = buildDropdownLeaguesItems(_leagues);
-//    _selectedCountry = _dropdownLeaguesItems[0].value;
-    _dropdownClubItems = buildDropdownClubItems(_clubs);
+    //  _dropdownClubItems = buildDropdownClubItems(_clubs);
     _selectedClub = _dropdownClubItems[0].value;
     super.initState();
-    //  this.getLeaguesData();
-    //_mySelection = _leagues?.elementAt(0) ?? "";
+    _leagues = _fetchLeagues(http.Client());
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
   }
-
-//  List<DropdownMenuItem<League>> buildDropdownLeaguesItems(List leagues) {
-//    List<DropdownMenuItem<League>> items = List();
-//    for (League league in leagues) {
-//      items.add(
-//        DropdownMenuItem(
-//          value: league,
-//          child: Row(
-//            mainAxisAlignment: MainAxisAlignment.start,
-//            children: <Widget>[
-//              Image.asset('images/croatia-flag.png'),
-//              SizedBox(
-//                width: 10.0,
-//              ),
-//              Text(league.name)
-//            ],
-//          ),
-//        ),
-//      );
-//    }
-//    return items;
-//  }
 
   List<DropdownMenuItem<Club>> buildDropdownClubItems(List clubs) {
     List<DropdownMenuItem<Club>> items = List();
@@ -135,12 +104,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     return items;
   }
 
-  onChangeLeagueItem(League selectedCountry) {
-    setState(() {
-      _selectedCountry = selectedCountry;
-    });
-  }
-
   onChangeClubItem(Club selectedClub) {
     setState(() {
       _selectedClub = selectedClub;
@@ -149,95 +112,59 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
 
   Widget LeaguesDropdown() {
     return Container(
-      child: FutureBuilder<List<League>>(
-          future: _fetchLeagues(http.Client()),
-          builder: (context, snapshot) {
-            print(snapshot.data);
-            if (!snapshot.hasData) {
-              return Padding(
-                padding: const EdgeInsets.all(15.0),
-                child: Text("Nema podataka"),
+        child: FutureBuilder<List<League>>(
+            future: _leagues,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text("Nema podataka"),
+                );
+              }
+              return DropdownButton<League>(
+                underline: SizedBox(),
+                icon: SizedBox(),
+                items: snapshot.data
+                    .map<DropdownMenuItem<League>>(
+                        (league) => DropdownMenuItem<League>(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  SvgPicture.network(
+                                    league.flag,
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text(league.name)
+                                ],
+                              ),
+                              value: league,
+                            ))
+                    .toList(),
+                onChanged: (League value) {
+                  setState(() {
+                    print(value.name);
+                    _selectedLeague = value;
+                  });
+                },
+                value: _selectedLeague,
+                isExpanded: true,
+                elevation: 6,
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontFamily: 'BarlowCondensed',
+                    color: Color(0xFF9999AC)),
               );
-            }
-            return DropdownButton<League>(
-              underline: SizedBox(),
-              icon: SizedBox(),
-              items: snapshot.data
-                  .map<DropdownMenuItem<League>>((league) => DropdownMenuItem(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: <Widget>[
-                            SvgPicture.network(
-                              league.flag,
-                              width: 20,
-                              height: 20,
-                            ),
-                            SizedBox(
-                              width: 10.0,
-                            ),
-                            Text(league.name)
-                          ],
-                        ),
-                        value: league,
-                      ))
-                  .toList(),
-              onChanged: (League value) {
-                setState(() {
-                  _selectedLeague = value;
-                });
-              },
-              value: _selectedLeague = snapshot.data[0],
-              isExpanded: true,
-              elevation: 6,
-              style: TextStyle(
-                  fontSize: 25.0,
-                  fontFamily: 'BarlowCondensed',
-                  color: Color(0xFF9999AC)),
-            );
-          }),
-    );
+            }));
   }
-
-//  DropdownButton _selectLegaue() => DropdownButton<String>(
-//        underline: SizedBox(),
-//        icon: SizedBox(),
-//        items: _leagues.map((item) {
-//          return DropdownMenuItem(
-//            child: Row(
-//              mainAxisAlignment: MainAxisAlignment.start,
-//              children: <Widget>[
-//                SvgPicture.network(
-//                  item['flag'],
-//                  width: 20.0,
-//                  height: 20.0,
-//                ),
-//                SizedBox(
-//                  width: 10.0,
-//                ),
-//                Text(item['name']),
-//              ],
-//            ),
-//            value: item["id"].toString(),
-//          );
-//        }).toList(),
-//        onChanged: (newVal) {
-//          setState(() {
-//            _mySelection = newVal;
-//          });
-//        },
-//        value: _mySelection,
-//        isExpanded: true,
-//        elevation: 6,
-//        style: TextStyle(
-//            fontSize: 25.0,
-//            fontFamily: 'BarlowCondensed',
-//            color: Color(0xFF9999AC)),
-//      );
 
   DropdownButton _selectClub() => DropdownButton<Club>(
         underline: SizedBox(),
         icon: SizedBox(),
-        items: buildDropdownClubItems(_clubs),
+        // items: buildDropdownClubItems(_clubs),
         onChanged: onChangeClubItem,
         value: _selectedClub,
         isExpanded: true,

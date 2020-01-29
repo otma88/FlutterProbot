@@ -1,21 +1,4 @@
-import 'dart:convert';
-import 'dart:io';
-import 'package:flutter/material.dart';
-
 class League {
-  // List<dynamic> data;
-
-//  Future<List<dynamic>> getLeagues() async {
-//    var response = await http.get(Uri.encodeFull(url), headers: {
-//      HttpHeaders.contentTypeHeader: "application/json",
-//      HttpHeaders.authorizationHeader: "Bearer $accessToken",
-//    });
-//
-//    Map<String, dynamic> map = jsonDecode(response.body);
-//
-//    return data = map["data"];
-//  }
-
   final int id;
   final int country_id;
   final String name;
