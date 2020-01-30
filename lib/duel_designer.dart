@@ -1,6 +1,8 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:probot/players.dart';
 import 'leagues.dart';
 import 'clubs.dart';
 import 'quick_kick_siluete.dart';
@@ -23,20 +25,46 @@ Future<List<League>> _fetchLeagues(http.Client client) async {
   return compute(parseLeagues, response.body);
 }
 
-//Future<List<Club>> _fetchClubsByLeagueID(
-//    http.Client client, int leagueID) async {
-//  var response = await client.get(URL_CLUBS_API, headers: {
-//    HttpHeaders.contentTypeHeader: "application/json",
-//    HttpHeaders.authorizationHeader: "Bearer $accessToken"
-//  });
-//
-//  return compute(parseLeagues, response.body);
-//}
+Future<List<Club>> _fetchClubsByLeagueID(
+    http.Client client, String leagueID) async {
+  var response = await client.get(
+      'http://probot-backend.test/api/auth/clubs/league/$leagueID',
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      });
+
+  return compute(parseClubs, response.body);
+}
+
+Future<List<Player>> _fetchPlayersByClubID(
+    http.Client client, String clubID) async {
+  var response = await client.get(
+      'http://probot-backend.test/api/auth/players/club/$clubID',
+      headers: {
+        HttpHeaders.contentTypeHeader: "application/json",
+        HttpHeaders.authorizationHeader: "Bearer $accessToken"
+      });
+
+  return compute(parsePlayers, response.body);
+}
 
 List<League> parseLeagues(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
   return pas['data'].map<League>((json) => League.fromJson(json)).toList();
+}
+
+List<Club> parseClubs(String responseBody) {
+  final parsed = jsonDecode(responseBody);
+  Map<String, dynamic> pas = parsed;
+  return pas['data'].map<Club>((json) => Club.fromJson(json)).toList();
+}
+
+List<Player> parsePlayers(String responseBody) {
+  final parsed = jsonDecode(responseBody);
+  Map<String, dynamic> pas = parsed;
+  return pas['data'].map<Player>((json) => Player.fromJson(json)).toList();
 }
 
 class DuelDesigner extends StatelessWidget {
@@ -56,11 +84,12 @@ class DuelDesignerPage extends StatefulWidget {
 class _DuelDesignerPageState extends State<DuelDesignerPage> {
   League _selectedLeague;
   Future<List<League>> _leagues;
-  List<DropdownMenuItem<League>> _dropdownLeaguesItems;
-
-  //List<Club> _clubs = Club.getClubs();
-  List<DropdownMenuItem<Club>> _dropdownClubItems;
   Club _selectedClub;
+  Future<List<Club>> _clubs;
+  String leagueID = "1";
+  Player _selectedPlayer;
+  Future<List<Player>> _players;
+  String clubID = "1";
 
   bool isActiveSiluete1;
   bool isActiveSiluete2;
@@ -70,44 +99,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
 
   @override
   void initState() {
-    //  _dropdownClubItems = buildDropdownClubItems(_clubs);
-    _selectedClub = _dropdownClubItems[0].value;
     super.initState();
     _leagues = _fetchLeagues(http.Client());
+    _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
+    _players = _fetchPlayersByClubID(http.Client(), clubID);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
-  }
-
-  List<DropdownMenuItem<Club>> buildDropdownClubItems(List clubs) {
-    List<DropdownMenuItem<Club>> items = List();
-    for (Club club in clubs) {
-      items.add(DropdownMenuItem(
-        value: club,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: <Widget>[
-            Image.asset(
-              'images/dinamo.jpg',
-              height: 20.0,
-              width: 20.0,
-            ),
-            SizedBox(
-              width: 10.0,
-            ),
-            Text(club.name),
-          ],
-        ),
-      ));
-    }
-    return items;
-  }
-
-  onChangeClubItem(Club selectedClub) {
-    setState(() {
-      _selectedClub = selectedClub;
-    });
   }
 
   Widget LeaguesDropdown() {
@@ -148,6 +147,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                   setState(() {
                     print(value.name);
                     _selectedLeague = value;
+                    leagueID = _selectedLeague.id.toString();
                   });
                 },
                 value: _selectedLeague,
@@ -161,19 +161,56 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
             }));
   }
 
-  DropdownButton _selectClub() => DropdownButton<Club>(
-        underline: SizedBox(),
-        icon: SizedBox(),
-        // items: buildDropdownClubItems(_clubs),
-        onChanged: onChangeClubItem,
-        value: _selectedClub,
-        isExpanded: true,
-        elevation: 6,
-        style: TextStyle(
-            fontSize: 25.0,
-            fontFamily: 'BarlowCondensed',
-            color: Color(0xFF9999AC)),
-      );
+  Widget ClubsDropdown() {
+    return Container(
+        child: FutureBuilder<List<Club>>(
+            future: _clubs,
+            builder: (context, snapshot) {
+              if (!snapshot.hasData) {
+                return Padding(
+                  padding: const EdgeInsets.all(15.0),
+                  child: Text("Nema podataka"),
+                );
+              }
+              return DropdownButton<Club>(
+                underline: SizedBox(),
+                icon: SizedBox(),
+                items: snapshot.data
+                    .map<DropdownMenuItem<Club>>(
+                        (club) => DropdownMenuItem<Club>(
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.start,
+                                children: <Widget>[
+                                  SvgPicture.network(
+                                    club.logo,
+                                    width: 20,
+                                    height: 20,
+                                  ),
+                                  SizedBox(
+                                    width: 10.0,
+                                  ),
+                                  Text(club.name)
+                                ],
+                              ),
+                              value: club,
+                            ))
+                    .toList(),
+                onChanged: (Club value) {
+                  setState(() {
+                    print(value.name);
+                    _selectedClub = value;
+                  });
+                },
+                value: _selectedClub,
+                isExpanded: true,
+                elevation: 6,
+                style: TextStyle(
+                    fontSize: 25.0,
+                    fontFamily: 'BarlowCondensed',
+                    color: Color(0xFF9999AC)),
+              );
+            }));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -270,7 +307,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(
                                           10.0, 7.0, 5.0, 7.0),
-                                      child: Container(child: _selectClub()),
+                                      child: Container(child: ClubsDropdown()),
                                       decoration: BoxDecoration(boxShadow: [
                                         BoxShadow(
                                             color: Color(0xFF000000),
@@ -664,6 +701,20 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
+                                                  CupertinoPicker(
+                                                    itemExtent: 20,
+                                                    children: <Widget>[
+                                                      //_fetchPlayers with club_id parameter
+                                                      //for petlja
+                                                      Text("Igrač 1"),
+                                                      Text("Igrač 2"),
+                                                      Text("Igrač 3")
+                                                    ],
+                                                    onSelectedItemChanged:
+                                                        (int index) {
+                                                      // selectedPlayers
+                                                    },
+                                                  );
                                                   setState(() {
                                                     isActiveSiluete1 == false
                                                         ? isActiveSiluete1 =
@@ -752,6 +803,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
+                                                  //tu otvori Cupertino
                                                   setState(() {
                                                     isActiveSiluete3 == false
                                                         ? isActiveSiluete3 =
