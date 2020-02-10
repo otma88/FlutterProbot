@@ -92,6 +92,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     super.initState();
     _leagues = _fetchLeagues(http.Client());
     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
+    _selectedPlayer = null;
     //  _players = _fetchPlayersByClubID(http.Client(), clubID);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -410,7 +411,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "183 cm",
+                                                _selectedPlayer != null ? _selectedPlayer.height != null ? _selectedPlayer.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -473,7 +474,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "45 cm",
+                                                _selectedPlayer != null ? _selectedPlayer.height != null ? "45 cm" : "-" : "-",
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -613,51 +614,61 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   if (this._selectedClub != null) {
-                                                    showModalBottomSheet(
+                                                    showDialog(
                                                         context: context,
-                                                        builder: (BuildContext builder) {
-                                                          return Scaffold(
-                                                            appBar: AppBar(
-                                                              title: Text(
-                                                                "Choose player",
-                                                                textAlign: TextAlign.justify,
+                                                        builder: (context) {
+                                                          return CupertinoAlertDialog(
+                                                            title: Text("Choose player"),
+                                                            actions: <Widget>[
+                                                              CupertinoDialogAction(
+                                                                child: Text("Disable siluette"),
+                                                                onPressed: () {
+                                                                  setState(() {
+                                                                    _selectedPlayer = null;
+                                                                    isActiveSiluete1 = false;
+                                                                  });
+                                                                  Navigator.pop(context, 'Disable');
+                                                                },
+                                                              )
+                                                            ],
+                                                            content: Container(
+                                                              width: 500,
+                                                              height: 500,
+                                                              child: FutureBuilder<List<Player>>(
+                                                                future: _players,
+                                                                builder: (context, snapshot) {
+                                                                  switch (snapshot.connectionState) {
+                                                                    case ConnectionState.none:
+                                                                    case ConnectionState.waiting:
+                                                                      return Text("Loading...");
+                                                                    default:
+                                                                      if (snapshot.hasError) {
+                                                                        return Text('Error: ${snapshot.error}');
+                                                                      } else {
+                                                                        return ListView.builder(
+                                                                            itemCount: snapshot.data.length,
+                                                                            itemBuilder: (context, index) {
+                                                                              return Card(
+                                                                                child: ListTile(
+                                                                                  onTap: () {
+                                                                                    setState(() {
+                                                                                      _selectedPlayer = snapshot.data[index];
+                                                                                      isActiveSiluete1 = true;
+                                                                                      Navigator.pop(context, 'Cancel');
+                                                                                    });
+                                                                                  },
+                                                                                  leading: Icon(Icons.accessibility),
+                                                                                  title: Text(snapshot.data[index].playerName),
+                                                                                  subtitle:
+                                                                                      Text("Height: ${snapshot.data[index].height}, Position: ${snapshot.data[index].position}"),
+                                                                                ),
+                                                                              );
+                                                                            });
+                                                                      }
+                                                                  }
+                                                                },
                                                               ),
                                                             ),
-                                                            body: Container(
-                                                                child: FutureBuilder<List<Player>>(
-                                                              future: _players,
-                                                              builder: (context, AsyncSnapshot snapshot) {
-                                                                if (!snapshot.hasData) {
-                                                                  return Text("No data");
-                                                                }
-                                                                return CupertinoPicker(
-                                                                  scrollController: FixedExtentScrollController(initialItem: 0),
-                                                                  key: Key("Player picker"),
-                                                                  backgroundColor: Color(0xFF191926),
-                                                                  itemExtent: 50,
-                                                                  children: List<Widget>.generate(snapshot.data.length, (int index) {
-                                                                    return Text(
-                                                                      snapshot.data[index].playerName,
-                                                                      style: TextStyle(color: Colors.white),
-                                                                    );
-                                                                  }),
-                                                                  onSelectedItemChanged: (int index) {
-                                                                    print(index);
-                                                                    if (index == 0) {
-                                                                      setState(() {
-                                                                        isActiveSiluete1 == false;
-                                                                      });
-                                                                    } else {
-                                                                      setState(() {
-                                                                        _selectedPlayer = snapshot.data[index];
-                                                                        print(_selectedPlayer.playerName);
-                                                                        isActiveSiluete1 == true;
-                                                                      });
-                                                                    }
-                                                                  },
-                                                                );
-                                                              },
-                                                            )),
                                                           );
                                                         });
                                                   } else {
@@ -683,8 +694,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "1",
                                                         batteryLevel: 1,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: "SILVA",
-                                                        playerNumber: "2",
+                                                        playerName: _selectedPlayer.lastName.toUpperCase(),
+                                                        playerNumber: _selectedPlayer.number != null ? _selectedPlayer.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,
