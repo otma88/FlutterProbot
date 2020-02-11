@@ -77,7 +77,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   Club _selectedClub;
   Future<List<Club>> _clubs;
   String leagueID = "1";
-  Player _selectedPlayer;
+  Player _selectedPlayer1;
+  Player _selectedPlayer2;
+  Player _selectedPlayer3;
+  Player _selectedPlayer4;
+  Player _selectedPlayer5;
   Future<List<Player>> _players;
   String clubID = "1";
 
@@ -92,7 +96,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     super.initState();
     _leagues = _fetchLeagues(http.Client());
     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-    _selectedPlayer = null;
+    //_selectedPlayer1 = null;
     //  _players = _fetchPlayersByClubID(http.Client(), clubID);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -194,6 +198,16 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     clubID = _selectedClub.id.toString();
                     print(clubID);
                     _players = _fetchPlayersByClubID(http.Client(), clubID);
+                    isActiveSiluete1 = false;
+                    isActiveSiluete2 = false;
+                    isActiveSiluete3 = false;
+                    isActiveSiluete4 = false;
+                    isActiveSiluete5 = false;
+                    _selectedPlayer1 = null;
+                    _selectedPlayer2 = null;
+                    _selectedPlayer3 = null;
+                    _selectedPlayer4 = null;
+                    _selectedPlayer5 = null;
                     print("udropu $_players");
                   });
                 },
@@ -411,7 +425,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer != null ? _selectedPlayer.height != null ? _selectedPlayer.height : "-" : kPlayerParamDisabled.data,
+                                                _selectedPlayer1 != null ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -422,7 +436,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "190 cm",
+                                                _selectedPlayer2 != null ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -433,7 +447,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "183 cm",
+                                                _selectedPlayer3 != null ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -442,13 +456,23 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Expanded(
                                           flex: 2,
                                           child: Column(
-                                            children: <Widget>[kPlayerParamDisabled],
+                                            children: <Widget>[
+                                              Text(
+                                                _selectedPlayer4 != null ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-" : kPlayerParamDisabled.data,
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
                                           ),
                                         ),
                                         Expanded(
                                           flex: 2,
                                           child: Column(
-                                            children: <Widget>[kPlayerParamDisabled],
+                                            children: <Widget>[
+                                              Text(
+                                                _selectedPlayer5 != null ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-" : kPlayerParamDisabled.data,
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
                                           ),
                                         )
                                       ],
@@ -474,7 +498,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer != null ? _selectedPlayer.height != null ? "45 cm" : "-" : "-",
+                                                _selectedPlayer1 != null ? _selectedPlayer1.height != null ? "45 cm" : "-" : "-",
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -485,7 +509,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "40 cm",
+                                                _selectedPlayer2 != null ? _selectedPlayer2.height != null ? "45 cm" : "-" : "-",
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -496,7 +520,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                "48 cm",
+                                                _selectedPlayer3 != null ? _selectedPlayer3.height != null ? "45 cm" : "-" : "-",
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -505,13 +529,23 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Expanded(
                                           flex: 2,
                                           child: Column(
-                                            children: <Widget>[kPlayerParamDisabled],
+                                            children: <Widget>[
+                                              Text(
+                                                _selectedPlayer4 != null ? _selectedPlayer4.height != null ? "45 cm" : "-" : "-",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
                                           ),
                                         ),
                                         Expanded(
                                           flex: 2,
                                           child: Column(
-                                            children: <Widget>[kPlayerParamDisabled],
+                                            children: <Widget>[
+                                              Text(
+                                                _selectedPlayer5 != null ? _selectedPlayer5.height != null ? "45 cm" : "-" : "-",
+                                                style: kPlayerParamTextStyle,
+                                              )
+                                            ],
                                           ),
                                         )
                                       ],
@@ -624,7 +658,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 child: Text("Disable siluette"),
                                                                 onPressed: () {
                                                                   setState(() {
-                                                                    _selectedPlayer = null;
+                                                                    _selectedPlayer1 = null;
                                                                     isActiveSiluete1 = false;
                                                                   });
                                                                   Navigator.pop(context, 'Disable');
@@ -652,7 +686,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 child: ListTile(
                                                                                   onTap: () {
                                                                                     setState(() {
-                                                                                      _selectedPlayer = snapshot.data[index];
+                                                                                      _selectedPlayer1 = snapshot.data[index];
                                                                                       isActiveSiluete1 = true;
                                                                                       Navigator.pop(context, 'Cancel');
                                                                                     });
@@ -694,8 +728,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "1",
                                                         batteryLevel: 1,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer.lastName.toUpperCase(),
-                                                        playerNumber: _selectedPlayer.number != null ? _selectedPlayer.number.toString() : "1",
+                                                        playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : null,
+                                                        playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,
@@ -718,7 +752,79 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   setState(() {
-                                                    isActiveSiluete2 == false ? isActiveSiluete2 = true : isActiveSiluete2 = false;
+                                                    if (this._selectedClub != null) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return CupertinoAlertDialog(
+                                                              title: Text("Choose player"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  child: Text("Disable siluette"),
+                                                                  onPressed: () {
+                                                                    setState(() {
+                                                                      _selectedPlayer2 = null;
+                                                                      isActiveSiluete2 = false;
+                                                                    });
+                                                                    Navigator.pop(context, 'Disable');
+                                                                  },
+                                                                )
+                                                              ],
+                                                              content: Container(
+                                                                height: 500,
+                                                                child: FutureBuilder<List<Player>>(
+                                                                  future: _players,
+                                                                  builder: (context, snapshot) {
+                                                                    switch (snapshot.connectionState) {
+                                                                      case ConnectionState.none:
+                                                                      case ConnectionState.waiting:
+                                                                        return Text("Loading...");
+                                                                      default:
+                                                                        if (snapshot.hasError) {
+                                                                          return Text('Error: ${snapshot.error}');
+                                                                        } else {
+                                                                          return ListView.builder(
+                                                                              itemCount: snapshot.data.length,
+                                                                              itemBuilder: (context, index) {
+                                                                                return Card(
+                                                                                  child: ListTile(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        _selectedPlayer2 = snapshot.data[index];
+                                                                                        isActiveSiluete2 = true;
+                                                                                        Navigator.pop(context, 'Cancel');
+                                                                                      });
+                                                                                    },
+                                                                                    leading: Icon(Icons.accessibility),
+                                                                                    title: Text(snapshot.data[index].playerName),
+                                                                                    subtitle: Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
+                                                                                        "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
+                                                                                        ""}"),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                        }
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    } else {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) => CupertinoAlertDialog(
+                                                                title: Text("Warninng!"),
+                                                                content: Text("Please choose oponnent!"),
+                                                                actions: <Widget>[
+                                                                  CupertinoDialogAction(
+                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                    isDefaultAction: true,
+                                                                    child: Text("Close"),
+                                                                  )
+                                                                ],
+                                                              ));
+                                                    }
                                                   });
                                                 },
                                                 siluete: isActiveSiluete2 == true
@@ -727,8 +833,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "2",
                                                         batteryLevel: 2,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: "MEUNIER",
-                                                        playerNumber: "12",
+                                                        playerName: _selectedPlayer2.lastName.toUpperCase(),
+                                                        playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,
@@ -752,7 +858,79 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 onPress: () {
                                                   //tu otvori Cupertino
                                                   setState(() {
-                                                    isActiveSiluete3 == false ? isActiveSiluete3 = true : isActiveSiluete3 = false;
+                                                    if (this._selectedClub != null) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return CupertinoAlertDialog(
+                                                              title: Text("Choose player"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  child: Text("Disable siluette"),
+                                                                  onPressed: () {
+                                                                    setState(() {
+                                                                      _selectedPlayer3 = null;
+                                                                      isActiveSiluete3 = false;
+                                                                    });
+                                                                    Navigator.pop(context, 'Disable');
+                                                                  },
+                                                                )
+                                                              ],
+                                                              content: Container(
+                                                                height: 500,
+                                                                child: FutureBuilder<List<Player>>(
+                                                                  future: _players,
+                                                                  builder: (context, snapshot) {
+                                                                    switch (snapshot.connectionState) {
+                                                                      case ConnectionState.none:
+                                                                      case ConnectionState.waiting:
+                                                                        return Text("Loading...");
+                                                                      default:
+                                                                        if (snapshot.hasError) {
+                                                                          return Text('Error: ${snapshot.error}');
+                                                                        } else {
+                                                                          return ListView.builder(
+                                                                              itemCount: snapshot.data.length,
+                                                                              itemBuilder: (context, index) {
+                                                                                return Card(
+                                                                                  child: ListTile(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        _selectedPlayer3 = snapshot.data[index];
+                                                                                        isActiveSiluete3 = true;
+                                                                                        Navigator.pop(context, 'Cancel');
+                                                                                      });
+                                                                                    },
+                                                                                    leading: Icon(Icons.accessibility),
+                                                                                    title: Text(snapshot.data[index].playerName),
+                                                                                    subtitle: Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
+                                                                                        "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
+                                                                                        ""}"),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                        }
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    } else {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) => CupertinoAlertDialog(
+                                                                title: Text("Warninng!"),
+                                                                content: Text("Please choose oponnent!"),
+                                                                actions: <Widget>[
+                                                                  CupertinoDialogAction(
+                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                    isDefaultAction: true,
+                                                                    child: Text("Close"),
+                                                                  )
+                                                                ],
+                                                              ));
+                                                    }
                                                   });
                                                 },
                                                 siluete: isActiveSiluete3 == true
@@ -761,8 +939,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "3",
                                                         batteryLevel: 3,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: "KIMPEMBE",
-                                                        playerNumber: "4",
+                                                        playerName: _selectedPlayer3.lastName.toUpperCase(),
+                                                        playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,
@@ -785,7 +963,79 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   setState(() {
-                                                    isActiveSiluete4 == false ? isActiveSiluete4 = true : isActiveSiluete4 = false;
+                                                    if (this._selectedClub != null) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return CupertinoAlertDialog(
+                                                              title: Text("Choose player"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  child: Text("Disable siluette"),
+                                                                  onPressed: () {
+                                                                    setState(() {
+                                                                      _selectedPlayer4 = null;
+                                                                      isActiveSiluete4 = false;
+                                                                    });
+                                                                    Navigator.pop(context, 'Disable');
+                                                                  },
+                                                                )
+                                                              ],
+                                                              content: Container(
+                                                                height: 500,
+                                                                child: FutureBuilder<List<Player>>(
+                                                                  future: _players,
+                                                                  builder: (context, snapshot) {
+                                                                    switch (snapshot.connectionState) {
+                                                                      case ConnectionState.none:
+                                                                      case ConnectionState.waiting:
+                                                                        return Text("Loading...");
+                                                                      default:
+                                                                        if (snapshot.hasError) {
+                                                                          return Text('Error: ${snapshot.error}');
+                                                                        } else {
+                                                                          return ListView.builder(
+                                                                              itemCount: snapshot.data.length,
+                                                                              itemBuilder: (context, index) {
+                                                                                return Card(
+                                                                                  child: ListTile(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        _selectedPlayer4 = snapshot.data[index];
+                                                                                        isActiveSiluete4 = true;
+                                                                                        Navigator.pop(context, 'Cancel');
+                                                                                      });
+                                                                                    },
+                                                                                    leading: Icon(Icons.accessibility),
+                                                                                    title: Text(snapshot.data[index].playerName),
+                                                                                    subtitle: Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
+                                                                                        "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
+                                                                                        ""}"),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                        }
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    } else {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) => CupertinoAlertDialog(
+                                                                title: Text("Warninng!"),
+                                                                content: Text("Please choose oponnent!"),
+                                                                actions: <Widget>[
+                                                                  CupertinoDialogAction(
+                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                    isDefaultAction: true,
+                                                                    child: Text("Close"),
+                                                                  )
+                                                                ],
+                                                              ));
+                                                    }
                                                   });
                                                 },
                                                 siluete: isActiveSiluete4 == true
@@ -794,8 +1044,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "4",
                                                         batteryLevel: 4,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: "PONGRAC",
-                                                        playerNumber: "1",
+                                                        playerName: _selectedPlayer4.lastName.toUpperCase(),
+                                                        playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,
@@ -818,7 +1068,79 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   setState(() {
-                                                    isActiveSiluete5 == false ? isActiveSiluete5 = true : isActiveSiluete5 = false;
+                                                    if (this._selectedClub != null) {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (context) {
+                                                            return CupertinoAlertDialog(
+                                                              title: Text("Choose player"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  child: Text("Disable siluette"),
+                                                                  onPressed: () {
+                                                                    setState(() {
+                                                                      _selectedPlayer5 = null;
+                                                                      isActiveSiluete5 = false;
+                                                                    });
+                                                                    Navigator.pop(context, 'Disable');
+                                                                  },
+                                                                )
+                                                              ],
+                                                              content: Container(
+                                                                height: 500,
+                                                                child: FutureBuilder<List<Player>>(
+                                                                  future: _players,
+                                                                  builder: (context, snapshot) {
+                                                                    switch (snapshot.connectionState) {
+                                                                      case ConnectionState.none:
+                                                                      case ConnectionState.waiting:
+                                                                        return Text("Loading...");
+                                                                      default:
+                                                                        if (snapshot.hasError) {
+                                                                          return Text('Error: ${snapshot.error}');
+                                                                        } else {
+                                                                          return ListView.builder(
+                                                                              itemCount: snapshot.data.length,
+                                                                              itemBuilder: (context, index) {
+                                                                                return Card(
+                                                                                  child: ListTile(
+                                                                                    onTap: () {
+                                                                                      setState(() {
+                                                                                        _selectedPlayer5 = snapshot.data[index];
+                                                                                        isActiveSiluete5 = true;
+                                                                                        Navigator.pop(context, 'Cancel');
+                                                                                      });
+                                                                                    },
+                                                                                    leading: Icon(Icons.accessibility),
+                                                                                    title: Text(snapshot.data[index].playerName),
+                                                                                    subtitle: Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
+                                                                                        "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
+                                                                                        ""}"),
+                                                                                  ),
+                                                                                );
+                                                                              });
+                                                                        }
+                                                                    }
+                                                                  },
+                                                                ),
+                                                              ),
+                                                            );
+                                                          });
+                                                    } else {
+                                                      showDialog(
+                                                          context: context,
+                                                          builder: (BuildContext context) => CupertinoAlertDialog(
+                                                                title: Text("Warninng!"),
+                                                                content: Text("Please choose oponnent!"),
+                                                                actions: <Widget>[
+                                                                  CupertinoDialogAction(
+                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                    isDefaultAction: true,
+                                                                    child: Text("Close"),
+                                                                  )
+                                                                ],
+                                                              ));
+                                                    }
                                                   });
                                                 },
                                                 siluete: isActiveSiluete5 == true
@@ -827,8 +1149,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "5",
                                                         batteryLevel: 4,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: "RAZUM",
-                                                        playerNumber: "10",
+                                                        playerName: _selectedPlayer5.lastName.toUpperCase(),
+                                                        playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "1",
                                                         kragna: Color(0xFFFF0000),
                                                         shirtColor: Color(0xFF243479),
                                                         playerNameColor: Colors.white,

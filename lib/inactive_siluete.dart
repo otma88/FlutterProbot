@@ -18,23 +18,15 @@ class InactiveSiluete extends StatelessWidget {
           ),
           Positioned(
               bottom: 105,
-              left: 40,
+              left: 42,
               child: Text(
                 number,
-                style: TextStyle(
-                    color: Color(0xFF191926),
-                    fontSize: 30.0,
-                    fontFamily: 'BarlowCondensed',
-                    fontWeight: FontWeight.w500),
+                style: TextStyle(color: Color(0xFF191926), fontSize: 30.0, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.w500),
               )),
           Positioned(
             child: Text(
               "DETACHED",
-              style: TextStyle(
-                  fontSize: 15.0,
-                  color: Color(0xFF464655),
-                  fontFamily: 'BarlowCondensed',
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 15.0, color: Color(0xFF464655), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold),
             ),
             top: 63,
             left: 22,
