@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class QuickKickInactiveSiluete extends StatelessWidget {
+class InactiveSiluete extends StatelessWidget {
   final String image;
   final String number;
 
-  QuickKickInactiveSiluete({this.image, this.number});
+  InactiveSiluete({this.image, this.number});
 
   @override
   Widget build(BuildContext context) {
@@ -17,19 +17,19 @@ class QuickKickInactiveSiluete extends StatelessWidget {
             height: 400,
           ),
           Positioned(
-              bottom: 110,
-              left: 40,
+              bottom: 105,
+              left: 42,
               child: Text(
                 number,
-                style: TextStyle(color: Color(0xFF191926), fontSize: 35.0),
+                style: TextStyle(color: Color(0xFF191926), fontSize: 30.0, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.w500),
               )),
           Positioned(
             child: Text(
               "DETACHED",
-              style: TextStyle(fontSize: 12.0, color: Color(0xFF191926)),
+              style: TextStyle(fontSize: 15.0, color: Color(0xFF464655), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold),
             ),
-            bottom: 310,
-            left: 18,
+            top: 63,
+            left: 22,
           )
         ],
       ),
