@@ -126,8 +126,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             children: <Widget>[
                               SvgPicture.network(
                                 league.flag,
-                                width: 20,
-                                height: 20,
+                                width: 25,
+                                height: 25,
                               ),
                               SizedBox(
                                 width: 10.0,
@@ -179,8 +179,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             children: <Widget>[
                               Image.network(
                                 club.logo,
-                                width: 20,
-                                height: 20,
+                                width: 30,
+                                height: 30,
                               ),
                               SizedBox(
                                 width: 10.0,
@@ -217,6 +217,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                 style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
               );
             }));
+  }
+
+  Color getColorFromString(String value) {
+    return new Color(int.parse(value.substring(4, 10), radix: 16) + 0xFF000000);
   }
 
   @override
@@ -566,17 +570,20 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             flex: 1,
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
-                              //verticalDirection: VerticalDirection.down,
+                              verticalDirection: VerticalDirection.down,
                               children: <Widget>[
                                 Expanded(
                                   child: SizedBox(),
                                   flex: 1,
                                 ),
                                 Expanded(
-                                  child: Icon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Color(0xFF191926),
-                                    size: 60.0,
+                                  child: Container(
+                                    alignment: Alignment.topCenter,
+                                    child: Icon(
+                                      FontAwesomeIcons.caretDown,
+                                      color: Color(0xFF191926),
+                                      size: 60.0,
+                                    ),
                                   ),
                                   flex: 2,
                                 ),
@@ -694,7 +701,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   leading: Icon(Icons.accessibility),
                                                                                   title: Text(snapshot.data[index].playerName),
                                                                                   subtitle:
-                                                                                      Text("Height: ${snapshot.data[index].height}, Position: ${snapshot.data[index].position}"),
+                                                                                      Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "No "
+                                                                                              "data"}, "
+                                                                                          "Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
+                                                                                              ""}"),
                                                                                 ),
                                                                               );
                                                                             });
@@ -730,11 +740,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : null,
                                                         playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
-                                                        kragna: Color(0xFFFF0000),
-                                                        shirtColor: Color(0xFF243479),
-                                                        playerNameColor: Colors.white,
-                                                        playerNumberColor: Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -835,11 +846,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer2.lastName.toUpperCase(),
                                                         playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "1",
-                                                        kragna: Color(0xFFFF0000),
-                                                        shirtColor: Color(0xFF243479),
-                                                        playerNameColor: Colors.white,
-                                                        playerNumberColor: Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -941,11 +953,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer3.lastName.toUpperCase(),
                                                         playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "1",
-                                                        kragna: Color(0xFFFF0000),
-                                                        shirtColor: Color(0xFF243479),
-                                                        playerNameColor: Colors.white,
-                                                        playerNumberColor: Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1046,11 +1059,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer4.lastName.toUpperCase(),
                                                         playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "1",
-                                                        kragna: Color(0xFFFF0000),
-                                                        shirtColor: Color(0xFF243479),
-                                                        playerNameColor: Colors.white,
-                                                        playerNumberColor: Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1151,11 +1165,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer5.lastName.toUpperCase(),
                                                         playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "1",
-                                                        kragna: Color(0xFFFF0000),
-                                                        shirtColor: Color(0xFF243479),
-                                                        playerNameColor: Colors.white,
-                                                        playerNumberColor: Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
