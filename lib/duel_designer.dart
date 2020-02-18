@@ -39,21 +39,18 @@ Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) as
 List<League> parseLeagues(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print(pas);
   return pas['data'].map<League>((json) => League.fromJson(json)).toList();
 }
 
 List<Club> parseClubs(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print(pas);
   return pas['data'].map<Club>((json) => Club.fromJson(json)).toList();
 }
 
 List<Player> parsePlayers(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print("u fetchu $pas");
   return pas['data'].map<Player>((json) => Player.fromJson(json)).toList();
 }
 
@@ -96,8 +93,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     super.initState();
     _leagues = _fetchLeagues(http.Client());
     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-    //_selectedPlayer1 = null;
-    //  _players = _fetchPlayersByClubID(http.Client(), clubID);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -140,12 +135,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     .toList(),
                 onChanged: (League value) {
                   setState(() {
-                    print(value.name);
                     _selectedLeague = value;
                     leagueID = _selectedLeague.id.toString();
-                    print(leagueID);
                     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-                    print(_clubs);
                     _selectedClub = null;
                   });
                 },
@@ -193,10 +185,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     .toList(),
                 onChanged: (Club value) {
                   setState(() {
-                    print(value.name);
                     _selectedClub = value;
                     clubID = _selectedClub.id.toString();
-                    print(clubID);
                     _players = _fetchPlayersByClubID(http.Client(), clubID);
                     isActiveSiluete1 = false;
                     isActiveSiluete2 = false;
@@ -208,7 +198,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     _selectedPlayer3 = null;
                     _selectedPlayer4 = null;
                     _selectedPlayer5 = null;
-                    print("udropu $_players");
                   });
                 },
                 value: _selectedClub,
@@ -716,7 +705,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                           );
                                                         });
                                                   } else {
-                                                    print(_selectedClub);
                                                     showDialog(
                                                         context: context,
                                                         builder: (BuildContext context) => CupertinoAlertDialog(
