@@ -37,9 +37,9 @@ class Club {
       venueCapacity: json['venue_capacity'] as String,
       shirtColor: json['shirt_color'] as String,
       numberColor: json['number_color'] as String,
-      collarColor: json['number_color'] as String,
-      nameColor: json['number_color'] as String,
-      numBorderColor: json['number_color'] as String,
+      collarColor: json['collar_color'] as String,
+      nameColor: json['name_color'] as String,
+      numBorderColor: json['num_border_color'] as String,
     );
   }
 }

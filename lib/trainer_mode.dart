@@ -1,5 +1,12 @@
+import 'dart:convert';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:probot/check_auth.dart';
 import 'package:probot/duel_designer.dart';
+import 'package:probot/login.dart';
+import 'package:probot/network/api.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'menu_card.dart';
 import 'card_content.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -34,8 +41,11 @@ class TrainerModePage extends StatefulWidget {
 }
 
 class _TrainerModePageState extends State<TrainerModePage> {
+  String name;
+
   @override
   void initState() {
+    getUserData();
     super.initState();
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
@@ -62,26 +72,38 @@ class _TrainerModePageState extends State<TrainerModePage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      child: Icon(
-                        Icons.arrow_back,
-                        size: 50.0,
-                        color: Color.fromRGBO(255, 255, 255, 0.9),
+                      child: IconButton(
+                        icon: Icon(
+                          Icons.arrow_back,
+                          size: 50.0,
+                          color: Color.fromRGBO(255, 255, 255, 0.9),
+                        ),
+                        onPressed: () {
+                          logout();
+                        },
                       ),
                     ),
                   ),
                   Expanded(
-                    flex: 10,
+                    flex: 5,
                     child: Container(
                       child: Text(
                         'TRAINER MODE',
-                        style: TextStyle(
-                            fontSize: 55.0,
-                            fontFamily: 'Barlow',
-                            color: Color(0xFF191926),
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(fontSize: 55.0, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
+                  Expanded(
+                      flex: 6,
+                      child: Container(
+                        child: Padding(
+                          padding: const EdgeInsets.only(top: 20.0),
+                          child: Text(
+                            name,
+                            style: TextStyle(fontSize: 25.0, color: Colors.white),
+                          ),
+                        ),
+                      )),
                   Expanded(
                       flex: 1,
                       child: Container(
@@ -102,15 +124,11 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     Expanded(
                         child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => QuickKickPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => QuickKickPage()));
                       },
                       child: MenuCard(
                         colour: cardColor,
-                        cardChild: CardContent(
-                            label: "QUICK KICK", icon: ProbotIcons.ball),
+                        cardChild: CardContent(label: "QUICK KICK", icon: ProbotIcons.ball),
                         description: 'Fully automated, hassle free practice.',
                       ),
                     )),
@@ -129,10 +147,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     Expanded(
                         child: GestureDetector(
                       onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => DuelDesignerPage()));
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => DuelDesignerPage()));
                       },
                       child: MenuCard(
                         colour: cardColor,
@@ -151,5 +166,27 @@ class _TrainerModePageState extends State<TrainerModePage> {
         ),
       ),
     );
+  }
+
+  void logout() async {
+    var res = await Network().getData("/logout");
+    var body = jsonDecode(res.body);
+    if (res.statusCode == 200) {
+      SharedPreferences localStorage = await SharedPreferences.getInstance();
+      localStorage.remove('user');
+      localStorage.remove('token');
+      Navigator.push(context, MaterialPageRoute(builder: (context) => CheckAuth()));
+    }
+  }
+
+  void getUserData() async {
+    var res = await Network().getData("/user");
+    var user = jsonDecode(res.body);
+
+    if (user != null) {
+      setState(() {
+        name = user['name'];
+      });
+    }
   }
 }

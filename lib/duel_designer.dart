@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:probot/network/api.dart';
 import 'package:probot/players.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'leagues.dart';
 import 'clubs.dart';
 import 'quick_kick_siluete.dart';
@@ -17,12 +19,15 @@ import 'dart:convert';
 import 'dart:io';
 
 Future<List<League>> _fetchLeagues(http.Client client) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
-
   return compute(parseLeagues, response.body);
 }
 
 Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get('http://probot-backend.test/api/auth/clubs/league/$leagueID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
@@ -30,6 +35,8 @@ Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) as
 }
 
 Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
@@ -39,21 +46,18 @@ Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) as
 List<League> parseLeagues(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print(pas);
   return pas['data'].map<League>((json) => League.fromJson(json)).toList();
 }
 
 List<Club> parseClubs(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print(pas);
   return pas['data'].map<Club>((json) => Club.fromJson(json)).toList();
 }
 
 List<Player> parsePlayers(String responseBody) {
   final parsed = jsonDecode(responseBody);
   Map<String, dynamic> pas = parsed;
-  print("u fetchu $pas");
   return pas['data'].map<Player>((json) => Player.fromJson(json)).toList();
 }
 
@@ -96,8 +100,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     super.initState();
     _leagues = _fetchLeagues(http.Client());
     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-    //_selectedPlayer1 = null;
-    //  _players = _fetchPlayersByClubID(http.Client(), clubID);
     SystemChrome.setPreferredOrientations([
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
@@ -140,13 +142,20 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     .toList(),
                 onChanged: (League value) {
                   setState(() {
-                    print(value.name);
+                    isActiveSiluete1 = false;
+                    isActiveSiluete2 = false;
+                    isActiveSiluete3 = false;
+                    isActiveSiluete4 = false;
+                    isActiveSiluete5 = false;
                     _selectedLeague = value;
-                    leagueID = _selectedLeague.id.toString();
-                    print(leagueID);
-                    _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-                    print(_clubs);
+                    _selectedPlayer1 = null;
+                    _selectedPlayer2 = null;
+                    _selectedPlayer3 = null;
+                    _selectedPlayer4 = null;
+                    _selectedPlayer5 = null;
                     _selectedClub = null;
+                    leagueID = _selectedLeague.id.toString();
+                    _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
                   });
                 },
                 value: _selectedLeague,
@@ -193,11 +202,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     .toList(),
                 onChanged: (Club value) {
                   setState(() {
-                    print(value.name);
                     _selectedClub = value;
-                    clubID = _selectedClub.id.toString();
-                    print(clubID);
-                    _players = _fetchPlayersByClubID(http.Client(), clubID);
                     isActiveSiluete1 = false;
                     isActiveSiluete2 = false;
                     isActiveSiluete3 = false;
@@ -208,7 +213,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     _selectedPlayer3 = null;
                     _selectedPlayer4 = null;
                     _selectedPlayer5 = null;
-                    print("udropu $_players");
+                    clubID = _selectedClub.id.toString();
+                    _players = _fetchPlayersByClubID(http.Client(), clubID);
                   });
                 },
                 value: _selectedClub,
@@ -716,7 +722,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                           );
                                                         });
                                                   } else {
-                                                    print(_selectedClub);
                                                     showDialog(
                                                         context: context,
                                                         builder: (BuildContext context) => CupertinoAlertDialog(
@@ -738,7 +743,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "1",
                                                         batteryLevel: 1,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : null,
+                                                        playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
                                                         kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
                                                         shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
