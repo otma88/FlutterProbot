@@ -2,7 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:probot/network/api.dart';
 import 'package:probot/players.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'leagues.dart';
 import 'clubs.dart';
 import 'quick_kick_siluete.dart';
@@ -17,12 +19,15 @@ import 'dart:convert';
 import 'dart:io';
 
 Future<List<League>> _fetchLeagues(http.Client client) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
-
   return compute(parseLeagues, response.body);
 }
 
 Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get('http://probot-backend.test/api/auth/clubs/league/$leagueID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
@@ -30,6 +35,8 @@ Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) as
 }
 
 Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
   var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
@@ -135,10 +142,20 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     .toList(),
                 onChanged: (League value) {
                   setState(() {
+                    isActiveSiluete1 = false;
+                    isActiveSiluete2 = false;
+                    isActiveSiluete3 = false;
+                    isActiveSiluete4 = false;
+                    isActiveSiluete5 = false;
                     _selectedLeague = value;
+                    _selectedPlayer1 = null;
+                    _selectedPlayer2 = null;
+                    _selectedPlayer3 = null;
+                    _selectedPlayer4 = null;
+                    _selectedPlayer5 = null;
+                    _selectedClub = null;
                     leagueID = _selectedLeague.id.toString();
                     _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-                    _selectedClub = null;
                   });
                 },
                 value: _selectedLeague,
@@ -186,8 +203,6 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                 onChanged: (Club value) {
                   setState(() {
                     _selectedClub = value;
-                    clubID = _selectedClub.id.toString();
-                    _players = _fetchPlayersByClubID(http.Client(), clubID);
                     isActiveSiluete1 = false;
                     isActiveSiluete2 = false;
                     isActiveSiluete3 = false;
@@ -198,6 +213,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     _selectedPlayer3 = null;
                     _selectedPlayer4 = null;
                     _selectedPlayer5 = null;
+                    clubID = _selectedClub.id.toString();
+                    _players = _fetchPlayersByClubID(http.Client(), clubID);
                   });
                 },
                 value: _selectedClub,
@@ -726,7 +743,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "1",
                                                         batteryLevel: 1,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : null,
+                                                        playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
                                                         kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
                                                         shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
