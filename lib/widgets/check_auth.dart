@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:probot/trainer_mode.dart';
+import 'package:probot/screens/trainer_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'login.dart';
+import '../screens/login.dart';
 
 class CheckAuth extends StatefulWidget {
   @override

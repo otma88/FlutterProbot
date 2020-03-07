@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:probot/check_auth.dart';
+import 'package:probot/widgets/check_auth.dart';
 import 'trainer_mode.dart';
 
 void main() {

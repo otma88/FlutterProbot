@@ -91,6 +91,14 @@ flutter:
     - family: ProbotTriangle
       fonts:
         - asset: icons/ProbotTriangle.ttf
+
+    - family: BottomSheetIcons
+      fonts:
+        - asset: icons/BottomSheetIcons.ttf
+
+    - family: TestSheetIcons
+      fonts:
+        - asset: icons/TestSheetIcons.ttf
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

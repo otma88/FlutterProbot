@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class ActiveSilueteDuelDesigner extends StatelessWidget {
   final String image;
@@ -61,11 +61,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                       child: Center(
                           child: Text(
                         playerName,
-                        style: TextStyle(
-                            fontFamily: 'BarlowCondensed',
-                            color: playerNameColor,
-                            fontSize: 40.0,
-                            fontWeight: FontWeight.bold),
+                        style: TextStyle(fontFamily: 'BarlowCondensed', color: playerNameColor, fontSize: 40.0, fontWeight: FontWeight.bold),
                       ))))),
           Positioned(
               top: 77,
@@ -104,11 +100,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
               left: 40,
               child: Text(
                 number,
-                style: TextStyle(
-                    color: numAndEmptyIndicatorColor,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'BarlowCondensed'),
+                style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: 30.0, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
               )),
           Positioned(
             bottom: 25,
@@ -122,9 +114,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -133,9 +123,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 3 || batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -144,11 +132,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 2 ||
-                                batteryLevel == 3 ||
-                                batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -157,8 +141,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color:
-                            batteryLevel == 1 ? redIndicator : whiteIndicator,
+                        color: batteryLevel == 1 ? redIndicator : whiteIndicator,
                         width: 35,
                         height: 10,
                       ),

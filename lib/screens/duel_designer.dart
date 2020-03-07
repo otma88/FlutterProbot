@@ -2,16 +2,17 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:probot/widgets/bottom_sheet_icons_icons.dart';
 import 'package:probot/network/api.dart';
-import 'package:probot/players.dart';
+import 'package:probot/model/players.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'leagues.dart';
-import 'clubs.dart';
-import 'quick_kick_siluete.dart';
-import 'inactive_siluete.dart';
-import 'active_siluete_duel_designer.dart';
-import 'start_button.dart';
-import 'constants.dart';
+import '../model/leagues.dart';
+import '../model/clubs.dart';
+import '../widgets/quick_kick_siluete.dart';
+import '../widgets/inactive_siluete.dart';
+import '../widgets/active_siluete_duel_designer.dart';
+import '../widgets/start_button.dart';
+import '../constants.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:http/http.dart' as http;
@@ -661,66 +662,237 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   if (this._selectedClub != null) {
-                                                    showDialog(
+                                                    showModalBottomSheet(
+                                                        isScrollControlled: true,
                                                         context: context,
-                                                        builder: (context) {
-                                                          return CupertinoAlertDialog(
-                                                            title: Text("Choose player"),
-                                                            actions: <Widget>[
-                                                              CupertinoDialogAction(
-                                                                child: Text("Disable siluette"),
-                                                                onPressed: () {
-                                                                  setState(() {
-                                                                    _selectedPlayer1 = null;
-                                                                    isActiveSiluete1 = false;
-                                                                  });
-                                                                  Navigator.pop(context, 'Disable');
-                                                                },
-                                                              )
-                                                            ],
-                                                            content: Container(
-                                                              width: 500,
-                                                              height: 500,
-                                                              child: FutureBuilder<List<Player>>(
-                                                                future: _players,
-                                                                builder: (context, snapshot) {
-                                                                  switch (snapshot.connectionState) {
-                                                                    case ConnectionState.none:
-                                                                    case ConnectionState.waiting:
-                                                                      return Text("Loading...");
-                                                                    default:
-                                                                      if (snapshot.hasError) {
-                                                                        return Text('Error: ${snapshot.error}');
-                                                                      } else {
-                                                                        return ListView.builder(
-                                                                            itemCount: snapshot.data.length,
-                                                                            itemBuilder: (context, index) {
-                                                                              return Card(
-                                                                                child: ListTile(
-                                                                                  onTap: () {
-                                                                                    setState(() {
-                                                                                      _selectedPlayer1 = snapshot.data[index];
-                                                                                      isActiveSiluete1 = true;
-                                                                                      Navigator.pop(context, 'Cancel');
-                                                                                    });
-                                                                                  },
-                                                                                  leading: Icon(Icons.accessibility),
-                                                                                  title: Text(snapshot.data[index].playerName),
-                                                                                  subtitle:
-                                                                                      Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "No "
-                                                                                              "data"}, "
-                                                                                          "Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
-                                                                                              ""}"),
+                                                        builder: (BuildContext bc) {
+                                                          return Container(
+                                                            height: MediaQuery.of(context).size.height * 0.75,
+                                                            color: Color(0xFF484454),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(10.0),
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      Icon(
+                                                                        Icons.close,
+                                                                        size: 50.0,
+                                                                        color: Color(0xFF9999AC),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 20.0,
+                                                                      ),
+                                                                      Text(
+                                                                        "PLAYERS",
+                                                                        style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: SingleChildScrollView(
+                                                                            child: Column(
+                                                                              crossAxisAlignment: CrossAxisAlignment.start,
+                                                                              children: <Widget>[
+                                                                                Padding(
+                                                                                  padding: const EdgeInsets.all(8.0),
+                                                                                  child: Text(
+                                                                                    "Defenders",
+                                                                                    style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  ),
                                                                                 ),
-                                                                              );
-                                                                            });
-                                                                      }
-                                                                  }
-                                                                },
+                                                                                ListView.separated(
+                                                                                    separatorBuilder: (context, index) => SizedBox(
+                                                                                          height: 15.0,
+                                                                                        ),
+                                                                                    itemCount: 6,
+                                                                                    scrollDirection: Axis.vertical,
+                                                                                    shrinkWrap: true,
+                                                                                    itemBuilder: (context, position) {
+                                                                                      return Row(
+                                                                                        children: <Widget>[
+                                                                                          Expanded(
+                                                                                              flex: 2,
+                                                                                              child: Container(
+                                                                                                color: Color(0xFF9C96AE),
+                                                                                                child: Icon(
+                                                                                                  BottomSheetIcons.no_photo,
+                                                                                                  size: 120.0,
+                                                                                                  color: Color(0xFF484452),
+                                                                                                ),
+                                                                                              )),
+                                                                                          Expanded(
+                                                                                              flex: 3,
+                                                                                              child: Container(
+                                                                                                color: Color(0xFF191526),
+                                                                                                child: Padding(
+                                                                                                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 46.0),
+                                                                                                  child: Column(
+                                                                                                    children: <Widget>[
+                                                                                                      Text(
+                                                                                                        "18",
+                                                                                                        style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "JORDI ALBA",
+                                                                                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              )),
+                                                                                        ],
+                                                                                      );
+//
+                                                                                    })
+                                                                              ],
+                                                                            ),
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Midfilders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              ListView.separated(
+                                                                                  separatorBuilder: (context, index) => SizedBox(
+                                                                                        height: 15.0,
+                                                                                      ),
+                                                                                  itemCount: 6,
+                                                                                  scrollDirection: Axis.vertical,
+                                                                                  shrinkWrap: true,
+                                                                                  itemBuilder: (context, position) {
+                                                                                    return Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                            flex: 2,
+                                                                                            child: Container(
+                                                                                              color: Color(0xFF9C96AE),
+                                                                                              child: Icon(
+                                                                                                BottomSheetIcons.no_photo,
+                                                                                                size: 120.0,
+                                                                                                color: Color(0xFF484452),
+                                                                                              ),
+                                                                                            )),
+                                                                                        Expanded(
+                                                                                            flex: 3,
+                                                                                            child: Container(
+                                                                                              color: Color(0xFF191526),
+                                                                                              child: Padding(
+                                                                                                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 46.0),
+                                                                                                child: Column(
+                                                                                                  children: <Widget>[
+                                                                                                    Text(
+                                                                                                      "18",
+                                                                                                      style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+                                                                                                    ),
+                                                                                                    Text(
+                                                                                                      "JORDI ALBA",
+                                                                                                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                ),
+                                                                                              ),
+                                                                                            )),
+                                                                                      ],
+                                                                                    );
+                                                                                  })
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Forwards",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              Scrollbar(
+                                                                                child: ListView.separated(
+                                                                                    separatorBuilder: (context, index) => SizedBox(
+                                                                                          height: 15.0,
+                                                                                        ),
+                                                                                    itemCount: 6,
+                                                                                    scrollDirection: Axis.vertical,
+                                                                                    shrinkWrap: true,
+                                                                                    itemBuilder: (context, position) {
+                                                                                      return Row(
+                                                                                        children: <Widget>[
+                                                                                          Expanded(
+                                                                                              flex: 2,
+                                                                                              child: Container(
+                                                                                                color: Color(0xFF9C96AE),
+                                                                                                child: Icon(
+                                                                                                  BottomSheetIcons.no_photo,
+                                                                                                  size: 120.0,
+                                                                                                  color: Color(0xFF484452),
+                                                                                                ),
+                                                                                              )),
+                                                                                          Expanded(
+                                                                                              flex: 3,
+                                                                                              child: Container(
+                                                                                                color: Color(0xFF191526),
+                                                                                                child: Padding(
+                                                                                                  padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 46.0),
+                                                                                                  child: Column(
+                                                                                                    children: <Widget>[
+                                                                                                      Text(
+                                                                                                        "18",
+                                                                                                        style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+                                                                                                      ),
+                                                                                                      Text(
+                                                                                                        "JORDI ALBA",
+                                                                                                        style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                                                                                      ),
+                                                                                                    ],
+                                                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                  ),
+                                                                                                ),
+                                                                                              )),
+                                                                                        ],
+                                                                                      );
+                                                                                    }),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  )
+                                                                ],
                                                               ),
                                                             ),
                                                           );
                                                         });
+//
                                                   } else {
                                                     showDialog(
                                                         context: context,
@@ -769,60 +941,99 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 onPress: () {
                                                   setState(() {
                                                     if (this._selectedClub != null) {
-                                                      showDialog(
+                                                      showModalBottomSheet(
                                                           context: context,
-                                                          builder: (context) {
-                                                            return CupertinoAlertDialog(
-                                                              title: Text("Choose player"),
-                                                              actions: <Widget>[
-                                                                CupertinoDialogAction(
-                                                                  child: Text("Disable siluette"),
-                                                                  onPressed: () {
-                                                                    setState(() {
-                                                                      _selectedPlayer2 = null;
-                                                                      isActiveSiluete2 = false;
-                                                                    });
-                                                                    Navigator.pop(context, 'Disable');
-                                                                  },
-                                                                )
-                                                              ],
-                                                              content: Container(
-                                                                height: 500,
-                                                                child: FutureBuilder<List<Player>>(
-                                                                  future: _players,
-                                                                  builder: (context, snapshot) {
-                                                                    switch (snapshot.connectionState) {
-                                                                      case ConnectionState.none:
-                                                                      case ConnectionState.waiting:
-                                                                        return Text("Loading...");
-                                                                      default:
-                                                                        if (snapshot.hasError) {
-                                                                          return Text('Error: ${snapshot.error}');
-                                                                        } else {
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data.length,
-                                                                              itemBuilder: (context, index) {
-                                                                                return Card(
-                                                                                  child: ListTile(
-                                                                                    onTap: () {
-                                                                                      setState(() {
-                                                                                        _selectedPlayer2 = snapshot.data[index];
-                                                                                        isActiveSiluete2 = true;
-                                                                                        Navigator.pop(context, 'Cancel');
-                                                                                      });
-                                                                                    },
-                                                                                    leading: Icon(Icons.accessibility),
-                                                                                    title: Text(snapshot.data[index].playerName),
-                                                                                    subtitle: Text("Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
-                                                                                        "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
-                                                                                        ""}"),
+                                                          builder: (BuildContext bc) {
+                                                            return Container(
+                                                              height: MediaQuery.of(context).size.height * 0.75,
+                                                              color: Color(0xFF484454),
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      Icon(
+                                                                        Icons.close,
+                                                                        size: 50.0,
+                                                                        color: Color(0xFF9999AC),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 20.0,
+                                                                      ),
+                                                                      Text(
+                                                                        "PLAYERS",
+                                                                        style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                      )
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Defenders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              Container(
+                                                                                child: ListView.separated(
+                                                                                  separatorBuilder: (context, index) => SizedBox(
+                                                                                    height: 15.0,
                                                                                   ),
-                                                                                );
-                                                                              });
-                                                                        }
-                                                                    }
-                                                                  },
-                                                                ),
+                                                                                  itemCount: 3,
+                                                                                  scrollDirection: Axis.vertical,
+                                                                                  shrinkWrap: true,
+                                                                                  itemBuilder: (context, position) {
+                                                                                    return Row(
+                                                                                      children: <Widget>[
+                                                                                        Expanded(
+                                                                                            flex: 2,
+                                                                                            child: Container(
+                                                                                              color: Color(0xFF9C96AE),
+                                                                                              child: Icon(
+                                                                                                BottomSheetIcons.no_photo,
+                                                                                                size: 120.0,
+                                                                                                color: Color(0xFF484452),
+                                                                                              ),
+                                                                                            )),
+                                                                                        Expanded(
+                                                                                            flex: 3,
+                                                                                            child: Container(
+                                                                                              color: Color(0xFF191526),
+                                                                                              child: Padding(
+                                                                                                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 0.0, 46.0),
+                                                                                                child: Column(
+                                                                                                  children: <Widget>[
+                                                                                                    Text(
+                                                                                                      "18",
+                                                                                                      style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+                                                                                                    ),
+                                                                                                    Text(
+                                                                                                      "JORDI ALBA",
+                                                                                                      style: TextStyle(fontSize: 15.0, fontWeight: FontWeight.bold),
+                                                                                                    ),
+                                                                                                  ],
+                                                                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                                                                ),
+                                                                                              ),
+                                                                                            )),
+                                                                                      ],
+                                                                                    );
+                                                                                  },
+                                                                                ),
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
+                                                                  ),
+                                                                ],
                                                               ),
                                                             );
                                                           });
