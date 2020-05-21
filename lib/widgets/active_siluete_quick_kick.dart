@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class ActiveSilueteQuickKick extends StatelessWidget {
   final String image;
@@ -7,11 +7,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
   final int batteryLevel;
   final Color numAndEmptyIndicatorColor;
 
-  ActiveSilueteQuickKick(
-      {this.image,
-      this.number,
-      this.batteryLevel,
-      this.numAndEmptyIndicatorColor});
+  ActiveSilueteQuickKick({this.image, this.number, this.batteryLevel, this.numAndEmptyIndicatorColor});
 
   @override
   Widget build(BuildContext context) {
@@ -28,11 +24,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
               left: 40,
               child: Text(
                 number,
-                style: TextStyle(
-                    color: numAndEmptyIndicatorColor,
-                    fontSize: 30.0,
-                    fontWeight: FontWeight.w500,
-                    fontFamily: 'BarlowCondensed'),
+                style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: 30.0, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
               )),
           Positioned(
             bottom: 25,
@@ -46,9 +38,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -57,9 +47,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 3 || batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -68,11 +56,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color: batteryLevel == 2 ||
-                                batteryLevel == 3 ||
-                                batteryLevel == 4
-                            ? whiteIndicator
-                            : numAndEmptyIndicatorColor,
+                        color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
                         width: 35,
                         height: 10,
                       ),
@@ -81,8 +65,7 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                   Row(
                     children: <Widget>[
                       Container(
-                        color:
-                            batteryLevel == 1 ? redIndicator : whiteIndicator,
+                        color: batteryLevel == 1 ? redIndicator : whiteIndicator,
                         width: 35,
                         height: 10,
                       ),

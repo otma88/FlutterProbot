@@ -2,16 +2,17 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:probot/check_auth.dart';
-import 'package:probot/duel_designer.dart';
-import 'package:probot/login.dart';
+import 'package:probot/custom_icons/test_sheet_icons_icons.dart';
+import 'package:probot/widgets/check_auth.dart';
+import 'package:probot/screens/duel_designer.dart';
+import 'package:probot/screens/login.dart';
 import 'package:probot/network/api.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'menu_card.dart';
-import 'card_content.dart';
+import '../widgets/menu_card.dart';
+import '../widgets/card_content.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'probot_icons_icons.dart';
-import 'probot_params_icons.dart';
+import '../custom_icons/probot_icons_icons.dart';
+import '../custom_icons/probot_params_icons.dart';
 import 'quick_kick.dart';
 import 'package:flutter/services.dart';
 
@@ -99,7 +100,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         child: Padding(
                           padding: const EdgeInsets.only(top: 20.0),
                           child: Text(
-                            name,
+                            "PROBOT",
                             style: TextStyle(fontSize: 25.0, color: Colors.white),
                           ),
                         ),

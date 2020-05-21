@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:probot/active_siluete_quick_kick.dart';
-import 'package:probot/inactive_siluete.dart';
-import 'package:probot/quick_kick_siluete.dart';
+import 'package:probot/widgets/active_siluete_quick_kick.dart';
+import 'package:probot/widgets/inactive_siluete.dart';
+import 'package:probot/widgets/quick_kick_siluete.dart';
 import 'package:flutter/services.dart';
-import 'constants.dart';
+import '../constants.dart';
 
 class QuickKick extends StatelessWidget {
   @override
@@ -125,10 +125,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
         value: _value,
         isExpanded: true,
         elevation: 6,
-        style: TextStyle(
-            fontSize: 25.0,
-            fontFamily: 'BarlowCondensed',
-            color: Color(0xFF9999AC)),
+        style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
       );
 
   @override
@@ -165,12 +162,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                             Flexible(
                               child: Text(
                                 "QUICK KICK",
-                                style: TextStyle(
-                                    fontSize: 70.0,
-                                    height: 1,
-                                    color: Color(0xFF9999AC),
-                                    fontFamily: 'BarlowCondensed',
-                                    fontWeight: FontWeight.bold),
+                                style: TextStyle(fontSize: 70.0, height: 1, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold),
                               ),
                             )
                           ],
@@ -184,10 +176,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                             Container(
                               child: Text(
                                 "Select difficulty:",
-                                style: TextStyle(
-                                    color: Color(0xFF464655),
-                                    fontSize: 18.0,
-                                    fontFamily: 'BarlowCondensed'),
+                                style: TextStyle(color: Color(0xFF464655), fontSize: 18.0, fontFamily: 'BarlowCondensed'),
                               ),
                               margin: EdgeInsets.fromLTRB(0.0, 0.0, 0.0, 10.0),
                             ),
@@ -195,16 +184,11 @@ class _QuickKickPageState extends State<QuickKickPage> {
                               children: <Widget>[
                                 Expanded(
                                   child: Container(
-                                    padding: EdgeInsets.fromLTRB(
-                                        10.0, 7.0, 5.0, 7.0),
+                                    padding: EdgeInsets.fromLTRB(10.0, 7.0, 5.0, 7.0),
                                     //color: Color(0xFF464655),
                                     child: Container(child: _difficultyItems()),
-                                    decoration: BoxDecoration(boxShadow: [
-                                      BoxShadow(
-                                          color: Color(0xFF000000),
-                                          blurRadius: 5.0,
-                                          offset: Offset(5.0, 5.0))
-                                    ], color: Color(0xFF464655)),
+                                    decoration:
+                                        BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                                   ),
                                 ),
                                 Container(
@@ -226,14 +210,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                               padding: EdgeInsets.all(0.0),
                               onPressed: null,
                               child: Container(
-                                decoration: BoxDecoration(
-                                    color: Color(0xFF3FA9F5),
-                                    boxShadow: [
-                                      BoxShadow(
-                                          color: Color(0xFF000000),
-                                          blurRadius: 8.0,
-                                          offset: Offset(7.0, 7.0))
-                                    ]),
+                                decoration: BoxDecoration(color: Color(0xFF3FA9F5), boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
                                 child: Text(
                                   'START',
                                   style: TextStyle(
@@ -272,9 +249,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                     children: <Widget>[
                                       Text(
                                         "Player height:",
-                                        style: TextStyle(
-                                            color: Color(0xFF464655),
-                                            fontSize: 20.0),
+                                        style: TextStyle(color: Color(0xFF464655), fontSize: 20.0),
                                       ),
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -301,9 +276,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                     children: <Widget>[
                                       Text(
                                         "Jump height:",
-                                        style: TextStyle(
-                                            color: Color(0xFF464655),
-                                            fontSize: 20.0),
+                                        style: TextStyle(color: Color(0xFF464655), fontSize: 20.0),
                                       )
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -330,9 +303,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                     children: <Widget>[
                                       Text(
                                         "Jump occurrence:",
-                                        style: TextStyle(
-                                            color: Color(0xFF464655),
-                                            fontSize: 20.0),
+                                        style: TextStyle(color: Color(0xFF464655), fontSize: 20.0),
                                       )
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -395,9 +366,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   child: QuickKickSiluete(
                                       onPress: () {
                                         setState(() {
-                                          isActiveSiluete1 == false
-                                              ? isActiveSiluete1 = true
-                                              : isActiveSiluete1 = false;
+                                          isActiveSiluete1 == false ? isActiveSiluete1 = true : isActiveSiluete1 = false;
                                         });
                                       },
                                       siluete: isActiveSiluete1 == true
@@ -405,8 +374,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                               image: kQKActiveSiluete,
                                               number: "1",
                                               batteryLevel: 1,
-                                              numAndEmptyIndicatorColor:
-                                                  emptyIndicatorQK,
+                                              numAndEmptyIndicatorColor: emptyIndicatorQK,
                                             )
                                           : InactiveSiluete(
                                               image: kInactiveSiluete,
@@ -423,9 +391,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   child: QuickKickSiluete(
                                       onPress: () {
                                         setState(() {
-                                          isActiveSiluete2 == false
-                                              ? isActiveSiluete2 = true
-                                              : isActiveSiluete2 = false;
+                                          isActiveSiluete2 == false ? isActiveSiluete2 = true : isActiveSiluete2 = false;
                                         });
                                       },
                                       siluete: isActiveSiluete2 == true
@@ -433,8 +399,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                               image: kQKActiveSiluete,
                                               number: "2",
                                               batteryLevel: 2,
-                                              numAndEmptyIndicatorColor:
-                                                  emptyIndicatorQK,
+                                              numAndEmptyIndicatorColor: emptyIndicatorQK,
                                             )
                                           : InactiveSiluete(
                                               image: kInactiveSiluete,
@@ -451,9 +416,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   child: QuickKickSiluete(
                                       onPress: () {
                                         setState(() {
-                                          isActiveSiluete3 == false
-                                              ? isActiveSiluete3 = true
-                                              : isActiveSiluete3 = false;
+                                          isActiveSiluete3 == false ? isActiveSiluete3 = true : isActiveSiluete3 = false;
                                         });
                                       },
                                       siluete: isActiveSiluete3 == true
@@ -461,8 +424,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                               image: kQKActiveSiluete,
                                               number: "3",
                                               batteryLevel: 3,
-                                              numAndEmptyIndicatorColor:
-                                                  emptyIndicatorQK,
+                                              numAndEmptyIndicatorColor: emptyIndicatorQK,
                                             )
                                           : InactiveSiluete(
                                               image: kInactiveSiluete,
@@ -479,9 +441,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   child: QuickKickSiluete(
                                       onPress: () {
                                         setState(() {
-                                          isActiveSiluete4 == false
-                                              ? isActiveSiluete4 = true
-                                              : isActiveSiluete4 = false;
+                                          isActiveSiluete4 == false ? isActiveSiluete4 = true : isActiveSiluete4 = false;
                                         });
                                       },
                                       siluete: isActiveSiluete4 == true
@@ -489,8 +449,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                               image: kQKActiveSiluete,
                                               number: "4",
                                               batteryLevel: 4,
-                                              numAndEmptyIndicatorColor:
-                                                  emptyIndicatorQK,
+                                              numAndEmptyIndicatorColor: emptyIndicatorQK,
                                             )
                                           : InactiveSiluete(
                                               image: kInactiveSiluete,
@@ -507,9 +466,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   child: QuickKickSiluete(
                                       onPress: () {
                                         setState(() {
-                                          isActiveSiluete5 == false
-                                              ? isActiveSiluete5 = true
-                                              : isActiveSiluete5 = false;
+                                          isActiveSiluete5 == false ? isActiveSiluete5 = true : isActiveSiluete5 = false;
                                         });
                                       },
                                       siluete: isActiveSiluete5 == true
@@ -517,8 +474,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                               image: kQKActiveSiluete,
                                               number: "5",
                                               batteryLevel: 4,
-                                              numAndEmptyIndicatorColor:
-                                                  emptyIndicatorQK,
+                                              numAndEmptyIndicatorColor: emptyIndicatorQK,
                                             )
                                           : InactiveSiluete(
                                               image: kInactiveSiluete,

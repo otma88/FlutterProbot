@@ -2,7 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:probot/network/api.dart';
-import 'package:probot/trainer_mode.dart';
+import 'package:probot/screens/trainer_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Login extends StatefulWidget {
