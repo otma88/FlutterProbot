@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 
 class Network {
-  final String _url = 'http://165.22.26.62/api/auth';
+  final String _url = 'http://probot-backend.test/api/auth';
   var token;
 
   _getToken() async {

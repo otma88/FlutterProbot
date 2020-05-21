@@ -5,6 +5,8 @@ import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:probot/widgets/bottom_sheet_icons_icons.dart';
 import 'package:probot/network/api.dart';
 import 'package:probot/model/players.dart';
+import 'package:probot/widgets/custom_radio.dart';
+import 'package:probot/widgets/modal_radio_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/leagues.dart';
 import '../model/clubs.dart';
@@ -23,15 +25,14 @@ import '../widgets/modal_item.dart';
 Future<List<League>> _fetchLeagues(http.Client client) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client
-      .get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
+  var response = await client.get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
   return compute(parseLeagues, response.body);
 }
 
 Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://165.22.26.62/api/auth/clubs/league/$leagueID',
+  var response = await client.get('http://probot-backend.test/api/auth/clubs/league/$leagueID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parseClubs, response.body);
@@ -40,7 +41,17 @@ Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) as
 Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://165.22.26.62/api/auth/players/club/$clubID',
+  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID',
+      headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
+
+  return compute(parsePlayers, response.body);
+}
+
+Future<List<Player>> _fetchPlayersByClubIDAndPosition(http.Client client, String clubID, String position) async {
+  SharedPreferences localStorage = await SharedPreferences.getInstance();
+  var accessToken = jsonDecode(localStorage.getString('token'));
+
+  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID/$position',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parsePlayers, response.body);
@@ -90,6 +101,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   Player _selectedPlayer4;
   Player _selectedPlayer5;
   Future<List<Player>> _players;
+  Future<List<Player>> _defenders;
+  Future<List<Player>> _midfilders;
+  Future<List<Player>> _forwards;
   String clubID = "1";
 
   bool isActiveSiluete1;
@@ -97,6 +111,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   bool isActiveSiluete3;
   bool isActiveSiluete4;
   bool isActiveSiluete5;
+
+  int activeRadioButtonInModal;
 
   @override
   void initState() {
@@ -107,6 +123,13 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
       DeviceOrientation.landscapeRight,
       DeviceOrientation.landscapeLeft,
     ]);
+    activeRadioButtonInModal = 1;
+  }
+
+  _updateActiveRadioButton(int activeNumber) {
+    setState(() {
+      activeRadioButtonInModal = activeNumber;
+    });
   }
 
   Widget LeaguesDropdown() {
@@ -218,6 +241,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                     _selectedPlayer5 = null;
                     clubID = _selectedClub.id.toString();
                     _players = _fetchPlayersByClubID(http.Client(), clubID);
+                    _defenders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Defender");
+                    _midfilders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Midfielder");
+                    _forwards = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Attacker");
                   });
                 },
                 value: _selectedClub,
@@ -297,9 +323,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(10.0, 7.0, 5.0, 7.0),
                                       child: Container(child: LeaguesDropdown()),
-                                      decoration: BoxDecoration(
-                                          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
-                                          color: Color(0xFF464655)),
+                                      decoration:
+                                          BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                                     ),
                                   ),
                                   Container(
@@ -318,9 +343,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(10.0, 7.0, 5.0, 7.0),
                                       child: Container(child: ClubsDropdown()),
-                                      decoration: BoxDecoration(
-                                          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
-                                          color: Color(0xFF464655)),
+                                      decoration:
+                                          BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                                     ),
                                   ),
                                   Container(
@@ -350,8 +374,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                   'LOAD',
                                                   style: TextStyle(fontSize: 25.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                                 ),
-                                                Text('SAVED PRESET',
-                                                    style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                                Text('SAVED PRESET', style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                               ],
                                             ),
                                           ),
@@ -382,8 +405,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                   'SAVE',
                                                   style: TextStyle(fontSize: 25.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                                 ),
-                                                Text('THIS SETUP',
-                                                    style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                                Text('THIS SETUP', style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                               ],
                                             ),
                                           ),
@@ -442,9 +464,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer1 != null
-                                                    ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-"
-                                                    : kPlayerParamDisabled.data,
+                                                _selectedPlayer1 != null ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -455,9 +475,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer2 != null
-                                                    ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-"
-                                                    : kPlayerParamDisabled.data,
+                                                _selectedPlayer2 != null ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -468,9 +486,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer3 != null
-                                                    ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-"
-                                                    : kPlayerParamDisabled.data,
+                                                _selectedPlayer3 != null ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -481,9 +497,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer4 != null
-                                                    ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-"
-                                                    : kPlayerParamDisabled.data,
+                                                _selectedPlayer4 != null ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -494,9 +508,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           child: Column(
                                             children: <Widget>[
                                               Text(
-                                                _selectedPlayer5 != null
-                                                    ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-"
-                                                    : kPlayerParamDisabled.data,
+                                                _selectedPlayer5 != null ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-" : kPlayerParamDisabled.data,
                                                 style: kPlayerParamTextStyle,
                                               )
                                             ],
@@ -678,6 +690,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                             child: QuickKickSiluete(
                                                 onPress: () {
                                                   if (this._selectedClub != null) {
+                                                    setState(() {
+                                                      activeRadioButtonInModal = 1;
+                                                    });
                                                     showModalBottomSheet(
                                                         isScrollControlled: true,
                                                         context: context,
@@ -691,19 +706,26 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 children: <Widget>[
                                                                   Row(
                                                                     children: <Widget>[
-                                                                      Icon(
-                                                                        Icons.close,
-                                                                        size: 50.0,
-                                                                        color: Color(0xFF9999AC),
-                                                                      ),
+                                                                      GestureDetector(
+                                                                          child: Icon(
+                                                                            Icons.close,
+                                                                            size: 50.0,
+                                                                            color: Color(0xFF9999AC),
+                                                                          ),
+                                                                          onTap: () => Navigator.pop(context)),
                                                                       SizedBox(
                                                                         width: 20.0,
                                                                       ),
-                                                                      Text(
-                                                                        "PLAYERS",
-                                                                        style: TextStyle(
-                                                                            fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
-                                                                      )
+                                                                      Expanded(
+                                                                        flex: 3,
+                                                                        child: Text(
+                                                                          "PLAYERS",
+                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                          flex: 5,
+                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -719,22 +741,62 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(
-                                                                                      fontSize: 25.0,
-                                                                                      fontFamily: 'BarlowCondensed',
-                                                                                      color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
-                                                                              ListView.separated(
-                                                                                  separatorBuilder: (context, index) => SizedBox(
-                                                                                        height: 15.0,
-                                                                                      ),
-                                                                                  itemCount: 6,
-                                                                                  scrollDirection: Axis.vertical,
-                                                                                  shrinkWrap: true,
-                                                                                  itemBuilder: (context, position) {
-                                                                                    return ModalItem("fds", "fds");
-                                                                                  })
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _defenders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
                                                                             ],
                                                                           ),
                                                                         ),
@@ -752,22 +814,62 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(
-                                                                                      fontSize: 25.0,
-                                                                                      fontFamily: 'BarlowCondensed',
-                                                                                      color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
-                                                                              ListView.separated(
-                                                                                  separatorBuilder: (context, index) => SizedBox(
-                                                                                        height: 15.0,
-                                                                                      ),
-                                                                                  itemCount: 6,
-                                                                                  scrollDirection: Axis.vertical,
-                                                                                  shrinkWrap: true,
-                                                                                  itemBuilder: (context, position) {
-                                                                                    return ModalItem("fds", "fds");
-                                                                                  })
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _midfilders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
                                                                             ],
                                                                           ),
                                                                         ),
@@ -785,23 +887,61 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(
-                                                                                      fontSize: 25.0,
-                                                                                      fontFamily: 'BarlowCondensed',
-                                                                                      color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
-                                                                              Scrollbar(
-                                                                                child: ListView.separated(
-                                                                                    separatorBuilder: (context, index) => SizedBox(
-                                                                                          height: 15.0,
-                                                                                        ),
-                                                                                    itemCount: 6,
-                                                                                    scrollDirection: Axis.vertical,
-                                                                                    shrinkWrap: true,
-                                                                                    itemBuilder: (context, position) {
-                                                                                      return ModalItem("fds", "fds");
-                                                                                    }),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _forwards,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
                                                                               )
                                                                             ],
                                                                           ),
@@ -839,21 +979,12 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null
-                                                            ? getColorFromString(_selectedClub.collarColor)
-                                                            : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null
-                                                            ? getColorFromString(_selectedClub.shirtColor)
-                                                            : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null
-                                                            ? getColorFromString(_selectedClub.nameColor)
-                                                            : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null
-                                                            ? getColorFromString(_selectedClub.numberColor)
-                                                            : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                            ? getColorFromString(_selectedClub.numBorderColor)
-                                                            : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -870,34 +1001,47 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
-                                                  setState(() {
-                                                    if (this._selectedClub != null) {
-                                                      showModalBottomSheet(
-                                                          context: context,
-                                                          builder: (BuildContext bc) {
-                                                            return Container(
-                                                              height: MediaQuery.of(context).size.height * 0.75,
-                                                              color: Color(0xFF484454),
+                                                  if (this._selectedClub != null) {
+                                                    setState(() {
+                                                      activeRadioButtonInModal = 2;
+                                                    });
+                                                    showModalBottomSheet(
+                                                        isScrollControlled: true,
+                                                        context: context,
+                                                        builder: (BuildContext bc) {
+                                                          return Container(
+                                                            height: MediaQuery.of(context).size.height * 0.75,
+                                                            color: Color(0xFF484454),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(10.0),
                                                               child: Column(
                                                                 children: <Widget>[
                                                                   Row(
                                                                     children: <Widget>[
-                                                                      Icon(
-                                                                        Icons.close,
-                                                                        size: 50.0,
-                                                                        color: Color(0xFF9999AC),
-                                                                      ),
+                                                                      GestureDetector(
+                                                                          child: Icon(
+                                                                            Icons.close,
+                                                                            size: 50.0,
+                                                                            color: Color(0xFF9999AC),
+                                                                          ),
+                                                                          onTap: () => Navigator.pop(context)),
                                                                       SizedBox(
                                                                         width: 20.0,
                                                                       ),
-                                                                      Text(
-                                                                        "PLAYERS",
-                                                                        style: TextStyle(
-                                                                            fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
-                                                                      )
+                                                                      Expanded(
+                                                                        flex: 3,
+                                                                        child: Text(
+                                                                          "PLAYERS",
+                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                          flex: 5,
+                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Expanded(
                                                                         child: Container(
@@ -909,51 +1053,235 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(
-                                                                                      fontSize: 25.0,
-                                                                                      fontFamily: 'BarlowCondensed',
-                                                                                      color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
-                                                                              Container(
-                                                                                child: ListView.separated(
-                                                                                  separatorBuilder: (context, index) => SizedBox(
-                                                                                    height: 15.0,
-                                                                                  ),
-                                                                                  itemCount: 3,
-                                                                                  scrollDirection: Axis.vertical,
-                                                                                  shrinkWrap: true,
-                                                                                  itemBuilder: (context, position) {
-                                                                                    return ModalItem("fds", "fds");
-                                                                                  },
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _defenders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Midfilders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                                 ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _midfilders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Forwards",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _forwards,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
                                                                               )
                                                                             ],
                                                                           ),
                                                                         ),
                                                                       ),
                                                                     ],
-                                                                  ),
-                                                                ],
-                                                              ),
-                                                            );
-                                                          });
-                                                    } else {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) => CupertinoAlertDialog(
-                                                                title: Text("Warninng!"),
-                                                                content: Text("Please choose oponnent!"),
-                                                                actions: <Widget>[
-                                                                  CupertinoDialogAction(
-                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
-                                                                    isDefaultAction: true,
-                                                                    child: Text("Close"),
                                                                   )
                                                                 ],
-                                                              ));
-                                                    }
-                                                  });
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                    //
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) => CupertinoAlertDialog(
+                                                              title: Text("Hey!!!"),
+                                                              content: Text("Please choose opponent!"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                  isDefaultAction: true,
+                                                                  child: Text("Close"),
+                                                                ),
+                                                              ],
+                                                            ));
+                                                  }
                                                 },
                                                 siluete: isActiveSiluete2 == true
                                                     ? ActiveSilueteDuelDesigner(
@@ -961,23 +1289,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "2",
                                                         batteryLevel: 2,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer2.lastName.toUpperCase(),
-                                                        playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null
-                                                            ? getColorFromString(_selectedClub.collarColor)
-                                                            : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null
-                                                            ? getColorFromString(_selectedClub.shirtColor)
-                                                            : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null
-                                                            ? getColorFromString(_selectedClub.nameColor)
-                                                            : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null
-                                                            ? getColorFromString(_selectedClub.numberColor)
-                                                            : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                            ? getColorFromString(_selectedClub.numBorderColor)
-                                                            : Colors.white,
+                                                        playerName: _selectedPlayer2.lastName != null ? _selectedPlayer2.lastName.toUpperCase() : "",
+                                                        playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "2",
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -994,83 +1313,287 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
-                                                  //tu otvori Cupertino
-                                                  setState(() {
-                                                    if (this._selectedClub != null) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return CupertinoAlertDialog(
-                                                              title: Text("Choose player"),
-                                                              actions: <Widget>[
-                                                                CupertinoDialogAction(
-                                                                  child: Text("Disable siluette"),
-                                                                  onPressed: () {
-                                                                    setState(() {
-                                                                      _selectedPlayer3 = null;
-                                                                      isActiveSiluete3 = false;
-                                                                    });
-                                                                    Navigator.pop(context, 'Disable');
-                                                                  },
-                                                                )
-                                                              ],
-                                                              content: Container(
-                                                                height: 500,
-                                                                child: FutureBuilder<List<Player>>(
-                                                                  future: _players,
-                                                                  builder: (context, snapshot) {
-                                                                    switch (snapshot.connectionState) {
-                                                                      case ConnectionState.none:
-                                                                      case ConnectionState.waiting:
-                                                                        return Text("Loading...");
-                                                                      default:
-                                                                        if (snapshot.hasError) {
-                                                                          return Text('Error: ${snapshot.error}');
-                                                                        } else {
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data.length,
-                                                                              itemBuilder: (context, index) {
-                                                                                return Card(
-                                                                                  child: ListTile(
-                                                                                    onTap: () {
-                                                                                      setState(() {
-                                                                                        _selectedPlayer3 = snapshot.data[index];
-                                                                                        isActiveSiluete3 = true;
-                                                                                        Navigator.pop(context, 'Cancel');
-                                                                                      });
-                                                                                    },
-                                                                                    leading: Icon(Icons.accessibility),
-                                                                                    title: Text(snapshot.data[index].playerName),
-                                                                                    subtitle: Text(
-                                                                                        "Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
-                                                                                            "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
-                                                                                            ""}"),
-                                                                                  ),
-                                                                                );
-                                                                              });
-                                                                        }
-                                                                    }
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    } else {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) => CupertinoAlertDialog(
-                                                                title: Text("Warninng!"),
-                                                                content: Text("Please choose oponnent!"),
-                                                                actions: <Widget>[
-                                                                  CupertinoDialogAction(
-                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
-                                                                    isDefaultAction: true,
-                                                                    child: Text("Close"),
+                                                  if (this._selectedClub != null) {
+                                                    setState(() {
+                                                      activeRadioButtonInModal = 3;
+                                                    });
+                                                    showModalBottomSheet(
+                                                        isScrollControlled: true,
+                                                        context: context,
+                                                        builder: (BuildContext bc) {
+                                                          return Container(
+                                                            height: MediaQuery.of(context).size.height * 0.75,
+                                                            color: Color(0xFF484454),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(10.0),
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      GestureDetector(
+                                                                          child: Icon(
+                                                                            Icons.close,
+                                                                            size: 50.0,
+                                                                            color: Color(0xFF9999AC),
+                                                                          ),
+                                                                          onTap: () => Navigator.pop(context)),
+                                                                      SizedBox(
+                                                                        width: 20.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        flex: 3,
+                                                                        child: Text(
+                                                                          "PLAYERS",
+                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                          flex: 5,
+                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: <Widget>[
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Defenders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _defenders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Midfilders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _midfilders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Forwards",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _forwards,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   )
                                                                 ],
-                                                              ));
-                                                    }
-                                                  });
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                    //
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) => CupertinoAlertDialog(
+                                                              title: Text("Hey!!!"),
+                                                              content: Text("Please choose opponent!"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                  isDefaultAction: true,
+                                                                  child: Text("Close"),
+                                                                ),
+                                                              ],
+                                                            ));
+                                                  }
                                                 },
                                                 siluete: isActiveSiluete3 == true
                                                     ? ActiveSilueteDuelDesigner(
@@ -1078,23 +1601,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "3",
                                                         batteryLevel: 3,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer3.lastName.toUpperCase(),
-                                                        playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null
-                                                            ? getColorFromString(_selectedClub.collarColor)
-                                                            : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null
-                                                            ? getColorFromString(_selectedClub.shirtColor)
-                                                            : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null
-                                                            ? getColorFromString(_selectedClub.nameColor)
-                                                            : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null
-                                                            ? getColorFromString(_selectedClub.numberColor)
-                                                            : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                            ? getColorFromString(_selectedClub.numBorderColor)
-                                                            : Colors.white,
+                                                        playerName: _selectedPlayer3.lastName != null ? _selectedPlayer3.lastName.toUpperCase() : "",
+                                                        playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "3",
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1111,82 +1625,287 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
-                                                  setState(() {
-                                                    if (this._selectedClub != null) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return CupertinoAlertDialog(
-                                                              title: Text("Choose player"),
-                                                              actions: <Widget>[
-                                                                CupertinoDialogAction(
-                                                                  child: Text("Disable siluette"),
-                                                                  onPressed: () {
-                                                                    setState(() {
-                                                                      _selectedPlayer4 = null;
-                                                                      isActiveSiluete4 = false;
-                                                                    });
-                                                                    Navigator.pop(context, 'Disable');
-                                                                  },
-                                                                )
-                                                              ],
-                                                              content: Container(
-                                                                height: 500,
-                                                                child: FutureBuilder<List<Player>>(
-                                                                  future: _players,
-                                                                  builder: (context, snapshot) {
-                                                                    switch (snapshot.connectionState) {
-                                                                      case ConnectionState.none:
-                                                                      case ConnectionState.waiting:
-                                                                        return Text("Loading...");
-                                                                      default:
-                                                                        if (snapshot.hasError) {
-                                                                          return Text('Error: ${snapshot.error}');
-                                                                        } else {
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data.length,
-                                                                              itemBuilder: (context, index) {
-                                                                                return Card(
-                                                                                  child: ListTile(
-                                                                                    onTap: () {
-                                                                                      setState(() {
-                                                                                        _selectedPlayer4 = snapshot.data[index];
-                                                                                        isActiveSiluete4 = true;
-                                                                                        Navigator.pop(context, 'Cancel');
-                                                                                      });
-                                                                                    },
-                                                                                    leading: Icon(Icons.accessibility),
-                                                                                    title: Text(snapshot.data[index].playerName),
-                                                                                    subtitle: Text(
-                                                                                        "Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
-                                                                                            "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
-                                                                                            ""}"),
-                                                                                  ),
-                                                                                );
-                                                                              });
-                                                                        }
-                                                                    }
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    } else {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) => CupertinoAlertDialog(
-                                                                title: Text("Warninng!"),
-                                                                content: Text("Please choose oponnent!"),
-                                                                actions: <Widget>[
-                                                                  CupertinoDialogAction(
-                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
-                                                                    isDefaultAction: true,
-                                                                    child: Text("Close"),
+                                                  if (this._selectedClub != null) {
+                                                    setState(() {
+                                                      activeRadioButtonInModal = 4;
+                                                    });
+                                                    showModalBottomSheet(
+                                                        isScrollControlled: true,
+                                                        context: context,
+                                                        builder: (BuildContext bc) {
+                                                          return Container(
+                                                            height: MediaQuery.of(context).size.height * 0.75,
+                                                            color: Color(0xFF484454),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(10.0),
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      GestureDetector(
+                                                                          child: Icon(
+                                                                            Icons.close,
+                                                                            size: 50.0,
+                                                                            color: Color(0xFF9999AC),
+                                                                          ),
+                                                                          onTap: () => Navigator.pop(context)),
+                                                                      SizedBox(
+                                                                        width: 20.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        flex: 3,
+                                                                        child: Text(
+                                                                          "PLAYERS",
+                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                          flex: 5,
+                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: <Widget>[
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Defenders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _defenders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Midfilders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _midfilders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Forwards",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _forwards,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   )
                                                                 ],
-                                                              ));
-                                                    }
-                                                  });
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                    //
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) => CupertinoAlertDialog(
+                                                              title: Text("Hey!!!"),
+                                                              content: Text("Please choose opponent!"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                  isDefaultAction: true,
+                                                                  child: Text("Close"),
+                                                                ),
+                                                              ],
+                                                            ));
+                                                  }
                                                 },
                                                 siluete: isActiveSiluete4 == true
                                                     ? ActiveSilueteDuelDesigner(
@@ -1194,23 +1913,14 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         number: "4",
                                                         batteryLevel: 4,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer4.lastName.toUpperCase(),
-                                                        playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null
-                                                            ? getColorFromString(_selectedClub.collarColor)
-                                                            : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null
-                                                            ? getColorFromString(_selectedClub.shirtColor)
-                                                            : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null
-                                                            ? getColorFromString(_selectedClub.nameColor)
-                                                            : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null
-                                                            ? getColorFromString(_selectedClub.numberColor)
-                                                            : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                            ? getColorFromString(_selectedClub.numBorderColor)
-                                                            : Colors.white,
+                                                        playerName: _selectedPlayer4.lastName != null ? _selectedPlayer4.lastName.toUpperCase() : "",
+                                                        playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "4",
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1227,106 +1937,302 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Container(
                                             child: QuickKickSiluete(
                                                 onPress: () {
-                                                  setState(() {
-                                                    if (this._selectedClub != null) {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (context) {
-                                                            return CupertinoAlertDialog(
-                                                              title: Text("Choose player"),
-                                                              actions: <Widget>[
-                                                                CupertinoDialogAction(
-                                                                  child: Text("Disable siluette"),
-                                                                  onPressed: () {
-                                                                    setState(() {
-                                                                      _selectedPlayer5 = null;
-                                                                      isActiveSiluete5 = false;
-                                                                    });
-                                                                    Navigator.pop(context, 'Disable');
-                                                                  },
-                                                                )
-                                                              ],
-                                                              content: Container(
-                                                                height: 500,
-                                                                child: FutureBuilder<List<Player>>(
-                                                                  future: _players,
-                                                                  builder: (context, snapshot) {
-                                                                    switch (snapshot.connectionState) {
-                                                                      case ConnectionState.none:
-                                                                      case ConnectionState.waiting:
-                                                                        return Text("Loading...");
-                                                                      default:
-                                                                        if (snapshot.hasError) {
-                                                                          return Text('Error: ${snapshot.error}');
-                                                                        } else {
-                                                                          return ListView.builder(
-                                                                              itemCount: snapshot.data.length,
-                                                                              itemBuilder: (context, index) {
-                                                                                return Card(
-                                                                                  child: ListTile(
-                                                                                    onTap: () {
-                                                                                      setState(() {
-                                                                                        _selectedPlayer5 = snapshot.data[index];
-                                                                                        isActiveSiluete5 = true;
-                                                                                        Navigator.pop(context, 'Cancel');
-                                                                                      });
-                                                                                    },
-                                                                                    leading: Icon(Icons.accessibility),
-                                                                                    title: Text(snapshot.data[index].playerName),
-                                                                                    subtitle: Text(
-                                                                                        "Height: ${snapshot.data[index].height != null ? snapshot.data[index].height : "-"
-                                                                                            "-"}, Position: ${snapshot.data[index].position != null ? snapshot.data[index].position : "-"
-                                                                                            ""}"),
-                                                                                  ),
-                                                                                );
-                                                                              });
-                                                                        }
-                                                                    }
-                                                                  },
-                                                                ),
-                                                              ),
-                                                            );
-                                                          });
-                                                    } else {
-                                                      showDialog(
-                                                          context: context,
-                                                          builder: (BuildContext context) => CupertinoAlertDialog(
-                                                                title: Text("Warninng!"),
-                                                                content: Text("Please choose oponnent!"),
-                                                                actions: <Widget>[
-                                                                  CupertinoDialogAction(
-                                                                    onPressed: () => Navigator.pop(context, 'Discard'),
-                                                                    isDefaultAction: true,
-                                                                    child: Text("Close"),
+                                                  if (this._selectedClub != null) {
+                                                    setState(() {
+                                                      activeRadioButtonInModal = 5;
+                                                    });
+                                                    showModalBottomSheet(
+                                                        isScrollControlled: true,
+                                                        context: context,
+                                                        builder: (BuildContext bc) {
+                                                          return Container(
+                                                            height: MediaQuery.of(context).size.height * 0.75,
+                                                            color: Color(0xFF484454),
+                                                            child: Padding(
+                                                              padding: const EdgeInsets.all(10.0),
+                                                              child: Column(
+                                                                children: <Widget>[
+                                                                  Row(
+                                                                    children: <Widget>[
+                                                                      GestureDetector(
+                                                                          child: Icon(
+                                                                            Icons.close,
+                                                                            size: 50.0,
+                                                                            color: Color(0xFF9999AC),
+                                                                          ),
+                                                                          onTap: () => Navigator.pop(context)),
+                                                                      SizedBox(
+                                                                        width: 20.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        flex: 3,
+                                                                        child: Text(
+                                                                          "PLAYERS",
+                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                        ),
+                                                                      ),
+                                                                      Expanded(
+                                                                          flex: 5,
+                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                    ],
+                                                                  ),
+                                                                  Row(
+                                                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                                                    children: <Widget>[
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Defenders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _defenders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Midfilders",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _midfilders,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                      SizedBox(
+                                                                        width: 10.0,
+                                                                      ),
+                                                                      Expanded(
+                                                                        child: Container(
+                                                                          color: Color(0xFF242131),
+                                                                          child: Column(
+                                                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                                                            children: <Widget>[
+                                                                              Padding(
+                                                                                padding: const EdgeInsets.all(8.0),
+                                                                                child: Text(
+                                                                                  "Forwards",
+                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                ),
+                                                                              ),
+                                                                              FutureBuilder<List<Player>>(
+                                                                                future: _forwards,
+                                                                                builder: (context, snapshot) {
+                                                                                  switch (snapshot.connectionState) {
+                                                                                    case ConnectionState.none:
+                                                                                    case ConnectionState.waiting:
+                                                                                      return Text("Loading...");
+                                                                                    default:
+                                                                                      if (snapshot.hasError) {
+                                                                                        return Text('Error: ${snapshot.error}');
+                                                                                      } else {
+                                                                                        return Container(
+                                                                                          child: Scrollbar(
+                                                                                            child: ListView.separated(
+                                                                                                separatorBuilder: (context, index) => SizedBox(
+                                                                                                      height: 15.0,
+                                                                                                    ),
+                                                                                                itemCount: snapshot.data.length,
+                                                                                                scrollDirection: Axis.vertical,
+                                                                                                shrinkWrap: true,
+                                                                                                itemBuilder: (context, index) {
+                                                                                                  return GestureDetector(
+                                                                                                    child: ModalItem(snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    onTap: () {
+                                                                                                      setState(() {
+                                                                                                        if (activeRadioButtonInModal == 1) {
+                                                                                                          _selectedPlayer1 = snapshot.data[index];
+                                                                                                          isActiveSiluete1 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 2) {
+                                                                                                          _selectedPlayer2 = snapshot.data[index];
+                                                                                                          isActiveSiluete2 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 3) {
+                                                                                                          _selectedPlayer3 = snapshot.data[index];
+                                                                                                          isActiveSiluete3 = true;
+                                                                                                        } else if (activeRadioButtonInModal == 4) {
+                                                                                                          _selectedPlayer4 = snapshot.data[index];
+                                                                                                          isActiveSiluete4 = true;
+                                                                                                        } else {
+                                                                                                          _selectedPlayer5 = snapshot.data[index];
+                                                                                                          isActiveSiluete5 = true;
+                                                                                                        }
+                                                                                                      });
+                                                                                                    },
+                                                                                                  );
+                                                                                                }),
+                                                                                          ),
+                                                                                          height: 450,
+                                                                                        );
+                                                                                      }
+                                                                                  }
+                                                                                },
+                                                                              )
+                                                                            ],
+                                                                          ),
+                                                                        ),
+                                                                      ),
+                                                                    ],
                                                                   )
                                                                 ],
-                                                              ));
-                                                    }
-                                                  });
+                                                              ),
+                                                            ),
+                                                          );
+                                                        });
+                                                    //
+                                                  } else {
+                                                    showDialog(
+                                                        context: context,
+                                                        builder: (BuildContext context) => CupertinoAlertDialog(
+                                                              title: Text("Hey!!!"),
+                                                              content: Text("Please choose opponent!"),
+                                                              actions: <Widget>[
+                                                                CupertinoDialogAction(
+                                                                  onPressed: () => Navigator.pop(context, 'Discard'),
+                                                                  isDefaultAction: true,
+                                                                  child: Text("Close"),
+                                                                ),
+                                                              ],
+                                                            ));
+                                                  }
                                                 },
                                                 siluete: isActiveSiluete5 == true
                                                     ? ActiveSilueteDuelDesigner(
                                                         image: kDDActiveSiluete,
                                                         number: "5",
-                                                        batteryLevel: 4,
+                                                        batteryLevel: 5,
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
-                                                        playerName: _selectedPlayer5.lastName.toUpperCase(),
-                                                        playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null
-                                                            ? getColorFromString(_selectedClub.collarColor)
-                                                            : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null
-                                                            ? getColorFromString(_selectedClub.shirtColor)
-                                                            : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null
-                                                            ? getColorFromString(_selectedClub.nameColor)
-                                                            : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null
-                                                            ? getColorFromString(_selectedClub.numberColor)
-                                                            : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                            ? getColorFromString(_selectedClub.numBorderColor)
-                                                            : Colors.white,
+                                                        playerName: _selectedPlayer5.lastName != null ? _selectedPlayer5.lastName.toUpperCase() : "",
+                                                        playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "5",
+                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor:
+                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1352,9 +2258,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
-                                          border: Border(
-                                              left: BorderSide(width: 1, color: Color(0xFF9999AC)),
-                                              bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                          border: Border(left: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                                     ),
                                     Container(
                                         child: Row(
@@ -1379,9 +2283,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
-                                          border: Border(
-                                              right: BorderSide(width: 1, color: Color(0xFF9999AC)),
-                                              bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                          border: Border(right: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                                     ),
                                   ],
                                 )),
