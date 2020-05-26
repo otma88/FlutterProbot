@@ -1,12 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:probot/widgets/bottom_sheet_icons_icons.dart';
-import 'package:probot/network/api.dart';
 import 'package:probot/model/players.dart';
 import 'package:probot/widgets/custom_radio.dart';
-import 'package:probot/widgets/modal_radio_button.dart';
+import 'package:probot/widgets/disable_button.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../model/leagues.dart';
 import '../model/clubs.dart';
@@ -651,7 +648,90 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             ),
                           ),
                           Expanded(
-                              flex: 5,
+                            flex: 1,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              verticalDirection: VerticalDirection.down,
+                              children: <Widget>[
+                                Expanded(
+                                  child: SizedBox(),
+                                  flex: 1,
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: DisableButton(
+                                        onTap: () {
+                                          setState(() {
+                                            isActiveSiluete1 = false;
+                                            _selectedPlayer1 = null;
+                                          });
+                                        },
+                                        buttonTitle: "Disable"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: DisableButton(
+                                        onTap: () {
+                                          setState(() {
+                                            isActiveSiluete2 = false;
+                                            _selectedPlayer2 = null;
+                                          });
+                                        },
+                                        buttonTitle: "Disable"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: DisableButton(
+                                        onTap: () {
+                                          setState(() {
+                                            isActiveSiluete3 = false;
+                                            _selectedPlayer3 = null;
+                                          });
+                                        },
+                                        buttonTitle: "Disable"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: DisableButton(
+                                        onTap: () {
+                                          setState(() {
+                                            isActiveSiluete4 = false;
+                                            _selectedPlayer4 = null;
+                                          });
+                                        },
+                                        buttonTitle: "Disable"),
+                                  ),
+                                ),
+                                Expanded(
+                                  flex: 2,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(left: 10.0, right: 10.0),
+                                    child: DisableButton(
+                                        onTap: () {
+                                          setState(() {
+                                            isActiveSiluete5 = false;
+                                            _selectedPlayer5 = null;
+                                          });
+                                        },
+                                        buttonTitle: "Disable"),
+                                  ),
+                                )
+                              ],
+                            ),
+                          ),
+                          Expanded(
+                              flex: 7,
                               child: Row(
                                 children: <Widget>[
                                   Expanded(
