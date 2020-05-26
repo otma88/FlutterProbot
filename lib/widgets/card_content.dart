@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class CardContent extends StatelessWidget {
   final String label;
-  final IconData icon;
+  final String icon;
 
   CardContent({this.label, this.icon});
 
@@ -17,17 +17,14 @@ class CardContent extends StatelessWidget {
           Flexible(
             child: Text(
               label,
-              style: TextStyle(
-                  color: Color(0xFF9999AC),
-                  fontSize: 40.0,
-                  fontWeight: FontWeight.bold),
+              style: TextStyle(color: Color(0xFF9999AC), fontSize: 40.0, fontWeight: FontWeight.bold),
             ),
           ),
-          Icon(
+          Image.asset(
             icon,
-            size: 80.0,
+            height: 80.0,
             color: Color(0xFF3FA9F5),
-          ),
+          )
         ],
       ),
     );

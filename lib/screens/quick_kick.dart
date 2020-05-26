@@ -55,9 +55,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.star_border,
-                  color: Color(0xFF3FA9F5),
+                Image.asset(
+                  'images/icons/difficulty_easy.png',
+                  height: 30.0,
                 ),
                 SizedBox(
                   width: 10.0,
@@ -74,9 +74,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.star_half,
-                  color: Color(0xFF3FA9F5),
+                Image.asset(
+                  'images/icons/difficulty_medium.png',
+                  height: 30.0,
                 ),
                 SizedBox(width: 10.0),
                 Text(
@@ -90,9 +90,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.start,
               children: <Widget>[
-                Icon(
-                  Icons.star,
-                  color: Color(0xFF3FA9F5),
+                Image.asset(
+                  'images/icons/difficulty_hard.png',
+                  height: 30.0,
                 ),
                 SizedBox(
                   width: 10.0,
@@ -256,9 +256,12 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      Text(
-                                        labelPlayerHeight,
-                                        style: TextStyle(fontSize: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                          labelPlayerHeight,
+                                          style: TextStyle(fontSize: 20.0),
+                                        ),
                                       )
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -283,9 +286,12 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      Text(
-                                        labelJumpHeight,
-                                        style: TextStyle(fontSize: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                          labelJumpHeight,
+                                          style: TextStyle(fontSize: 20.0),
+                                        ),
                                       )
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -310,9 +316,12 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                   ),
                                   Row(
                                     children: <Widget>[
-                                      Text(
-                                        labelJumpOccurrence,
-                                        style: TextStyle(fontSize: 20.0),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 10.0),
+                                        child: Text(
+                                          labelJumpOccurrence,
+                                          style: TextStyle(fontSize: 20.0),
+                                        ),
                                       )
                                     ],
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -346,9 +355,9 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                     ),
                                     Column(
                                       children: <Widget>[
-                                        Icon(
-                                          Icons.battery_full,
-                                          color: Color(0xFF464655),
+                                        Image.asset(
+                                          'images/icons/batt.png',
+                                          height: 30.0,
                                         )
                                       ],
                                     )

@@ -56,6 +56,21 @@ flutter:
     - images/dd-silueta.png
     - images/kragna.png
     - images/dres.png
+    - images/icons/logout.png
+    - images/icons/role.png
+    - images/icons/menu.png
+    - images/icons/quick_kick.png
+    - images/icons/season_shootout.png
+    - images/icons/duel_designer.png
+    - images/icons/difficulty_easy.png
+    - images/icons/difficulty_medium.png
+    - images/icons/difficulty_hard.png
+    - images/icons/height.png
+    - images/icons/jump_height.png
+    - images/icons/batt.png
+    - images/icons/player.png
+    - images/icons/down.png
+    - images/icons/substitute.png
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

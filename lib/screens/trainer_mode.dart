@@ -73,47 +73,55 @@ class _TrainerModePageState extends State<TrainerModePage> {
                   Expanded(
                     flex: 1,
                     child: Container(
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back,
-                          size: 50.0,
-                          color: Color.fromRGBO(255, 255, 255, 0.9),
-                        ),
-                        onPressed: () {
+                        child: GestureDetector(
+                      onTap: () {
+                        setState(() {
                           logout();
-                        },
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      child: Text(
-                        'TRAINER MODE',
-                        style: TextStyle(fontSize: 55.0, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                      flex: 6,
-                      child: Container(
-                        child: Padding(
-                          padding: const EdgeInsets.only(top: 20.0),
-                          child: Text(
-                            "PROBOT",
-                            style: TextStyle(fontSize: 25.0, color: Colors.white),
-                          ),
+                        });
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Image.asset(
+                          'images/icons/logout.png',
+                          height: 45.0,
                         ),
-                      )),
+                      ),
+                    )),
+                  ),
+                  Expanded(
+                    flex: 10,
+                    child: Container(
+                      child: Row(
+                        children: <Widget>[
+                          Text(
+                            'TRAINER MODE',
+                            style: TextStyle(fontSize: 55.0, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 12.0),
+                            child: Image.asset(
+                              'images/icons/role.png',
+                              height: 30.0,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: Text(
+                              "Probot",
+                              style: TextStyle(fontSize: 25.0, color: Color(0xff9999AC)),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Expanded(
                       flex: 1,
                       child: Container(
-                        child: Icon(
-                          Icons.dehaze,
-                          size: 50.0,
-                          color: Color.fromRGBO(255, 255, 255, 0.9),
-                        ),
-                      ))
+                          child: Image.asset(
+                        'images/icons/menu.png',
+                        height: 45.0,
+                      )))
                 ],
               ),
             ),
@@ -129,7 +137,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       },
                       child: MenuCard(
                         colour: cardColor,
-                        cardChild: CardContent(label: "QUICK KICK", icon: ProbotIcons.ball),
+                        cardChild: CardContent(label: "QUICK KICK", icon: 'images/icons/quick_kick.png'),
                         description: 'Fully automated, hassle free practice.',
                       ),
                     )),
@@ -140,7 +148,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         colour: cardColor,
                         cardChild: CardContent(
                           label: "PLAYERS",
-                          icon: ProbotIcons.trophy,
+                          icon: 'images/icons/season_shootout.png',
                         ),
                         description: "Add players.",
                       ),
@@ -154,7 +162,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         colour: cardColor,
                         cardChild: CardContent(
                           label: "DUEL DESIGNER",
-                          icon: ProbotIcons.params,
+                          icon: 'images/icons/duel_designer.png',
                         ),
                         description: "Practice against designated opponent.",
                       ),
