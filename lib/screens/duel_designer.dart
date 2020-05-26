@@ -445,18 +445,13 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                               child: Column(
                                 children: <Widget>[
                                   Padding(
-                                    padding: const EdgeInsets.fromLTRB(0.0, 35.0, 0.0, 10.0),
+                                    padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
                                     child: Row(
                                       children: <Widget>[
                                         Expanded(
                                           flex: 1,
                                           child: Column(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.arrow_upward,
-                                                size: 30.0,
-                                              )
-                                            ],
+                                            children: <Widget>[Image.asset('images/icons/height.png')],
                                           ),
                                         ),
                                         Expanded(
@@ -524,12 +519,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         Expanded(
                                           flex: 1,
                                           child: Column(
-                                            children: <Widget>[
-                                              Icon(
-                                                Icons.accessibility_new,
-                                                size: 30.0,
-                                              )
-                                            ],
+                                            children: <Widget>[Image.asset('images/icons/jump_height.png')],
                                           ),
                                         ),
                                         Expanded(
@@ -614,44 +604,47 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                 Expanded(
                                   child: Container(
                                     alignment: Alignment.topCenter,
-                                    child: Icon(
-                                      FontAwesomeIcons.caretDown,
-                                      color: Color(0xFF191926),
-                                      size: 60.0,
+                                    child: Image.asset(
+                                      'images/icons/down.png',
+                                      height: 20.0,
                                     ),
                                   ),
                                   flex: 2,
                                 ),
                                 Expanded(
-                                  child: Icon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Color(0xFF191926),
-                                    size: 60.0,
-                                  ),
+                                  child: Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Image.asset(
+                                        'images/icons/down.png',
+                                        height: 20.0,
+                                      )),
                                   flex: 2,
                                 ),
                                 Expanded(
-                                  child: Icon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Color(0xFF191926),
-                                    size: 60.0,
-                                  ),
+                                  child: Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Image.asset(
+                                        'images/icons/down.png',
+                                        height: 20.0,
+                                      )),
                                   flex: 2,
                                 ),
                                 Expanded(
-                                  child: Icon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Color(0xFF191926),
-                                    size: 60.0,
-                                  ),
+                                  child: Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Image.asset(
+                                        'images/icons/down.png',
+                                        height: 20.0,
+                                      )),
                                   flex: 2,
                                 ),
                                 Expanded(
-                                  child: Icon(
-                                    FontAwesomeIcons.caretDown,
-                                    color: Color(0xFF191926),
-                                    size: 60.0,
-                                  ),
+                                  child: Container(
+                                      alignment: Alignment.topCenter,
+                                      child: Image.asset(
+                                        'images/icons/down.png',
+                                        height: 20.0,
+                                      )),
                                   flex: 2,
                                 ),
                               ],
@@ -665,18 +658,18 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Column(
                                       children: <Widget>[
                                         Padding(
-                                          padding: const EdgeInsets.only(top: 60.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.user,
-                                            color: Color(0xFF464655),
+                                          padding: const EdgeInsets.only(top: 90.0),
+                                          child: Image.asset(
+                                            'images/icons/player.png',
+                                            height: 30.0,
                                           ),
                                         ),
                                         SizedBox(
                                           height: 250,
                                         ),
-                                        Icon(
-                                          Icons.battery_full,
-                                          color: Color(0xFF464655),
+                                        Image.asset(
+                                          'images/icons/batt.png',
+                                          height: 30.0,
                                         )
                                       ],
                                     ),
@@ -2254,7 +2247,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   children: <Widget>[
                                     Container(
                                       child: SizedBox(
-                                        width: 100,
+                                        width: 85,
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
@@ -2265,9 +2258,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       children: <Widget>[
                                         Padding(
                                           padding: const EdgeInsets.all(8.0),
-                                          child: Icon(
-                                            FontAwesomeIcons.exchangeAlt,
-                                            color: Color(0xFF9999AC),
+                                          child: Image.asset(
+                                            'images/icons/substitute.png',
+                                            height: 30.0,
                                           ),
                                         ),
                                         Text(
@@ -2279,7 +2272,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     Container(
                                       margin: EdgeInsets.only(left: 10.0),
                                       child: SizedBox(
-                                        width: 92,
+                                        width: 85,
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
