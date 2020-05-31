@@ -61,7 +61,7 @@ class _LoginState extends State<Login> {
                             padding: const EdgeInsets.only(bottom: 10.0),
                             child: Container(
                                 child: Text(
-                              "User name:",
+                              "Username:",
                               style: TextStyle(fontSize: 20, color: Color(0xFF1E1E28)),
                             )),
                           ),
@@ -183,7 +183,7 @@ class _LoginState extends State<Login> {
   }
 
   void _login() async {
-    var data = {'email': username, 'password': password};
+    var data = {'username': username, 'password': password};
 
     var res = await Network().authData(data, '/login');
     var body = json.decode(res.body);
