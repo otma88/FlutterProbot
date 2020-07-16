@@ -440,141 +440,166 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                           children: <Widget>[
                             Expanded(
                               child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(0.0, 30.0, 0.0, 10.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: <Widget>[Image.asset('images/icons/height.png')],
+                                  Expanded(
+                                    child: Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[Image.asset('images/icons/height.png')],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer1 != null ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-" : kPlayerParamDisabled.data,
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer1 != null
+                                                      ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-"
+                                                      : kPlayerParamDisabled.data,
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer2 != null ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-" : kPlayerParamDisabled.data,
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer2 != null
+                                                      ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-"
+                                                      : kPlayerParamDisabled.data,
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer3 != null ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-" : kPlayerParamDisabled.data,
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer3 != null
+                                                      ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-"
+                                                      : kPlayerParamDisabled.data,
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer4 != null ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-" : kPlayerParamDisabled.data,
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer4 != null
+                                                      ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-"
+                                                      : kPlayerParamDisabled.data,
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer5 != null ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-" : kPlayerParamDisabled.data,
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.end,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer5 != null
+                                                      ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-"
+                                                      : kPlayerParamDisabled.data,
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   ),
-                                  Padding(
-                                    padding: const EdgeInsets.fromLTRB(0.0, 10.0, 0.0, 10.0),
-                                    child: Row(
-                                      children: <Widget>[
-                                        Expanded(
-                                          flex: 1,
-                                          child: Column(
-                                            children: <Widget>[Image.asset('images/icons/jump_height.png')],
+                                  Expanded(
+                                    child: Container(
+                                      child: Row(
+                                        children: <Widget>[
+                                          Expanded(
+                                            flex: 1,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[Image.asset('images/icons/jump_height.png')],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer1 != null ? _selectedPlayer1.height != null ? "45 cm" : "-" : "-",
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer1 != null ? _selectedPlayer1.height != null ? "45 cm" : "-" : "-",
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer2 != null ? _selectedPlayer2.height != null ? "45 cm" : "-" : "-",
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer2 != null ? _selectedPlayer2.height != null ? "45 cm" : "-" : "-",
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer3 != null ? _selectedPlayer3.height != null ? "45 cm" : "-" : "-",
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer3 != null ? _selectedPlayer3.height != null ? "45 cm" : "-" : "-",
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer4 != null ? _selectedPlayer4.height != null ? "45 cm" : "-" : "-",
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer4 != null ? _selectedPlayer4.height != null ? "45 cm" : "-" : "-",
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
                                           ),
-                                        ),
-                                        Expanded(
-                                          flex: 2,
-                                          child: Column(
-                                            children: <Widget>[
-                                              Text(
-                                                _selectedPlayer5 != null ? _selectedPlayer5.height != null ? "45 cm" : "-" : "-",
-                                                style: kPlayerParamTextStyle,
-                                              )
-                                            ],
-                                          ),
-                                        )
-                                      ],
+                                          Expanded(
+                                            flex: 2,
+                                            child: Column(
+                                              mainAxisAlignment: MainAxisAlignment.center,
+                                              children: <Widget>[
+                                                Text(
+                                                  _selectedPlayer5 != null ? _selectedPlayer5.height != null ? "45 cm" : "-" : "-",
+                                                  style: kPlayerParamTextStyle,
+                                                )
+                                              ],
+                                            ),
+                                          )
+                                        ],
+                                      ),
                                     ),
                                   )
                                 ],
