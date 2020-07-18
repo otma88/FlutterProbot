@@ -29,7 +29,7 @@ Future<List<League>> _fetchLeagues(http.Client client) async {
 Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://probot-backend.test/api/auth/clubs/league/$leagueID',
+  var response = await client.get('http://165.22.26.62/api/auth/clubs/league/$leagueID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parseClubs, response.body);
@@ -38,7 +38,7 @@ Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) as
 Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID',
+  var response = await client.get('http://165.22.26.62/api/auth/players/club/$clubID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parsePlayers, response.body);
@@ -48,7 +48,7 @@ Future<List<Player>> _fetchPlayersByClubIDAndPosition(http.Client client, String
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
 
-  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID/$position',
+  var response = await client.get('http://165.22.26.62/api/auth/players/club/$clubID/$position',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parsePlayers, response.body);
