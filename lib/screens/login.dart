@@ -27,7 +27,7 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomPadding: false,
       key: _scaffoldKey,
       body: Container(
         color: Color(0xFF3FA9F5),
@@ -204,8 +204,7 @@ class _LoginState extends State<Login> {
                                           children: <Widget>[
                                             Text(
                                               "LOGIN",
-                                              style: TextStyle(
-                                                  fontSize: 30.0, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold, color: Colors.white),
+                                              style: TextStyle(fontSize: 30.0, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold, color: Colors.white),
                                             ),
                                           ],
                                         ),
