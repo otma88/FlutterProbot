@@ -27,154 +27,212 @@ class _LoginState extends State<Login> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomPadding: false,
       key: _scaffoldKey,
       body: Container(
         color: Color(0xFF3FA9F5),
         child: Column(
           children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.fromLTRB(50.0, 25.0, 2.0, 2.0),
-              child: Row(
-                children: <Widget>[
-                  Text(
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.only(left: 30.0, top: 30.0),
+                child: Container(
+                  alignment: Alignment.topLeft,
+                  child: Text(
                     "LOGIN",
-                    style: TextStyle(fontSize: 50.0, color: Color(0xFF242432)),
+                    style: TextStyle(fontSize: 50.0, color: Color(0xFF242432), fontFamily: 'Barlow', fontWeight: FontWeight.bold),
                   ),
-                ],
+                ),
               ),
             ),
-            SizedBox(
-              height: 280,
-            ),
-            Row(
-              children: <Widget>[
-                Expanded(flex: 2, child: SizedBox()),
-                Expanded(
-                  flex: 4,
-                  child: Container(
-                    child: Form(
-                      key: _formKey,
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10.0),
-                            child: Container(
+            Expanded(
+              child: Row(
+                children: <Widget>[
+                  Expanded(child: SizedBox()),
+                  Expanded(
+                    child: Container(
+                      child: Form(
+                        key: _formKey,
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: <Widget>[
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                  alignment: Alignment.centerLeft,
+                                  child: Text(
+                                    "Username:",
+                                    style: TextStyle(fontSize: 23, color: Color(0xFF1E1E28), fontFamily: 'BarlowCondensed'),
+                                  )),
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 35, color: Color(0xFF1E1E28)),
+                                decoration: InputDecoration(
+                                  border: UnderlineInputBorder(borderSide: BorderSide.none),
+                                  contentPadding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
+                                  filled: true,
+                                  fillColor: Colors.white,
+                                ),
+                                expands: true,
+                                minLines: null,
+                                maxLines: null,
+                                validator: (usernameValue) {
+                                  if (usernameValue.isEmpty) {
+                                    return 'Please enter username';
+                                  }
+                                  username = usernameValue;
+                                  return null;
+                                },
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Container(
+                                alignment: Alignment.centerLeft,
                                 child: Text(
-                              "Username:",
-                              style: TextStyle(fontSize: 20, color: Color(0xFF1E1E28)),
-                            )),
-                          ),
-                          Container(
-                            width: 350,
-                            child: TextFormField(
-                              style: TextStyle(fontSize: 30, color: Color(0xFF1E1E28)),
-                              decoration: InputDecoration(
-                                border: UnderlineInputBorder(borderSide: BorderSide.none),
-                                contentPadding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                                filled: true,
-                                fillColor: Colors.white,
-                              ),
-                              validator: (usernameValue) {
-                                if (usernameValue.isEmpty) {
-                                  return 'Please enter username';
-                                }
-                                username = usernameValue;
-                                return null;
-                              },
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(bottom: 10, top: 20),
-                            child: Text(
-                              "Password:",
-                              style: TextStyle(fontSize: 20, color: Color(0xFF1E1E28)),
-                            ),
-                          ),
-                          Row(
-                            children: <Widget>[
-                              Container(
-                                width: 350,
-                                child: TextFormField(
-                                  obscureText: true,
-                                  style: TextStyle(fontSize: 30, color: Color(0xFF1E1E28)),
-                                  decoration: InputDecoration(
-                                      border: UnderlineInputBorder(borderSide: BorderSide.none),
-                                      contentPadding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
-                                      filled: true,
-                                      fillColor: Colors.white),
-                                  validator: (passwordValue) {
-                                    if (passwordValue.isEmpty) {
-                                      return 'Please enter your password';
-                                    }
-                                    password = passwordValue;
-                                    return null;
-                                  },
+                                  "Password:",
+                                  style: TextStyle(fontSize: 23, color: Color(0xFF1E1E28), fontFamily: 'BarlowCondensed'),
                                 ),
                               ),
-                              SizedBox(
-                                width: 20,
+                            ),
+                            Expanded(
+                              flex: 2,
+                              child: TextFormField(
+                                style: TextStyle(fontSize: 35, color: Color(0xFF1E1E28)),
+                                decoration: InputDecoration(
+                                    border: UnderlineInputBorder(borderSide: BorderSide.none),
+                                    contentPadding: EdgeInsets.only(top: 20, bottom: 20, left: 10),
+                                    filled: true,
+                                    fillColor: Colors.white),
+                                expands: true,
+                                maxLines: null,
+                                minLines: null,
+                                validator: (passwordValue) {
+                                  if (passwordValue.isEmpty) {
+                                    return 'Please enter your password';
+                                  }
+                                  password = passwordValue;
+                                  return null;
+                                },
                               ),
-                              FlatButton(
-                                  onPressed: () {
-                                    if (_formKey.currentState.validate()) {
-                                      _login();
-                                    }
-                                  },
-                                  color: Color(0xFF1E1E28),
-                                  textColor: Colors.white,
-                                  padding: EdgeInsets.fromLTRB(35, 20, 35, 20),
-                                  child: Text(
-                                    "LOGIN",
-                                    style: TextStyle(fontSize: 30.0),
-                                  ))
-//                          GestureDetector(
-//                            onTap: null,
-//                            child: Container(
-//                              padding: EdgeInsets.fromLTRB(35, 20, 35, 20),
-//                              decoration: BoxDecoration(color: Color(0xFF1E1E28), boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
-//                              child: Center(
-//                                child: Text(
-//                                  "LOGIN",
-//                                  style: TextStyle(color: Color(0xFFFFFFFF), fontSize: 30.0),
-//                                ),
-//                              ),
-//                            ),
-//                          )
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20),
-                            child: Row(
-                              children: <Widget>[
-                                Container(
-                                  width: 30,
-                                  decoration: BoxDecoration(shape: BoxShape.rectangle, color: Colors.white),
-                                  padding: EdgeInsets.all(15),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 10),
-                                  child: Text(
-                                    "Remember me",
-                                    style: TextStyle(color: Colors.white, fontSize: 18),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: Row(
+                                children: <Widget>[
+                                  Expanded(
+                                      flex: 1,
+                                      child: Container(
+                                        alignment: Alignment.centerLeft,
+                                        child: SizedBox(
+                                          width: 30.0,
+                                          height: 30.0,
+                                          child: Checkbox(
+                                            activeColor: Colors.white,
+                                            value: false,
+                                          ),
+                                        ),
+                                      )),
+                                  Expanded(
+                                    flex: 5,
+                                    child: Text(
+                                      "Remember me",
+                                      style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'BarlowCondensed'),
+                                    ),
                                   ),
-                                ),
-                                SizedBox(
-                                  width: 50,
-                                ),
-                                Text(
-                                  "Forgot password?",
-                                  style: TextStyle(color: Colors.white, fontSize: 18),
-                                )
-                              ],
+                                  Expanded(
+                                    flex: 5,
+                                    child: Container(
+                                      alignment: Alignment.centerRight,
+                                      child: InkWell(
+                                        child: Text(
+                                          "Forgot password?",
+                                          style: TextStyle(color: Colors.white, fontSize: 20, fontFamily: 'BarlowCondensed'),
+                                        ),
+                                        onTap: () {
+                                          print("Forgot password");
+                                        },
+                                      ),
+                                    ),
+                                  )
+                                ],
+                              ),
                             ),
-                          )
-                        ],
+                            Expanded(
+                              flex: 2,
+                              child: SizedBox(),
+                            )
+                          ],
+                        ),
                       ),
                     ),
                   ),
-                ),
-              ],
+                  Expanded(
+                    child: Column(
+                      children: <Widget>[
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 2,
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          flex: 2,
+                          child: Row(
+                            children: <Widget>[
+                              Expanded(
+                                  flex: 3,
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      if (_formKey.currentState.validate()) {
+                                        _login();
+                                      }
+                                    },
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(left: 10.0),
+                                      child: Container(
+                                        child: Column(
+                                          mainAxisAlignment: MainAxisAlignment.center,
+                                          children: <Widget>[
+                                            Text(
+                                              "LOGIN",
+                                              style: TextStyle(fontSize: 30.0, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold, color: Colors.white),
+                                            ),
+                                          ],
+                                        ),
+                                        decoration: BoxDecoration(
+                                          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
+                                          color: Color(0xFF1E1E28),
+                                        ),
+                                      ),
+                                    ),
+                                  )),
+                              Expanded(flex: 1, child: SizedBox()),
+                              Expanded(flex: 1, child: SizedBox()),
+                            ],
+                          ),
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 1,
+                        ),
+                        Expanded(
+                          child: SizedBox(),
+                          flex: 2,
+                        )
+                      ],
+                    ),
+                  )
+                ],
+              ),
             ),
           ],
         ),
