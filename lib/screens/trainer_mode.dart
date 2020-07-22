@@ -56,6 +56,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -64,10 +65,9 @@ class _TrainerModePageState extends State<TrainerModePage> {
           fit: BoxFit.fill,
         )),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.fromLTRB(2.0, 20.0, 2.0, 2.0),
+              padding: EdgeInsets.only(left: size.height * 0.01, top: size.height * 0.02),
               child: Row(
                 children: <Widget>[
                   Expanded(
@@ -83,7 +83,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         padding: const EdgeInsets.all(10.0),
                         child: Image.asset(
                           'images/icons/logout.png',
-                          height: 45.0,
+                          height: size.height * 0.07,
                         ),
                       ),
                     )),
@@ -92,23 +92,30 @@ class _TrainerModePageState extends State<TrainerModePage> {
                     flex: 10,
                     child: Container(
                       child: Row(
+                        crossAxisAlignment: CrossAxisAlignment.end,
                         children: <Widget>[
                           Text(
                             'TRAINER MODE',
-                            style: TextStyle(fontSize: 55.0, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                          ),
+                          SizedBox(
+                            width: size.width * 0.005,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(left: 8.0, right: 8.0, top: 12.0),
+                            padding: const EdgeInsets.only(bottom: 8.0),
                             child: Image.asset(
                               'images/icons/role.png',
-                              height: 30.0,
+                              height: size.height * 0.05,
                             ),
                           ),
+                          SizedBox(
+                            width: size.width * 0.005,
+                          ),
                           Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
+                            padding: const EdgeInsets.only(bottom: 5.0),
                             child: Text(
                               "Probot",
-                              style: TextStyle(fontSize: 25.0, color: Color(0xff9999AC)),
+                              style: TextStyle(fontSize: size.height * 0.04, color: Color(0xff9999AC)),
                             ),
                           ),
                         ],
@@ -120,54 +127,90 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       child: Container(
                           child: Image.asset(
                         'images/icons/menu.png',
-                        height: 45.0,
+                        height: size.height * 0.07,
                       )))
                 ],
               ),
             ),
+            SizedBox(
+              height: size.height * 0.16,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Expanded(
+                    child: Container(
+                  child: Text(
+                    "Fully automated, hassle free practice.",
+                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed"),
+                  ),
+                )),
+                Expanded(
+                    child: Container(
+                  child: Text(
+                    "Add players.",
+                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed"),
+                  ),
+                )),
+                Expanded(
+                    child: Container(
+                  child: Text(
+                    "Practice against designated opponent.",
+                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed"),
+                  ),
+                )),
+              ],
+            ),
             Row(
               children: <Widget>[
                 Expanded(
-                    child: Row(
-                  children: <Widget>[
-                    Expanded(
-                        child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => QuickKickPage()));
-                      },
-                      child: MenuCard(
-                        colour: cardColor,
-                        cardChild: CardContent(label: "QUICK KICK", icon: 'images/icons/quick_kick.png'),
-                        description: 'Fully automated, hassle free practice.',
-                      ),
-                    )),
-                    Expanded(
-                        child: GestureDetector(
-                      onTap: () {},
-                      child: MenuCard(
-                        colour: cardColor,
-                        cardChild: CardContent(
-                          label: "PLAYERS",
-                          icon: 'images/icons/season_shootout.png',
-                        ),
-                        description: "Add players.",
-                      ),
-                    )),
-                    Expanded(
-                        child: GestureDetector(
-                      onTap: () {
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => DuelDesignerPage()));
-                      },
-                      child: MenuCard(
-                        colour: cardColor,
-                        cardChild: CardContent(
-                          label: "DUEL DESIGNER",
-                          icon: 'images/icons/duel_designer.png',
-                        ),
-                        description: "Practice against designated opponent.",
-                      ),
-                    ))
-                  ],
+                    child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => QuickKickPage()));
+                  },
+                  child: MenuCard(
+                    colour: cardColor,
+                    cardChild: CardContent(
+                      label: "QUICK KICK",
+                      icon: 'images/icons/quick_kick.png',
+                      fontSizeTitle: size.height * 0.06,
+                      iconSize: size.height * 0.15,
+                      paddingCard: size.height * 0.02,
+                      cardHeight: size.height * 0.3,
+                    ),
+                  ),
+                )),
+                Expanded(
+                    child: GestureDetector(
+                  onTap: () {},
+                  child: MenuCard(
+                    colour: cardColor,
+                    cardChild: CardContent(
+                      label: "PLAYERS",
+                      icon: 'images/icons/season_shootout.png',
+                      fontSizeTitle: size.height * 0.06,
+                      iconSize: size.height * 0.15,
+                      paddingCard: size.height * 0.02,
+                      cardHeight: size.height * 0.3,
+                    ),
+                  ),
+                )),
+                Expanded(
+                    child: GestureDetector(
+                  onTap: () {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => DuelDesignerPage()));
+                  },
+                  child: MenuCard(
+                    colour: cardColor,
+                    cardChild: CardContent(
+                      label: "DUEL DESIGNER",
+                      icon: 'images/icons/duel_designer.png',
+                      fontSizeTitle: size.height * 0.06,
+                      iconSize: size.height * 0.15,
+                      paddingCard: size.height * 0.02,
+                      cardHeight: size.height * 0.3,
+                    ),
+                  ),
                 ))
               ],
             )
