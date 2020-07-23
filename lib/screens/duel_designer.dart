@@ -22,14 +22,15 @@ import '../widgets/modal_item.dart';
 Future<List<League>> _fetchLeagues(http.Client client) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
+  var response = await client
+      .get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
   return compute(parseLeagues, response.body);
 }
 
 Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://probot-backend.test/api/auth/clubs/league/$leagueID',
+  var response = await client.get('http://165.22.26.62/api/auth/clubs/league/$leagueID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parseClubs, response.body);
@@ -38,7 +39,7 @@ Future<List<Club>> _fetchClubsByLeagueID(http.Client client, String leagueID) as
 Future<List<Player>> _fetchPlayersByClubID(http.Client client, String clubID) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID',
+  var response = await client.get('http://165.22.26.62/api/auth/players/club/$clubID',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parsePlayers, response.body);
@@ -48,7 +49,7 @@ Future<List<Player>> _fetchPlayersByClubIDAndPosition(http.Client client, String
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
 
-  var response = await client.get('http://probot-backend.test/api/auth/players/club/$clubID/$position',
+  var response = await client.get('http://165.22.26.62/api/auth/players/club/$clubID/$position',
       headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
 
   return compute(parsePlayers, response.body);
@@ -320,8 +321,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(10.0, 7.0, 5.0, 7.0),
                                       child: Container(child: LeaguesDropdown()),
-                                      decoration:
-                                          BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
+                                      decoration: BoxDecoration(
+                                          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
+                                          color: Color(0xFF464655)),
                                     ),
                                   ),
                                   Container(
@@ -340,8 +342,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Container(
                                       padding: EdgeInsets.fromLTRB(10.0, 7.0, 5.0, 7.0),
                                       child: Container(child: ClubsDropdown()),
-                                      decoration:
-                                          BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
+                                      decoration: BoxDecoration(
+                                          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
+                                          color: Color(0xFF464655)),
                                     ),
                                   ),
                                   Container(
@@ -371,7 +374,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                   'LOAD',
                                                   style: TextStyle(fontSize: 25.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                                 ),
-                                                Text('SAVED PRESET', style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                                Text('SAVED PRESET',
+                                                    style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                               ],
                                             ),
                                           ),
@@ -402,7 +406,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                   'SAVE',
                                                   style: TextStyle(fontSize: 25.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                                 ),
-                                                Text('THIS SETUP', style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                                Text('THIS SETUP',
+                                                    style: TextStyle(fontSize: 15.0, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                               ],
                                             ),
                                           ),
@@ -818,12 +823,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                         flex: 3,
                                                                         child: Text(
                                                                           "PLAYERS",
-                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                          style: TextStyle(
+                                                                              fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                         ),
                                                                       ),
                                                                       Expanded(
                                                                           flex: 5,
-                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                          child: CustomRadio(
+                                                                              parentAction: _updateActiveRadioButton,
+                                                                              activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -839,7 +847,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -864,8 +875,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -912,7 +926,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -937,8 +954,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -985,7 +1005,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1010,8 +1033,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1077,12 +1103,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
-                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor:
-                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null
+                                                            ? getColorFromString(_selectedClub.collarColor)
+                                                            : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null
+                                                            ? getColorFromString(_selectedClub.shirtColor)
+                                                            : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null
+                                                            ? getColorFromString(_selectedClub.nameColor)
+                                                            : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null
+                                                            ? getColorFromString(_selectedClub.numberColor)
+                                                            : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
+                                                            ? getColorFromString(_selectedClub.numBorderColor)
+                                                            : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1130,12 +1165,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                         flex: 3,
                                                                         child: Text(
                                                                           "PLAYERS",
-                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                          style: TextStyle(
+                                                                              fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                         ),
                                                                       ),
                                                                       Expanded(
                                                                           flex: 5,
-                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                          child: CustomRadio(
+                                                                              parentAction: _updateActiveRadioButton,
+                                                                              activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -1151,7 +1189,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1176,8 +1217,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1224,7 +1268,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1249,8 +1296,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1297,7 +1347,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1322,8 +1375,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1389,12 +1445,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer2.lastName != null ? _selectedPlayer2.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "2",
-                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor:
-                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null
+                                                            ? getColorFromString(_selectedClub.collarColor)
+                                                            : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null
+                                                            ? getColorFromString(_selectedClub.shirtColor)
+                                                            : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null
+                                                            ? getColorFromString(_selectedClub.nameColor)
+                                                            : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null
+                                                            ? getColorFromString(_selectedClub.numberColor)
+                                                            : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
+                                                            ? getColorFromString(_selectedClub.numBorderColor)
+                                                            : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1442,12 +1507,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                         flex: 3,
                                                                         child: Text(
                                                                           "PLAYERS",
-                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                          style: TextStyle(
+                                                                              fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                         ),
                                                                       ),
                                                                       Expanded(
                                                                           flex: 5,
-                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                          child: CustomRadio(
+                                                                              parentAction: _updateActiveRadioButton,
+                                                                              activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -1463,7 +1531,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1488,8 +1559,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1536,7 +1610,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1561,8 +1638,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1609,7 +1689,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1634,8 +1717,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1701,12 +1787,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer3.lastName != null ? _selectedPlayer3.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "3",
-                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor:
-                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null
+                                                            ? getColorFromString(_selectedClub.collarColor)
+                                                            : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null
+                                                            ? getColorFromString(_selectedClub.shirtColor)
+                                                            : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null
+                                                            ? getColorFromString(_selectedClub.nameColor)
+                                                            : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null
+                                                            ? getColorFromString(_selectedClub.numberColor)
+                                                            : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
+                                                            ? getColorFromString(_selectedClub.numBorderColor)
+                                                            : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -1754,12 +1849,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                         flex: 3,
                                                                         child: Text(
                                                                           "PLAYERS",
-                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                          style: TextStyle(
+                                                                              fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                         ),
                                                                       ),
                                                                       Expanded(
                                                                           flex: 5,
-                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                          child: CustomRadio(
+                                                                              parentAction: _updateActiveRadioButton,
+                                                                              activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -1775,7 +1873,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1800,8 +1901,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1848,7 +1952,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1873,8 +1980,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -1921,7 +2031,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -1946,8 +2059,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -2013,12 +2129,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer4.lastName != null ? _selectedPlayer4.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "4",
-                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor:
-                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null
+                                                            ? getColorFromString(_selectedClub.collarColor)
+                                                            : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null
+                                                            ? getColorFromString(_selectedClub.shirtColor)
+                                                            : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null
+                                                            ? getColorFromString(_selectedClub.nameColor)
+                                                            : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null
+                                                            ? getColorFromString(_selectedClub.numberColor)
+                                                            : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
+                                                            ? getColorFromString(_selectedClub.numBorderColor)
+                                                            : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -2066,12 +2191,15 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                         flex: 3,
                                                                         child: Text(
                                                                           "PLAYERS",
-                                                                          style: TextStyle(fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                          style: TextStyle(
+                                                                              fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                         ),
                                                                       ),
                                                                       Expanded(
                                                                           flex: 5,
-                                                                          child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                                          child: CustomRadio(
+                                                                              parentAction: _updateActiveRadioButton,
+                                                                              activeButton: activeRadioButtonInModal))
                                                                     ],
                                                                   ),
                                                                   Row(
@@ -2087,7 +2215,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Defenders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -2112,8 +2243,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -2160,7 +2294,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Midfilders",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -2185,8 +2322,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -2233,7 +2373,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                 padding: const EdgeInsets.all(8.0),
                                                                                 child: Text(
                                                                                   "Forwards",
-                                                                                  style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                                                                                  style: TextStyle(
+                                                                                      fontSize: 25.0,
+                                                                                      fontFamily: 'BarlowCondensed',
+                                                                                      color: Color(0xFF9999AC)),
                                                                                 ),
                                                                               ),
                                                                               FutureBuilder<List<Player>>(
@@ -2258,8 +2401,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                                 shrinkWrap: true,
                                                                                                 itemBuilder: (context, index) {
                                                                                                   return GestureDetector(
-                                                                                                    child: ModalItem(snapshot.data[index].playerName,
-                                                                                                        snapshot.data[index].number != null ? snapshot.data[index].number : 18),
+                                                                                                    child: ModalItem(
+                                                                                                        snapshot.data[index].playerName,
+                                                                                                        snapshot.data[index].number != null
+                                                                                                            ? snapshot.data[index].number
+                                                                                                            : 18),
                                                                                                     onTap: () {
                                                                                                       setState(() {
                                                                                                         if (activeRadioButtonInModal == 1) {
@@ -2325,12 +2471,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                         numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                         playerName: _selectedPlayer5.lastName != null ? _selectedPlayer5.lastName.toUpperCase() : "",
                                                         playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "5",
-                                                        kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
-                                                        shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
-                                                        playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                        playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
-                                                        playerNumberStrokeColor:
-                                                            _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                        kragna: _selectedClub.collarColor != null
+                                                            ? getColorFromString(_selectedClub.collarColor)
+                                                            : Color(0xFFFF0000),
+                                                        shirtColor: _selectedClub.shirtColor != null
+                                                            ? getColorFromString(_selectedClub.shirtColor)
+                                                            : Color(0xFF243479),
+                                                        playerNameColor: _selectedClub.nameColor != null
+                                                            ? getColorFromString(_selectedClub.nameColor)
+                                                            : Colors.white,
+                                                        playerNumberColor: _selectedClub.numberColor != null
+                                                            ? getColorFromString(_selectedClub.numberColor)
+                                                            : Color(0xFFFF0000),
+                                                        playerNumberStrokeColor: _selectedClub.numBorderColor != null
+                                                            ? getColorFromString(_selectedClub.numBorderColor)
+                                                            : Colors.white,
                                                       )
                                                     : InactiveSiluete(
                                                         image: kInactiveSiluete,
@@ -2356,7 +2511,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
-                                          border: Border(left: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                          border: Border(
+                                              left: BorderSide(width: 1, color: Color(0xFF9999AC)),
+                                              bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                                     ),
                                     Container(
                                         child: Row(
@@ -2381,7 +2538,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         height: 20,
                                       ),
                                       decoration: BoxDecoration(
-                                          border: Border(right: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                          border: Border(
+                                              right: BorderSide(width: 1, color: Color(0xFF9999AC)),
+                                              bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                                     ),
                                   ],
                                 )),

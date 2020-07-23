@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 
 class MenuCard extends StatelessWidget {
@@ -12,8 +10,10 @@ class MenuCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       child: cardChild,
-      decoration:
-          BoxDecoration(color: colour, borderRadius: BorderRadius.circular(1.0), boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
+      decoration: BoxDecoration(
+          color: colour,
+          borderRadius: BorderRadius.circular(1.0),
+          boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
     );
   }
 }

@@ -7,8 +7,10 @@ class CardContent extends StatelessWidget {
   double iconSize;
   double paddingCard;
   double cardHeight;
+  Color textColor;
+  Color iconColor;
 
-  CardContent({this.label, this.icon, this.fontSizeTitle, this.iconSize, this.paddingCard, this.cardHeight});
+  CardContent({this.label, this.icon, this.fontSizeTitle, this.iconSize, this.paddingCard, this.cardHeight, this.textColor, this.iconColor});
 
   @override
   Widget build(BuildContext context) {
@@ -23,13 +25,13 @@ class CardContent extends StatelessWidget {
             Flexible(
               child: Text(
                 label,
-                style: TextStyle(color: Color(0xFF9999AC), fontSize: fontSizeTitle, fontWeight: FontWeight.bold),
+                style: TextStyle(color: textColor, fontSize: fontSizeTitle, fontWeight: FontWeight.bold),
               ),
             ),
             Image.asset(
               icon,
               height: iconSize,
-              color: Color(0xFF3FA9F5),
+              color: iconColor,
             )
           ],
         ),
