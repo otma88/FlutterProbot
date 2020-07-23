@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:probot/custom_icons/test_sheet_icons_icons.dart';
 import 'package:probot/widgets/check_auth.dart';
 import 'package:probot/screens/duel_designer.dart';
@@ -98,8 +99,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         children: <Widget>[
                           Text(
                             'TRAINER MODE',
-                            style:
-                                TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             width: size.width * 0.01,
@@ -258,34 +258,23 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       child: GestureDetector(
                     onTap: () {},
                     child: MenuCard(
-                      colour: cardColorSecondRow,
-                      cardChild: PlayerCardContent(
-                        label: "PLAYER",
-                        icon: 'images/icons/role.png',
-                        fontSizeTitle: size.height * 0.06,
-                        iconSize: size.height * 0.15,
-                        paddingCard: size.height * 0.02,
-                        cardHeight: size.height * 0.25,
-                        textColor: Color(0xFF242432),
-                        iconColor: Colors.black,
-                        fontSizePlayer: size.height * 0.02,
-                        fontSizePlayerNumber: size.height * 0.04,
-                        labelPlayer: "MESSI",
-                        labelPlayerNumber: "10",
-                        textPlayeNumberColor: Colors.white,
-                        textPlayerColor: Colors.white,
-                        sliderWidget: Slider(
-                          max: 10,
-                          min: 0,
-                          value: _sliderValue,
-                          onChanged: (sliderValue) {
-                            setState(() {
-                              _sliderValue = sliderValue;
-                            });
-                          },
-                        ),
-                      ),
-                    ),
+                        colour: cardColorSecondRow,
+                        cardChild: PlayerCardContent(
+                          label: "PLAYER",
+                          icon: 'images/icons/role.png',
+                          fontSizeTitle: size.height * 0.06,
+                          iconSize: size.height * 0.15,
+                          paddingCard: size.height * 0.02,
+                          cardHeight: size.height * 0.25,
+                          textColor: Color(0xFF242432),
+                          iconColor: Colors.black,
+                          fontSizePlayer: size.height * 0.02,
+                          fontSizePlayerNumber: size.height * 0.04,
+                          labelPlayer: "MESSI",
+                          labelPlayerNumber: "10",
+                          textPlayeNumberColor: Colors.white,
+                          textPlayerColor: Colors.white,
+                        )),
                   )),
                   SizedBox(
                     width: size.width * 0.02,
