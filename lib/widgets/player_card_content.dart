@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 
@@ -80,10 +81,53 @@ class PlayerCardContent extends StatelessWidget {
             );
           },
           itemCount: 5,
-          control: SwiperControl(),
-          pagination: SwiperPagination(
-            builder: SwiperPagination.dots,
-          )),
+          control: SwiperControl(color: Colors.white, size: 10.0),
+          pagination: SwiperCustomPagination(builder: (BuildContext context, SwiperPluginConfig config) {
+            List<Widget> list = [];
+
+            int itemCount = config.itemCount;
+            int activeIndex = config.activeIndex;
+
+            for (int i = 0; i < itemCount; i++) {
+              bool active = i == activeIndex;
+              list.add(
+                Stack(
+                  children: <Widget>[
+                    Positioned(
+                      bottom: -3,
+                      left: 0,
+                      child: Container(
+                        height: 11,
+                        width: 16,
+                        decoration: BoxDecoration(
+                            color: Color(0xFF3FA9F5),
+                            borderRadius: BorderRadius.circular(2.0),
+                            boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 3.0, offset: Offset(1.0, 1.0))]),
+                        child: Padding(
+                          padding: const EdgeInsets.all(2.0),
+                          child: Image.asset('images/icons/sliderIcon.png'),
+                        ),
+                      ),
+                    )
+                  ],
+                  overflow: Overflow.visible,
+                ),
+              );
+            }
+
+            return Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: <Widget>[
+                Container(
+                  height: 5.0,
+                  color: Color(0xFF2D2D3C),
+                  child: Column(
+                    children: list,
+                  ),
+                ),
+              ],
+            );
+          })),
     );
   }
 }
