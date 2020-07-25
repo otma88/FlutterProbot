@@ -10,6 +10,7 @@ import 'package:probot/screens/login.dart';
 import 'package:probot/network/api.dart';
 import 'package:probot/widgets/menu_card_disabled.dart';
 import 'package:probot/widgets/player_card_content.dart';
+import 'package:probot/widgets/results_card_content.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../widgets/menu_card.dart';
 import '../widgets/card_content.dart';
@@ -99,7 +100,8 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         children: <Widget>[
                           Text(
                             'TRAINER MODE',
-                            style: TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                            style:
+                                TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             width: size.width * 0.01,
@@ -154,6 +156,9 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       ],
                     ),
                   )),
+                  SizedBox(
+                    width: size.width * 0.02,
+                  ),
                   Expanded(
                       child: Container(
                     child: Text(
@@ -161,6 +166,9 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed", height: 0.9),
                     ),
                   )),
+                  SizedBox(
+                    width: size.width * 0.02,
+                  ),
                   Expanded(
                       child: Container(
                     child: Row(
@@ -192,8 +200,8 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "QUICK KICK",
                         icon: 'images/icons/quick_kick.png',
-                        fontSizeTitle: size.height * 0.06,
-                        iconSize: size.height * 0.15,
+                        fontSizeTitle: size.height * 0.05,
+                        iconSize: size.height * 0.13,
                         paddingCard: size.height * 0.02,
                         cardHeight: size.height * 0.25,
                         textColor: Color(0xFF9999AC),
@@ -212,8 +220,8 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "SEASON SHOOTOUT",
                         icon: 'images/icons/season_shootout.png',
-                        fontSizeTitle: size.height * 0.06,
-                        iconSize: size.height * 0.15,
+                        fontSizeTitle: size.height * 0.05,
+                        iconSize: size.height * 0.13,
                         paddingCard: size.height * 0.02,
                         cardHeight: size.height * 0.25,
                         textColor: Color(0xFF9999AC).withOpacity(0.5),
@@ -234,8 +242,8 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "DUEL DESIGNER",
                         icon: 'images/icons/duel_designer.png',
-                        fontSizeTitle: size.height * 0.06,
-                        iconSize: size.height * 0.15,
+                        fontSizeTitle: size.height * 0.05,
+                        iconSize: size.height * 0.13,
                         paddingCard: size.height * 0.02,
                         cardHeight: size.height * 0.25,
                         textColor: Color(0xFF9999AC),
@@ -261,19 +269,22 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         colour: cardColorSecondRow,
                         cardChild: PlayerCardContent(
                           label: "PLAYER",
-                          icon: 'images/icons/role.png',
-                          fontSizeTitle: size.height * 0.06,
-                          iconSize: size.height * 0.15,
+                          icon: "",
+                          fontSizeTitle: size.height * 0.05,
+                          iconSize: size.height * 0.16,
                           paddingCard: size.height * 0.02,
                           cardHeight: size.height * 0.25,
                           textColor: Color(0xFF242432),
                           iconColor: Colors.black,
-                          fontSizePlayer: size.height * 0.02,
-                          fontSizePlayerNumber: size.height * 0.04,
+                          fontSizePlayer: size.height * 0.03,
+                          fontSizePlayerNumber: size.height * 0.07,
                           labelPlayer: "MESSI",
                           labelPlayerNumber: "10",
                           textPlayeNumberColor: Colors.white,
                           textPlayerColor: Colors.white,
+                          swiperControlSize: size.height * 0.03,
+                          swiperControlPadding: size.height * 0.18,
+                          fractionFontSize: size.height * 0.033,
                         )),
                   )),
                   SizedBox(
@@ -281,22 +292,24 @@ class _TrainerModePageState extends State<TrainerModePage> {
                   ),
                   Expanded(
                       child: GestureDetector(
-                    onTap: () {
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => DuelDesignerPage()));
-                    },
-                    child: MenuCard(
-                      colour: cardColor,
-                      cardChild: CardContent(
-                        label: "DUEL DESIGNER",
-                        icon: 'images/icons/duel_designer.png',
-                        fontSizeTitle: size.height * 0.06,
-                        iconSize: size.height * 0.15,
-                        paddingCard: size.height * 0.02,
-                        cardHeight: size.height * 0.25,
-                        textColor: Color(0xFF9999AC),
-                        iconColor: Color(0xFF3FA9F5),
-                      ),
-                    ),
+                    onTap: () {},
+                    child: MenuCardDisabled(
+                        colour: cardColorSecondRow.withOpacity(0.2),
+                        cardChild: ResultsCardContent(
+                          cardTitle: "RESULTS",
+                          cardHeight: size.height * 0.25,
+                          titleColor: Color(0xFF242432).withOpacity(0.5),
+                          fontSizeTitle: size.height * 0.05,
+                          paddingCard: size.height * 0.02,
+                          playerName: "PLAYER",
+                          textPlayerColor: Colors.white.withOpacity(0.3),
+                          fontSizePlayer: size.height * 0.03,
+                          fontSizeInClubRank: size.height * 0.03,
+                          fontSizeNumber: size.height * 0.15,
+                          rankNumber: "1",
+                          rankNumberSufix: "ST",
+                          fontSizeNumberSufix: size.height * 0.03,
+                        )),
                   ))
                 ],
               )
