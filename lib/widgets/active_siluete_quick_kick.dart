@@ -6,8 +6,32 @@ class ActiveSilueteQuickKick extends StatelessWidget {
   final String number;
   final int batteryLevel;
   final Color numAndEmptyIndicatorColor;
+  final double silueteSize;
+  final double numberPositionBottom;
+  final double numberPositionLeft;
+  final double numberFontSize;
+  final double batteryLevelPositionBottom;
+  final double batteryLevelPositionLeft;
+  final double batteryLevelBoxHeight;
+  final double batteryLevelBoxWidth;
+  final double batteryIndicatorHeight;
+  final double batteryIndicatorWidth;
 
-  ActiveSilueteQuickKick({this.image, this.number, this.batteryLevel, this.numAndEmptyIndicatorColor});
+  ActiveSilueteQuickKick(
+      {this.image,
+      this.number,
+      this.batteryLevel,
+      this.numAndEmptyIndicatorColor,
+      this.silueteSize,
+      this.numberPositionBottom,
+      this.numberPositionLeft,
+      this.numberFontSize,
+      this.batteryLevelPositionBottom,
+      this.batteryLevelPositionLeft,
+      this.batteryLevelBoxHeight,
+      this.batteryLevelBoxWidth,
+      this.batteryIndicatorHeight,
+      this.batteryIndicatorWidth});
 
   @override
   Widget build(BuildContext context) {
@@ -17,21 +41,22 @@ class ActiveSilueteQuickKick extends StatelessWidget {
           Image.asset(
             image,
             fit: BoxFit.fill,
-            height: 400,
+            height: silueteSize,
           ),
           Positioned(
-              bottom: 105,
-              left: 40,
+              bottom: numberPositionBottom,
+              left: numberPositionLeft,
               child: Text(
                 number,
-                style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: 30.0, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+                style:
+                    TextStyle(color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
               )),
           Positioned(
-            bottom: 25,
-            left: 32,
+            bottom: this.batteryLevelPositionBottom,
+            left: this.batteryLevelPositionLeft,
             child: Container(
-              height: 65,
-              width: 35,
+              height: batteryLevelBoxHeight,
+              width: batteryLevelBoxWidth,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -39,8 +64,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
+                        width: batteryIndicatorWidth,
+                        height: batteryIndicatorHeight,
                       ),
                     ],
                   ),
@@ -48,8 +73,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
+                        width: batteryIndicatorWidth,
+                        height: batteryIndicatorHeight,
                       ),
                     ],
                   ),
@@ -57,8 +82,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
+                        width: batteryIndicatorWidth,
+                        height: batteryIndicatorHeight,
                       ),
                     ],
                   ),
@@ -66,8 +91,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                     children: <Widget>[
                       Container(
                         color: batteryLevel == 1 ? redIndicator : whiteIndicator,
-                        width: 35,
-                        height: 10,
+                        width: batteryIndicatorWidth,
+                        height: batteryIndicatorHeight,
                       ),
                     ],
                   )
