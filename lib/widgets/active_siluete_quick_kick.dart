@@ -8,10 +8,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
   final Color numAndEmptyIndicatorColor;
   final double silueteSize;
   final double numberPositionBottom;
-  final double numberPositionLeft;
   final double numberFontSize;
   final double batteryLevelPositionBottom;
-  final double batteryLevelPositionLeft;
   final double batteryLevelBoxHeight;
   final double batteryLevelBoxWidth;
   final double batteryIndicatorHeight;
@@ -24,10 +22,8 @@ class ActiveSilueteQuickKick extends StatelessWidget {
       this.numAndEmptyIndicatorColor,
       this.silueteSize,
       this.numberPositionBottom,
-      this.numberPositionLeft,
       this.numberFontSize,
       this.batteryLevelPositionBottom,
-      this.batteryLevelPositionLeft,
       this.batteryLevelBoxHeight,
       this.batteryLevelBoxWidth,
       this.batteryIndicatorHeight,
@@ -43,60 +39,64 @@ class ActiveSilueteQuickKick extends StatelessWidget {
             fit: BoxFit.fill,
             height: silueteSize,
           ),
-          Positioned(
+          Positioned.fill(
               bottom: numberPositionBottom,
-              left: numberPositionLeft,
-              child: Text(
-                number,
-                style:
-                    TextStyle(color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  number,
+                  style: TextStyle(
+                      color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+                ),
               )),
-          Positioned(
+          Positioned.fill(
             bottom: this.batteryLevelPositionBottom,
-            left: this.batteryLevelPositionLeft,
-            child: Container(
-              height: batteryLevelBoxHeight,
-              width: batteryLevelBoxWidth,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: batteryIndicatorWidth,
-                        height: batteryIndicatorHeight,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: batteryIndicatorWidth,
-                        height: batteryIndicatorHeight,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: batteryIndicatorWidth,
-                        height: batteryIndicatorHeight,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 1 ? redIndicator : whiteIndicator,
-                        width: batteryIndicatorWidth,
-                        height: batteryIndicatorHeight,
-                      ),
-                    ],
-                  )
-                ],
+            child: Align(
+              alignment: Alignment.center,
+              child: Container(
+                height: batteryLevelBoxHeight,
+                width: batteryLevelBoxWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 1 ? redIndicator : whiteIndicator,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),

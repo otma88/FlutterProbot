@@ -5,7 +5,6 @@ class InactiveSiluete extends StatelessWidget {
   final String number;
   double silueteSize;
   double numberPositionBottom;
-  double numberPositionLeft;
   double numberFontSize;
   double detachedPositionTop;
   double detachedPositionLeft;
@@ -17,7 +16,6 @@ class InactiveSiluete extends StatelessWidget {
       this.silueteSize,
       this.numberPositionBottom,
       this.detachedPositionLeft,
-      this.numberPositionLeft,
       this.numberFontSize,
       this.detachedPositionTop,
       this.detachedFontSIze});
