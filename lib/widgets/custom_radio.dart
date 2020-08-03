@@ -3,7 +3,6 @@ import 'package:probot/model/radio_model.dart';
 
 class CustomRadio extends StatefulWidget {
   final ValueChanged<int> parentAction;
-
   final int activeButton;
 
   const CustomRadio({Key key, this.parentAction, this.activeButton}) : super(key: key);
@@ -38,46 +37,54 @@ class CustomRadioState extends State<CustomRadio> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: 50.0,
-      child: ListView.builder(
-          itemCount: radioList.length,
-          scrollDirection: Axis.horizontal,
-          shrinkWrap: true,
-          itemBuilder: (BuildContext context, int index) {
-            return InkWell(
-              onTap: () {
-                setState(() {
-                  radioList.forEach((element) => element.isSelected = false);
-                  radioList[index].isSelected = true;
-                  widget.parentAction(int.parse(radioList[index].text));
-                });
-              },
-              child: ModalRadioItem(radioList[index]),
-            );
-          }),
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        double width = constraints.maxWidth;
+        return Container(
+          height: width * 0.07,
+          child: ListView.builder(
+              itemCount: radioList.length,
+              scrollDirection: Axis.horizontal,
+              shrinkWrap: true,
+              itemBuilder: (BuildContext context, int index) {
+                return InkWell(
+                  onTap: () {
+                    setState(() {
+                      radioList.forEach((element) => element.isSelected = false);
+                      radioList[index].isSelected = true;
+                      widget.parentAction(int.parse(radioList[index].text));
+                    });
+                  },
+                  child: ModalRadioItem(radioList[index], width * 0.01, width * 0.18, width * 0.025),
+                );
+              }),
+        );
+      },
     );
   }
 }
 
 class ModalRadioItem extends StatelessWidget {
   final RadioModel _item;
-  ModalRadioItem(this._item);
+  double radioItemHeight;
+  double radioItemWidth;
+  double radioItemFontSize;
+  ModalRadioItem(this._item, this.radioItemHeight, this.radioItemWidth, this.radioItemFontSize);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
         Container(
-          height: 8.0,
-          width: 110.0,
+          height: radioItemHeight,
+          width: radioItemWidth,
           decoration: BoxDecoration(boxShadow: [
             BoxShadow(color: Color(0xFF000000), blurRadius: _item.isSelected ? 5.0 : 0.0, offset: Offset(_item.isSelected ? 5.0 : 0.0, _item.isSelected ? 5.0 : 0.0))
           ], color: _item.isSelected ? Color(0xFF9999AC) : Color(0xFF242131)),
         ),
         Padding(
           padding: const EdgeInsets.only(top: 8.0),
-          child: Text(_item.text, style: TextStyle(color: Color(0xFF9999AC), fontSize: 20.0, fontFamily: 'BarlowCondensed')),
+          child: Text(_item.text, style: TextStyle(color: Color(0xFF9999AC), fontSize: radioItemFontSize, fontFamily: 'BarlowCondensed')),
         )
       ],
     );

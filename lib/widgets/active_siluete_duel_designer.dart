@@ -13,6 +13,28 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
   final Color playerNameColor;
   final Color playerNumberColor;
   final Color playerNumberStrokeColor;
+  final double silueteSize;
+  final double numberPositionBottom;
+  final double numberFontSize;
+  final double batteryLevelPositionBottom;
+  final double batteryLevelBoxHeight;
+  final double batteryLevelBoxWidth;
+  final double batteryIndicatorHeight;
+  final double batteryIndicatorWidth;
+  final double kragnaTopPosition;
+  final double kragnaWidth;
+  final double kragnaPositionRight;
+  final double shirtTopPosition;
+  final double shirtWidth;
+  final double shirtRightPosition;
+  final double playerNameTopPosition;
+  final double playerNameRightPosition;
+  final double playerNameBoxHeight;
+  final double playerNameBoxWidth;
+  final double playerNameFontSize;
+  final double playerNumberTopPosition;
+  final double playerNumberRightPosition;
+  final double playerNumberFontSize;
 
   ActiveSilueteDuelDesigner(
       {this.image,
@@ -25,129 +47,165 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
       this.shirtColor,
       this.playerNameColor,
       this.playerNumberColor,
-      this.playerNumberStrokeColor});
+      this.playerNumberStrokeColor,
+      this.batteryIndicatorWidth,
+      this.batteryIndicatorHeight,
+      this.batteryLevelBoxWidth,
+      this.batteryLevelBoxHeight,
+      this.batteryLevelPositionBottom,
+      this.numberFontSize,
+      this.numberPositionBottom,
+      this.silueteSize,
+      this.kragnaTopPosition,
+      this.kragnaWidth,
+      this.kragnaPositionRight,
+      this.shirtRightPosition,
+      this.shirtTopPosition,
+      this.shirtWidth,
+      this.playerNameBoxHeight,
+      this.playerNameBoxWidth,
+      this.playerNameRightPosition,
+      this.playerNameTopPosition,
+      this.playerNumberRightPosition,
+      this.playerNumberTopPosition,
+      this.playerNumberFontSize,
+      this.playerNameFontSize});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       child: Stack(
         children: <Widget>[
-          Image.asset(image, fit: BoxFit.fill, height: 400),
-          Positioned(
-              top: 48,
-              left: 21,
-              child: Image.asset(
-                kKragna,
-                color: kragna,
-                width: 56,
-              )),
-          Positioned(
-            top: 54,
-            left: 6,
-            child: Image.asset(
-              kDres,
-              width: 86,
-              color: shirtColor,
-            ),
-          ),
-          Positioned(
-              top: 63,
-              left: 8,
-              child: Container(
-                  width: 82,
-                  height: 20,
-                  child: FittedBox(
-                      fit: BoxFit.scaleDown,
-                      child: Center(
-                          child: Text(
-                        playerName,
-                        style: TextStyle(fontFamily: 'BarlowCondensed', color: playerNameColor, fontSize: 40.0, fontWeight: FontWeight.bold),
-                      ))))),
-          Positioned(
-              top: 77,
-              left: 14,
-              child: Container(
-                width: 70,
-                child: Center(
-                  child: Stack(
-                    children: <Widget>[
-                      Text(
-                        playerNumber,
-                        style: TextStyle(
-                            fontSize: 50.0,
-                            fontWeight: FontWeight.w600,
-                            fontFamily: 'Barlow',
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 4
-                              ..color = playerNumberStrokeColor),
-                      ),
-                      Text(
-                        playerNumber,
-                        style: TextStyle(
-                          fontSize: 50.0,
-                          color: playerNumberColor,
-                          fontWeight: FontWeight.w600,
-                          fontFamily: 'Barlow',
-                        ),
-                      )
-                    ],
-                  ),
+          Image.asset(image, fit: BoxFit.fill, height: silueteSize),
+          Positioned.fill(
+              top: kragnaTopPosition,
+              right: kragnaPositionRight,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Image.asset(
+                  kKragna,
+                  color: kragna,
+                  width: kragnaWidth,
                 ),
               )),
-          Positioned(
-              bottom: 105,
-              left: 40,
-              child: Text(
-                number,
-                style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: 30.0, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+          Positioned.fill(
+            top: shirtTopPosition,
+            right: shirtRightPosition,
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Image.asset(
+                kDres,
+                width: shirtWidth,
+                color: shirtColor,
+              ),
+            ),
+          ),
+          Positioned.fill(
+              top: playerNameTopPosition,
+              right: playerNameRightPosition,
+              child: Align(
+                alignment: Alignment.topCenter,
+                child: Container(
+                    width: playerNameBoxWidth,
+                    height: playerNameBoxHeight,
+                    child: FittedBox(
+                        fit: BoxFit.scaleDown,
+                        child: Center(
+                            child: Text(
+                          playerName,
+                          style: TextStyle(fontSize: playerNameFontSize, fontFamily: 'BarlowCondensed', color: playerNameColor, fontWeight: FontWeight.bold),
+                        )))),
               )),
-          Positioned(
-            bottom: 25,
-            left: 32,
-            child: Container(
-              height: 65,
-              width: 35,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          Positioned.fill(
+              top: playerNumberTopPosition,
+              right: playerNumberRightPosition,
+              child: Stack(
                 children: <Widget>[
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
-                      ),
-                    ],
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      playerNumber,
+                      style: TextStyle(
+                          fontSize: playerNumberFontSize,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Barlow',
+                          foreground: Paint()
+                            ..style = PaintingStyle.stroke
+                            ..strokeWidth = 3
+                            ..color = playerNumberStrokeColor),
+                    ),
                   ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
+                  Align(
+                    alignment: Alignment.topCenter,
+                    child: Text(
+                      playerNumber,
+                      style: TextStyle(
+                        fontSize: playerNumberFontSize,
+                        color: playerNumberColor,
+                        fontWeight: FontWeight.w600,
+                        fontFamily: 'Barlow',
                       ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
-                        width: 35,
-                        height: 10,
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: <Widget>[
-                      Container(
-                        color: batteryLevel == 1 ? redIndicator : whiteIndicator,
-                        width: 35,
-                        height: 10,
-                      ),
-                    ],
+                    ),
                   )
                 ],
+              )),
+          Positioned.fill(
+              bottom: numberPositionBottom,
+              child: Align(
+                alignment: Alignment.center,
+                child: Text(
+                  number,
+                  style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+                ),
+              )),
+          Positioned.fill(
+            bottom: batteryLevelPositionBottom,
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                height: batteryLevelBoxHeight,
+                width: batteryLevelBoxWidth,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 2 || batteryLevel == 3 || batteryLevel == 4 ? whiteIndicator : numAndEmptyIndicatorColor,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: <Widget>[
+                        Container(
+                          color: batteryLevel == 1 ? redIndicator : whiteIndicator,
+                          width: batteryIndicatorWidth,
+                          height: batteryIndicatorHeight,
+                        ),
+                      ],
+                    )
+                  ],
+                ),
               ),
             ),
           ),
