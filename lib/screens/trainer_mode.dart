@@ -63,6 +63,24 @@ class _TrainerModePageState extends State<TrainerModePage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double logoutIconSize = size.width < 850 ? size.width * 0.04 : size.width * 0.05;
+    double trainerModeFontSize = size.width < 850 ? size.width * 0.05 : size.width * 0.06;
+    double iconRoleSize = size.width < 850 ? size.width * 0.02 : size.width * 0.03;
+    double userFontSize = size.width < 850 ? size.width * 0.02 : size.width * 0.03;
+    double iconMenuSize = size.width < 850 ? size.width * 0.04 : size.width * 0.05;
+    double cardHeight = size.width < 850 ? size.width * 0.13 : size.width * 0.19;
+    double infoCardFontSize = size.width < 850 ? size.width * 0.015 : size.width * 0.02;
+    double cardTitleFontSize = size.width < 850 ? size.width * 0.03 : size.width * 0.035;
+    double cardIconSize = size.width < 850 ? size.width * 0.07 : size.width * 0.08;
+    double playerNameFontSize = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double playerNumberFontSize = size.width < 850 ? size.width * 0.04 : size.width * 0.05;
+    double swipperControlPadding = size.width < 850 ? size.width * 0.09 : size.width * 0.15;
+    double swipperControlSize = size.width < 850 ? size.width * 0.017 : size.width * 0.02;
+    double fractionFontSize = size.width < 850 ? size.width * 0.018 : size.width * 0.022;
+    double fontSizePlayer = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double fontSizeInClubRanking = size.width < 850 ? size.width * 0.015 : size.width * 0.02;
+    double fontSizeNumber = size.width < 850 ? size.width * 0.08 : size.width * 0.1;
+    double fontSizeNumberSufix = size.width < 850 ? size.width * 0.018 : size.width * 0.02;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -71,7 +89,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
           fit: BoxFit.fill,
         )),
         child: Padding(
-          padding: EdgeInsets.all(size.height * 0.025),
+          padding: EdgeInsets.all(size.width * 0.015),
           child: Column(
             children: <Widget>[
               Row(
@@ -88,7 +106,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                           },
                           child: Image.asset(
                             'images/icons/logout.png',
-                            height: size.height * 0.07,
+                            height: logoutIconSize,
                           ),
                         )),
                   ),
@@ -100,27 +118,26 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         children: <Widget>[
                           Text(
                             'TRAINER MODE',
-                            style:
-                                TextStyle(fontSize: size.height * 0.1, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
+                            style: TextStyle(fontSize: trainerModeFontSize, fontFamily: 'Barlow', color: Color(0xFF191926), fontWeight: FontWeight.bold),
                           ),
                           SizedBox(
                             width: size.width * 0.01,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 8.0),
+                            padding: EdgeInsets.only(bottom: size.width * 0.012),
                             child: Image.asset(
                               'images/icons/role.png',
-                              height: size.height * 0.05,
+                              height: iconRoleSize,
                             ),
                           ),
                           SizedBox(
                             width: size.width * 0.01,
                           ),
                           Padding(
-                            padding: const EdgeInsets.only(bottom: 5.0),
+                            padding: EdgeInsets.only(bottom: size.width * 0.008),
                             child: Text(
                               "Probot",
-                              style: TextStyle(fontSize: size.height * 0.04, color: Color(0xff9999AC), fontFamily: "BarlowCondensed"),
+                              style: TextStyle(fontSize: userFontSize, color: Color(0xff9999AC), fontFamily: "BarlowCondensed"),
                             ),
                           ),
                         ],
@@ -132,12 +149,12 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       child: Container(
                           child: Image.asset(
                         'images/icons/menu.png',
-                        height: size.height * 0.07,
+                        height: iconMenuSize,
                       )))
                 ],
               ),
               SizedBox(
-                height: size.height * 0.16,
+                height: size.width < 850 ? size.height * 0.09 : size.height * 0.16,
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -149,7 +166,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         Expanded(
                           child: Text(
                             "Fully automated, hassle free practice.",
-                            style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed", height: 0.9),
+                            style: TextStyle(color: Color(0xFF464655), fontSize: infoCardFontSize, fontFamily: "BarlowCondensed", height: 0.9),
                           ),
                         ),
                         Expanded(child: SizedBox()),
@@ -163,7 +180,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       child: Container(
                     child: Text(
                       "Liga simulation.",
-                      style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed", height: 0.9),
+                      style: TextStyle(color: Color(0xFF464655), fontSize: infoCardFontSize, fontFamily: "BarlowCondensed", height: 0.9),
                     ),
                   )),
                   SizedBox(
@@ -176,7 +193,7 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         Expanded(
                           child: Text(
                             "Practice against designated opponent.",
-                            style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.033, fontFamily: "BarlowCondensed", height: 0.9),
+                            style: TextStyle(color: Color(0xFF464655), fontSize: infoCardFontSize, fontFamily: "BarlowCondensed", height: 0.9),
                           ),
                         ),
                         Expanded(child: SizedBox()),
@@ -200,10 +217,10 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "QUICK KICK",
                         icon: 'images/icons/quick_kick.png',
-                        fontSizeTitle: size.height * 0.05,
-                        iconSize: size.height * 0.13,
-                        paddingCard: size.height * 0.02,
-                        cardHeight: size.height * 0.25,
+                        fontSizeTitle: cardTitleFontSize,
+                        iconSize: cardIconSize,
+                        paddingCard: size.width * 0.01,
+                        cardHeight: cardHeight,
                         textColor: Color(0xFF9999AC),
                         iconColor: Color(0xFF3FA9F5),
                       ),
@@ -220,10 +237,10 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "SEASON SHOOTOUT",
                         icon: 'images/icons/season_shootout.png',
-                        fontSizeTitle: size.height * 0.05,
-                        iconSize: size.height * 0.13,
-                        paddingCard: size.height * 0.02,
-                        cardHeight: size.height * 0.25,
+                        fontSizeTitle: cardTitleFontSize,
+                        iconSize: cardIconSize,
+                        paddingCard: size.width * 0.01,
+                        cardHeight: cardHeight,
                         textColor: Color(0xFF9999AC).withOpacity(0.5),
                         iconColor: Color(0xFF3FA9F5).withOpacity(0.5),
                       ),
@@ -242,10 +259,10 @@ class _TrainerModePageState extends State<TrainerModePage> {
                       cardChild: CardContent(
                         label: "DUEL DESIGNER",
                         icon: 'images/icons/duel_designer.png',
-                        fontSizeTitle: size.height * 0.05,
-                        iconSize: size.height * 0.13,
-                        paddingCard: size.height * 0.02,
-                        cardHeight: size.height * 0.25,
+                        fontSizeTitle: cardTitleFontSize,
+                        iconSize: cardIconSize,
+                        paddingCard: size.width * 0.01,
+                        cardHeight: cardHeight,
                         textColor: Color(0xFF9999AC),
                         iconColor: Color(0xFF3FA9F5),
                       ),
@@ -270,21 +287,21 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         cardChild: PlayerCardContent(
                           label: "PLAYER",
                           icon: "",
-                          fontSizeTitle: size.height * 0.05,
-                          iconSize: size.height * 0.16,
-                          paddingCard: size.height * 0.02,
-                          cardHeight: size.height * 0.25,
+                          fontSizeTitle: cardTitleFontSize,
+                          iconSize: cardIconSize,
+                          paddingCard: size.width * 0.01,
+                          cardHeight: cardHeight,
                           textColor: Color(0xFF242432),
                           iconColor: Colors.black,
-                          fontSizePlayer: size.height * 0.03,
-                          fontSizePlayerNumber: size.height * 0.07,
+                          fontSizePlayer: playerNameFontSize,
+                          fontSizePlayerNumber: playerNumberFontSize,
                           labelPlayer: "MESSI",
                           labelPlayerNumber: "10",
                           textPlayeNumberColor: Colors.white,
                           textPlayerColor: Colors.white,
-                          swiperControlSize: size.height * 0.03,
-                          swiperControlPadding: size.height * 0.18,
-                          fractionFontSize: size.height * 0.033,
+                          swiperControlSize: swipperControlSize,
+                          swiperControlPadding: swipperControlPadding,
+                          fractionFontSize: fractionFontSize,
                         )),
                   )),
                   SizedBox(
@@ -297,18 +314,18 @@ class _TrainerModePageState extends State<TrainerModePage> {
                         colour: cardColorSecondRow.withOpacity(0.2),
                         cardChild: ResultsCardContent(
                           cardTitle: "RESULTS",
-                          cardHeight: size.height * 0.25,
+                          cardHeight: cardHeight,
                           titleColor: Color(0xFF242432).withOpacity(0.5),
-                          fontSizeTitle: size.height * 0.05,
-                          paddingCard: size.height * 0.02,
+                          fontSizeTitle: cardTitleFontSize,
+                          paddingCard: size.width * 0.01,
                           playerName: "PLAYER",
                           textPlayerColor: Colors.white.withOpacity(0.3),
-                          fontSizePlayer: size.height * 0.03,
-                          fontSizeInClubRank: size.height * 0.03,
-                          fontSizeNumber: size.height * 0.15,
+                          fontSizePlayer: fontSizePlayer,
+                          fontSizeInClubRank: fontSizeInClubRanking,
+                          fontSizeNumber: fontSizeNumber,
                           rankNumber: "1",
                           rankNumberSufix: "ST",
-                          fontSizeNumberSufix: size.height * 0.03,
+                          fontSizeNumberSufix: fontSizeNumberSufix,
                         )),
                   ))
                 ],

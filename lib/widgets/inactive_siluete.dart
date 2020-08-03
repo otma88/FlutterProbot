@@ -7,18 +7,11 @@ class InactiveSiluete extends StatelessWidget {
   double numberPositionBottom;
   double numberFontSize;
   double detachedPositionTop;
-  double detachedPositionLeft;
+  double detachedPositionRight;
   double detachedFontSIze;
 
   InactiveSiluete(
-      {this.image,
-      this.number,
-      this.silueteSize,
-      this.numberPositionBottom,
-      this.detachedPositionLeft,
-      this.numberFontSize,
-      this.detachedPositionTop,
-      this.detachedFontSIze});
+      {this.image, this.number, this.silueteSize, this.numberPositionBottom, this.detachedPositionRight, this.numberFontSize, this.detachedPositionTop, this.detachedFontSIze});
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +32,16 @@ class InactiveSiluete extends StatelessWidget {
                   style: TextStyle(color: Color(0xFF191926), fontSize: numberFontSize, fontFamily: 'BarlowCondensed', fontWeight: FontWeight.w500),
                 ),
               )),
-          Positioned(
-            child: Text(
-              "DETACHED",
-              style: TextStyle(fontSize: detachedFontSIze, color: Color(0xFF191926), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold),
+          Positioned.fill(
+            child: Align(
+              alignment: Alignment.topCenter,
+              child: Text(
+                "DETACHED",
+                style: TextStyle(fontSize: detachedFontSIze, color: Color(0xFF191926), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold),
+              ),
             ),
             top: detachedPositionTop,
-            left: detachedPositionLeft,
+            right: detachedPositionRight,
           )
         ],
       ),

@@ -4,8 +4,12 @@ import 'bottom_sheet_icons_icons.dart';
 class ModalItem extends StatelessWidget {
   final String name;
   final int number;
+  double iconSize;
+  double playerItemHeight;
+  double numberFontSize;
+  double playerNameFontSize;
 
-  ModalItem(this.name, this.number);
+  ModalItem(this.name, this.number, this.iconSize, this.playerItemHeight, this.numberFontSize, this.playerNameFontSize);
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +21,7 @@ class ModalItem extends StatelessWidget {
             color: Color(0xFF9C96AE),
             child: Icon(
               BottomSheetIcons.no_photo,
-              size: 133.0,
+              size: iconSize,
               color: Color(0xFF484452),
             ),
           ),
@@ -25,21 +29,21 @@ class ModalItem extends StatelessWidget {
         Expanded(
             flex: 3,
             child: Container(
-              height: 134.0,
+              height: playerItemHeight,
               color: Color(0xFF191526),
               child: Padding(
-                padding: const EdgeInsets.fromLTRB(15.0, 10.0, 5.0, 46.0),
+                padding: const EdgeInsets.only(left: 5.0),
                 child: Column(
                   children: <Widget>[
                     Text(
                       number.toString(),
-                      style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.bold),
+                      style: TextStyle(fontSize: numberFontSize, fontWeight: FontWeight.bold),
                     ),
                     FittedBox(
                       fit: BoxFit.scaleDown,
                       child: Text(
                         name.toUpperCase(),
-                        style: TextStyle(fontSize: 25.0, fontFamily: 'BarlowCondensed'),
+                        style: TextStyle(fontSize: playerNameFontSize, fontFamily: 'BarlowCondensed'),
                       ),
                     ),
                   ],

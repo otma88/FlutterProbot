@@ -23,8 +23,7 @@ import '../widgets/modal_item.dart';
 Future<List<League>> _fetchLeagues(http.Client client) async {
   SharedPreferences localStorage = await SharedPreferences.getInstance();
   var accessToken = jsonDecode(localStorage.getString('token'));
-  var response = await client
-      .get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
+  var response = await client.get(URL_LEAGUE_API, headers: {HttpHeaders.contentTypeHeader: "application/json", HttpHeaders.authorizationHeader: "Bearer $accessToken"});
   return compute(parseLeagues, response.body);
 }
 
@@ -229,6 +228,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                 width: flagSizeWidth,
                                 height: flagSizeHeight,
                               ),
+                              SizedBox(
+                                width: 10.0,
+                              ),
                               Text(club.name)
                             ],
                           ),
@@ -270,6 +272,30 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double topScreenPadding = size.width < 850 ? size.width * 0.015 : size.width * 0.020;
+    double backIconSize = size.width < 850 ? size.width * 0.04 : size.width * 0.05;
+    double duelDesignerFontSize = size.width < 850 ? size.width * 0.04 : size.width * 0.06;
+    double fontSizeSelectOpponent = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double selectBoxSize = size.width < 850 ? size.width * 0.055 : size.width * 0.08;
+    double selectBoxIconSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double selectBoxFontSize = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double selectBoxArrowDownSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double loadFontSize = size.width < 850 ? size.width * 0.023 : size.width * 0.03;
+    double savedPresetFontSize = size.width < 850 ? size.width * 0.012 : size.width * 0.015;
+    double startButtonFontSize = size.width < 850 ? size.width * 0.03 : size.width * 0.035;
+    double valueParams = size.width < 850 ? size.width * 0.02 : size.width * 0.03;
+    double iconSiluete = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double silueteSize = size.width < 850 ? size.width * 0.3 : size.width * 0.45;
+    double numberFontSize = size.width < 850 ? size.width * 0.03 : size.width * 0.04;
+    double detachedFontSize = size.width < 850 ? size.width * 0.015 : size.width * 0.022;
+    double bottomModalItemSize = size.width < 850 ? size.width * 0.05 : size.width * 0.1;
+    double bottomNumberFontSize = size.width < 850 ? size.width * 0.025 : size.width * 0.04;
+    double bottomModalPlyerNameFontSize = size.width < 850 ? size.width * 0.015 : size.width * 0.025;
+    double bottomSheetSeparator = size.width < 850 ? size.height * 0.02 : size.height * 0.02;
+    double bottomSheetHeight = size.width < 850 ? size.height * 0.5 : size.height * 0.58;
+    double bottomSheetIconXSize = size.width < 850 ? size.width * 0.03 : size.width * 0.045;
+    double bottomSheetPlyersLabel = size.width < 850 ? size.width * 0.03 : size.width * 0.045;
+
     return Scaffold(
       body: Row(
         children: <Widget>[
@@ -277,7 +303,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
             width: size.width / 3,
             color: Color(0xFF2D2D3C),
             child: Padding(
-              padding: EdgeInsets.only(right: size.width * 0.02, top: size.height * 0.025, left: size.width * 0.025, bottom: size.height * 0.025),
+              padding: EdgeInsets.only(right: size.width * 0.02, top: topScreenPadding, left: size.width * 0.025, bottom: size.width * 0.025),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -289,7 +315,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         },
                         child: Image.asset(
                           "images/icons/back.png",
-                          height: size.height * 0.07,
+                          height: backIconSize,
                           color: Color(0xFF9999AC),
                         ),
                       ),
@@ -300,18 +326,13 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         width: size.width * 0.21,
                         child: Text(
                           "DUEL DESIGNER",
-                          style: TextStyle(
-                              fontSize: size.height * 0.08,
-                              color: Color(0xFF9999AC),
-                              fontFamily: 'BarlowCondensed',
-                              fontWeight: FontWeight.bold,
-                              height: 0.9),
+                          style: TextStyle(fontSize: duelDesignerFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold, height: 0.9),
                         ),
                       )
                     ],
                   ),
                   SizedBox(
-                    height: size.height * 0.12,
+                    height: size.width < 850 ? size.height * 0.10 : size.height * 0.12,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -319,7 +340,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                       Container(
                         child: Text(
                           "Select opponent:",
-                          style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.03, fontFamily: 'BarlowCondensed'),
+                          style: TextStyle(color: Color(0xFF464655), fontSize: fontSizeSelectOpponent, fontFamily: 'BarlowCondensed'),
                         ),
                       ),
                       SizedBox(
@@ -329,24 +350,22 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              height: size.height * 0.12,
+                              height: selectBoxSize,
                               child: Container(
                                   alignment: Alignment.center,
                                   child: Padding(
                                     padding: EdgeInsets.only(left: size.width * 0.01),
-                                    child: LeaguesDropdown(size.height * 0.04, size.height * 0.045, size.width * 0.045),
+                                    child: LeaguesDropdown(selectBoxFontSize, selectBoxIconSize, selectBoxIconSize),
                                   )),
-                              decoration: BoxDecoration(
-                                  boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
-                                  color: Color(0xFF464655)),
+                              decoration: BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                             ),
                           ),
                           Container(
-                            height: size.height * 0.12,
+                            height: selectBoxSize,
                             color: Color(0xFF242432),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              size: size.height * 0.05,
+                              size: selectBoxArrowDownSize,
                             ),
                           )
                         ],
@@ -358,24 +377,22 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              height: size.height * 0.12,
+                              height: selectBoxSize,
                               child: Container(
                                   alignment: Alignment.center,
                                   child: Padding(
                                     padding: EdgeInsets.only(left: size.width * 0.01),
-                                    child: ClubsDropdown(size.height * 0.04, size.height * 0.06, size.width * 0.06),
+                                    child: ClubsDropdown(selectBoxFontSize, selectBoxIconSize, selectBoxIconSize),
                                   )),
-                              decoration: BoxDecoration(
-                                  boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
-                                  color: Color(0xFF464655)),
+                              decoration: BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                             ),
                           ),
                           Container(
-                            height: size.height * 0.12,
+                            height: selectBoxSize,
                             color: Color(0xFF242432),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              size: size.height * 0.05,
+                              size: selectBoxArrowDownSize,
                             ),
                           )
                         ],
@@ -387,20 +404,19 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              height: size.height * 0.12,
+                              height: selectBoxSize,
                               child: GestureDetector(
                                 onTap: () {},
                                 child: Padding(
-                                  padding: EdgeInsets.all(size.height * 0.02),
+                                  padding: EdgeInsets.symmetric(vertical: size.width < 850 ? size.width * 0.005 : size.width * 0.01, horizontal: size.width * 0.01),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         'LOAD',
-                                        style: TextStyle(fontSize: size.height * 0.045, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
+                                        style: TextStyle(fontSize: loadFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                       ),
-                                      Text('SAVED PRESET',
-                                          style: TextStyle(fontSize: size.height * 0.021, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                      Text('SAVED PRESET', style: TextStyle(fontSize: savedPresetFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                     ],
                                   ),
                                 ),
@@ -420,20 +436,19 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              height: size.height * 0.12,
+                              height: selectBoxSize,
                               child: GestureDetector(
                                 onTap: () {},
                                 child: Padding(
-                                  padding: EdgeInsets.all(size.height * 0.02),
+                                  padding: EdgeInsets.symmetric(vertical: size.width < 850 ? size.width * 0.005 : size.width * 0.01, horizontal: size.width * 0.01),
                                   child: Column(
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: <Widget>[
                                       Text(
                                         'SAVE',
-                                        style: TextStyle(fontSize: size.height * 0.045, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
+                                        style: TextStyle(fontSize: loadFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'),
                                       ),
-                                      Text('THIS SETUP',
-                                          style: TextStyle(fontSize: size.height * 0.021, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
+                                      Text('THIS SETUP', style: TextStyle(fontSize: savedPresetFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed'))
                                     ],
                                   ),
                                 ),
@@ -448,9 +463,9 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                               child: StartButton(
                             onTap: null,
                             buttonTitle: "START",
-                            buttonPadding: size.height * 0.02,
-                            buttonSize: size.height * 0.12,
-                            titleFontSize: size.height * 0.05,
+                            buttonPadding: size.width < 850 ? size.width * 0.005 : size.width * 0.01,
+                            buttonSize: selectBoxSize,
+                            titleFontSize: startButtonFontSize,
                           )),
                           SizedBox(
                             width: size.width * 0.028,
@@ -472,7 +487,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                   height: size.height / 5,
                   color: Color(0xFF191926),
                   child: Padding(
-                    padding: EdgeInsets.only(top: size.height * 0.03),
+                    padding: EdgeInsets.only(top: topScreenPadding),
                     child: Row(
                       children: <Widget>[
                         Expanded(
@@ -487,7 +502,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                         alignment: Alignment.bottomCenter,
                                         child: Image.asset(
                                           'images/icons/height.png',
-                                          height: size.height * 0.06,
+                                          height: size.width * 0.04,
                                         ),
                                       ),
                                     ),
@@ -496,10 +511,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       child: Container(
                                         alignment: Alignment.bottomCenter,
                                         child: Text(
-                                          _selectedPlayer1 != null
-                                              ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-"
-                                              : kPlayerParamDisabled.data,
-                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                          _selectedPlayer1 != null ? _selectedPlayer1.height != null ? _selectedPlayer1.height : "-" : kPlayerParamDisabled.data,
+                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                         ),
                                       ),
                                     ),
@@ -508,10 +521,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       child: Container(
                                         alignment: Alignment.bottomCenter,
                                         child: Text(
-                                          _selectedPlayer2 != null
-                                              ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-"
-                                              : kPlayerParamDisabled.data,
-                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                          _selectedPlayer2 != null ? _selectedPlayer2.height != null ? _selectedPlayer2.height : "-" : kPlayerParamDisabled.data,
+                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                         ),
                                       ),
                                     ),
@@ -520,10 +531,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       child: Container(
                                         alignment: Alignment.bottomCenter,
                                         child: Text(
-                                          _selectedPlayer3 != null
-                                              ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-"
-                                              : kPlayerParamDisabled.data,
-                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                          _selectedPlayer3 != null ? _selectedPlayer3.height != null ? _selectedPlayer3.height : "-" : kPlayerParamDisabled.data,
+                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                         ),
                                       ),
                                     ),
@@ -532,10 +541,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       child: Container(
                                         alignment: Alignment.bottomCenter,
                                         child: Text(
-                                          _selectedPlayer4 != null
-                                              ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-"
-                                              : kPlayerParamDisabled.data,
-                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                          _selectedPlayer4 != null ? _selectedPlayer4.height != null ? _selectedPlayer4.height : "-" : kPlayerParamDisabled.data,
+                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                         ),
                                       ),
                                     ),
@@ -544,10 +551,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                       child: Container(
                                         alignment: Alignment.bottomCenter,
                                         child: Text(
-                                          _selectedPlayer5 != null
-                                              ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-"
-                                              : kPlayerParamDisabled.data,
-                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                          _selectedPlayer5 != null ? _selectedPlayer5.height != null ? _selectedPlayer5.height : "-" : kPlayerParamDisabled.data,
+                                          style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                         ),
                                       ),
                                     )
@@ -574,7 +579,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           alignment: Alignment.topCenter,
                                           child: Text(
                                             _selectedPlayer1 != null ? _selectedPlayer1.height != null ? "45 cm" : "-" : "-",
-                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                           ),
                                         ),
                                       ),
@@ -584,7 +589,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           alignment: Alignment.topCenter,
                                           child: Text(
                                             _selectedPlayer2 != null ? _selectedPlayer2.height != null ? "45 cm" : "-" : "-",
-                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                           ),
                                         ),
                                       ),
@@ -594,7 +599,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           alignment: Alignment.topCenter,
                                           child: Text(
                                             _selectedPlayer3 != null ? _selectedPlayer3.height != null ? "45 cm" : "-" : "-",
-                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                           ),
                                         ),
                                       ),
@@ -604,7 +609,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           alignment: Alignment.topCenter,
                                           child: Text(
                                             _selectedPlayer4 != null ? _selectedPlayer4.height != null ? "45 cm" : "-" : "-",
-                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                           ),
                                         ),
                                       ),
@@ -614,7 +619,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                           alignment: Alignment.topCenter,
                                           child: Text(
                                             _selectedPlayer5 != null ? _selectedPlayer5.height != null ? "45 cm" : "-" : "-",
-                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: size.height * 0.045),
+                                            style: TextStyle(fontFamily: 'BarlowCondensed', fontSize: valueParams),
                                           ),
                                         ),
                                       )
@@ -648,7 +653,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                 alignment: Alignment.topCenter,
                                 child: Image.asset(
                                   'images/icons/down.png',
-                                  height: size.height * 0.04,
+                                  height: size.width * 0.02,
                                 ),
                               ),
                               flex: 2,
@@ -658,7 +663,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   alignment: Alignment.topCenter,
                                   child: Image.asset(
                                     'images/icons/down.png',
-                                    height: size.height * 0.04,
+                                    height: size.width * 0.02,
                                   )),
                               flex: 2,
                             ),
@@ -667,7 +672,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   alignment: Alignment.topCenter,
                                   child: Image.asset(
                                     'images/icons/down.png',
-                                    height: size.height * 0.04,
+                                    height: size.width * 0.02,
                                   )),
                               flex: 2,
                             ),
@@ -676,7 +681,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   alignment: Alignment.topCenter,
                                   child: Image.asset(
                                     'images/icons/down.png',
-                                    height: size.height * 0.04,
+                                    height: size.width * 0.02,
                                   )),
                               flex: 2,
                             ),
@@ -685,7 +690,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                   alignment: Alignment.topCenter,
                                   child: Image.asset(
                                     'images/icons/down.png',
-                                    height: size.height * 0.04,
+                                    height: size.width * 0.02,
                                   )),
                               flex: 2,
                             ),
@@ -819,16 +824,16 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                 Container(
                                   child: Image.asset(
                                     'images/icons/player.png',
-                                    height: size.height * 0.04,
+                                    height: iconSiluete,
                                   ),
                                 ),
                                 SizedBox(
-                                  height: size.height * 0.38,
+                                  height: size.height * 0.36,
                                 ),
                                 Container(
                                   child: Image.asset(
                                     'images/icons/batt.png',
-                                    height: size.height * 0.04,
+                                    height: iconSiluete,
                                   ),
                                 ),
                               ],
@@ -839,8 +844,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Container(
-                                    child: QuickKickSiluete(
+                                Container(child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double width = constraints.maxWidth;
+                                    double height = constraints.maxHeight;
+                                    return QuickKickSiluete(
                                         onPress: () {
                                           if (this._selectedClub != null) {
                                             setState(() {
@@ -851,10 +859,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 context: context,
                                                 builder: (BuildContext bc) {
                                                   return Container(
-                                                    height: MediaQuery.of(context).size.height * 0.75,
+                                                    height: size.height * 0.75,
                                                     color: Color(0xFF484454),
                                                     child: Padding(
-                                                      padding: const EdgeInsets.all(10.0),
+                                                      padding: EdgeInsets.all(size.width * 0.01),
                                                       child: Column(
                                                         children: <Widget>[
                                                           Row(
@@ -862,25 +870,21 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                               GestureDetector(
                                                                   child: Icon(
                                                                     Icons.close,
-                                                                    size: 50.0,
+                                                                    size: bottomSheetIconXSize,
                                                                     color: Color(0xFF9999AC),
                                                                   ),
                                                                   onTap: () => Navigator.pop(context)),
                                                               SizedBox(
-                                                                width: 20.0,
+                                                                width: size.width * 0.01,
                                                               ),
                                                               Expanded(
                                                                 flex: 3,
                                                                 child: Text(
                                                                   "PLAYERS",
-                                                                  style: TextStyle(
-                                                                      fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                  style: TextStyle(fontSize: bottomSheetPlyersLabel, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                  flex: 5,
-                                                                  child: CustomRadio(
-                                                                      parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                              Expanded(flex: 5, child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                             ],
                                                           ),
                                                           Row(
@@ -893,13 +897,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Defenders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -917,7 +918,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -926,9 +927,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -952,7 +955,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -972,13 +975,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Midfilders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -996,7 +996,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1005,9 +1005,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1031,7 +1033,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1051,13 +1053,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Forwards",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1075,7 +1074,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1084,9 +1083,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1110,7 +1111,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1152,52 +1153,46 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                 playerName: _selectedPlayer1.lastName != null ? _selectedPlayer1.lastName.toUpperCase() : "",
                                                 playerNumber: _selectedPlayer1.number != null ? _selectedPlayer1.number.toString() : "1",
-                                                kragna: _selectedClub.collarColor != null
-                                                    ? getColorFromString(_selectedClub.collarColor)
-                                                    : Color(0xFFFF0000),
-                                                shirtColor: _selectedClub.shirtColor != null
-                                                    ? getColorFromString(_selectedClub.shirtColor)
-                                                    : Color(0xFF243479),
-                                                playerNameColor:
-                                                    _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                playerNumberColor: _selectedClub.numberColor != null
-                                                    ? getColorFromString(_selectedClub.numberColor)
-                                                    : Color(0xFFFF0000),
-                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                    ? getColorFromString(_selectedClub.numBorderColor)
-                                                    : Colors.white,
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                batteryLevelBoxHeight: size.height * 0.1,
-                                                batteryLevelBoxWidth: size.width * 0.04,
-                                                batteryIndicatorHeight: size.height * 0.017,
-                                                batteryIndicatorWidth: size.width * 0.036,
-                                                batteryLevelPositionBottom: size.height * -0.43,
-                                                kragnaTopPosition: size.height * 0.076,
+                                                kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                                batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                                batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                                batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                                batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
+                                                kragnaTopPosition: size.width < 850 ? width * 0.3 : width * 0.46,
                                                 kragnaPositionRight: size.height * 0.007,
-                                                kragnaWidth: size.height * 0.09,
-                                                shirtTopPosition: size.height * 0.084,
-                                                shirtRightPosition: size.width * 0.005,
-                                                shirtWidth: size.width * 0.08,
-                                                playerNameTopPosition: size.height * 0.092,
-                                                playerNameRightPosition: size.width * 0.005,
-                                                playerNameBoxHeight: size.height * 0.03,
-                                                playerNameBoxWidth: size.width * 0.07,
-                                                playerNumberTopPosition: size.height * 0.11,
-                                                playerNumberRightPosition: size.width * 0.005,
-                                                playerNumberFontSize: size.height * 0.08,
+                                                kragnaWidth: size.width < 850 ? width * 0.35 : size.height * 0.09,
+                                                shirtTopPosition: size.width < 850 ? width * 0.33 : size.height * 0.083,
+                                                shirtRightPosition: size.width < 850 ? width * 0.03 : width * 0.045,
+                                                shirtWidth: size.width < 850 ? width * 0.53 : width * 0.78,
+                                                playerNameTopPosition: size.width < 850 ? width * 0.28 : size.height * 0.09,
+                                                playerNameRightPosition: size.width < 850 ? width * 0.01 : size.width * 0.005,
+                                                playerNameBoxHeight: size.width < 850 ? width * 0.3 : width * 0.3,
+                                                playerNameBoxWidth: size.width < 850 ? width * 0.45 : width * 0.7,
+                                                playerNameFontSize: size.width < 850 ? width * 0.13 : width * 0.18,
+                                                playerNumberTopPosition: size.width < 850 ? width * 0.48 : size.height * 0.12,
+                                                playerNumberRightPosition: size.width < 850 ? width * 0.02 : width * 0.005,
+                                                playerNumberFontSize: size.width < 850 ? width * 0.35 : size.height * 0.08,
                                               )
                                             : InactiveSiluete(
                                                 image: kInactiveSiluete,
                                                 number: "1",
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                detachedPositionTop: size.height * 0.1,
-                                                detachedPositionLeft: size.width * 0.012,
-                                                detachedFontSIze: size.height * 0.032,
-                                              )))
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                                detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                                detachedFontSIze: detachedFontSize,
+                                              ));
+                                  },
+                                ))
                               ],
                             ),
                             flex: 2,
@@ -1206,8 +1201,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Container(
-                                    child: QuickKickSiluete(
+                                Container(child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double width = constraints.maxWidth;
+                                    return QuickKickSiluete(
                                         onPress: () {
                                           if (this._selectedClub != null) {
                                             setState(() {
@@ -1229,7 +1226,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                               GestureDetector(
                                                                   child: Icon(
                                                                     Icons.close,
-                                                                    size: 50.0,
+                                                                    size: bottomSheetIconXSize,
                                                                     color: Color(0xFF9999AC),
                                                                   ),
                                                                   onTap: () => Navigator.pop(context)),
@@ -1240,14 +1237,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 flex: 3,
                                                                 child: Text(
                                                                   "PLAYERS",
-                                                                  style: TextStyle(
-                                                                      fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                  style: TextStyle(fontSize: bottomSheetPlyersLabel, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                  flex: 5,
-                                                                  child: CustomRadio(
-                                                                      parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                              Expanded(flex: 5, child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                             ],
                                                           ),
                                                           Row(
@@ -1260,13 +1253,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Defenders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1284,7 +1274,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1293,9 +1283,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1319,7 +1311,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1339,13 +1331,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Midfilders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1363,7 +1352,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1372,9 +1361,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1398,7 +1389,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1418,13 +1409,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Forwards",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1442,7 +1430,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1451,9 +1439,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1477,7 +1467,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1519,52 +1509,46 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                 playerName: _selectedPlayer2.lastName != null ? _selectedPlayer2.lastName.toUpperCase() : "",
                                                 playerNumber: _selectedPlayer2.number != null ? _selectedPlayer2.number.toString() : "2",
-                                                kragna: _selectedClub.collarColor != null
-                                                    ? getColorFromString(_selectedClub.collarColor)
-                                                    : Color(0xFFFF0000),
-                                                shirtColor: _selectedClub.shirtColor != null
-                                                    ? getColorFromString(_selectedClub.shirtColor)
-                                                    : Color(0xFF243479),
-                                                playerNameColor:
-                                                    _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                playerNumberColor: _selectedClub.numberColor != null
-                                                    ? getColorFromString(_selectedClub.numberColor)
-                                                    : Color(0xFFFF0000),
-                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                    ? getColorFromString(_selectedClub.numBorderColor)
-                                                    : Colors.white,
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                batteryLevelBoxHeight: size.height * 0.1,
-                                                batteryLevelBoxWidth: size.width * 0.04,
-                                                batteryIndicatorHeight: size.height * 0.017,
-                                                batteryIndicatorWidth: size.width * 0.036,
-                                                batteryLevelPositionBottom: size.height * -0.43,
-                                                kragnaTopPosition: size.height * 0.076,
+                                                kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                                batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                                batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                                batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                                batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
+                                                kragnaTopPosition: size.width < 850 ? width * 0.3 : width * 0.46,
                                                 kragnaPositionRight: size.height * 0.007,
-                                                kragnaWidth: size.height * 0.09,
-                                                shirtTopPosition: size.height * 0.084,
-                                                shirtRightPosition: size.width * 0.005,
-                                                shirtWidth: size.width * 0.08,
-                                                playerNameTopPosition: size.height * 0.092,
-                                                playerNameRightPosition: size.width * 0.005,
-                                                playerNameBoxHeight: size.height * 0.03,
-                                                playerNameBoxWidth: size.width * 0.07,
-                                                playerNumberTopPosition: size.height * 0.11,
-                                                playerNumberRightPosition: size.width * 0.005,
-                                                playerNumberFontSize: size.height * 0.08,
+                                                kragnaWidth: size.width < 850 ? width * 0.35 : size.height * 0.09,
+                                                shirtTopPosition: size.width < 850 ? width * 0.33 : size.height * 0.083,
+                                                shirtRightPosition: size.width < 850 ? width * 0.03 : width * 0.045,
+                                                shirtWidth: size.width < 850 ? width * 0.53 : width * 0.78,
+                                                playerNameTopPosition: size.width < 850 ? width * 0.28 : size.height * 0.09,
+                                                playerNameRightPosition: size.width < 850 ? width * 0.01 : size.width * 0.005,
+                                                playerNameBoxHeight: size.width < 850 ? width * 0.3 : width * 0.3,
+                                                playerNameBoxWidth: size.width < 850 ? width * 0.45 : width * 0.7,
+                                                playerNameFontSize: size.width < 850 ? width * 0.13 : width * 0.18,
+                                                playerNumberTopPosition: size.width < 850 ? width * 0.48 : size.height * 0.12,
+                                                playerNumberRightPosition: size.width < 850 ? width * 0.02 : width * 0.005,
+                                                playerNumberFontSize: size.width < 850 ? width * 0.35 : size.height * 0.08,
                                               )
                                             : InactiveSiluete(
                                                 image: kInactiveSiluete,
                                                 number: "2",
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                detachedPositionTop: size.height * 0.1,
-                                                detachedPositionLeft: size.width * 0.012,
-                                                detachedFontSIze: size.height * 0.032,
-                                              )))
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                                detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                                detachedFontSIze: detachedFontSize,
+                                              ));
+                                  },
+                                ))
                               ],
                             ),
                             flex: 2,
@@ -1573,8 +1557,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Container(
-                                    child: QuickKickSiluete(
+                                Container(child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double width = constraints.maxWidth;
+                                    return QuickKickSiluete(
                                         onPress: () {
                                           if (this._selectedClub != null) {
                                             setState(() {
@@ -1596,7 +1582,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                               GestureDetector(
                                                                   child: Icon(
                                                                     Icons.close,
-                                                                    size: 50.0,
+                                                                    size: bottomSheetIconXSize,
                                                                     color: Color(0xFF9999AC),
                                                                   ),
                                                                   onTap: () => Navigator.pop(context)),
@@ -1607,14 +1593,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 flex: 3,
                                                                 child: Text(
                                                                   "PLAYERS",
-                                                                  style: TextStyle(
-                                                                      fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                  style: TextStyle(fontSize: bottomSheetPlyersLabel, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                  flex: 5,
-                                                                  child: CustomRadio(
-                                                                      parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                              Expanded(flex: 5, child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                             ],
                                                           ),
                                                           Row(
@@ -1627,13 +1609,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Defenders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1651,7 +1630,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1660,9 +1639,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1686,7 +1667,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1706,13 +1687,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Midfilders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1730,7 +1708,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1739,9 +1717,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1765,7 +1745,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1785,13 +1765,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Forwards",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -1809,7 +1786,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -1818,9 +1795,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -1844,7 +1823,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -1886,52 +1865,46 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                 playerName: _selectedPlayer3.lastName != null ? _selectedPlayer3.lastName.toUpperCase() : "",
                                                 playerNumber: _selectedPlayer3.number != null ? _selectedPlayer3.number.toString() : "3",
-                                                kragna: _selectedClub.collarColor != null
-                                                    ? getColorFromString(_selectedClub.collarColor)
-                                                    : Color(0xFFFF0000),
-                                                shirtColor: _selectedClub.shirtColor != null
-                                                    ? getColorFromString(_selectedClub.shirtColor)
-                                                    : Color(0xFF243479),
-                                                playerNameColor:
-                                                    _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                playerNumberColor: _selectedClub.numberColor != null
-                                                    ? getColorFromString(_selectedClub.numberColor)
-                                                    : Color(0xFFFF0000),
-                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                    ? getColorFromString(_selectedClub.numBorderColor)
-                                                    : Colors.white,
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                batteryLevelBoxHeight: size.height * 0.1,
-                                                batteryLevelBoxWidth: size.width * 0.04,
-                                                batteryIndicatorHeight: size.height * 0.017,
-                                                batteryIndicatorWidth: size.width * 0.036,
-                                                batteryLevelPositionBottom: size.height * -0.43,
-                                                kragnaTopPosition: size.height * 0.076,
+                                                kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                                batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                                batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                                batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                                batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
+                                                kragnaTopPosition: size.width < 850 ? width * 0.3 : width * 0.46,
                                                 kragnaPositionRight: size.height * 0.007,
-                                                kragnaWidth: size.height * 0.09,
-                                                shirtTopPosition: size.height * 0.084,
-                                                shirtRightPosition: size.width * 0.005,
-                                                shirtWidth: size.width * 0.08,
-                                                playerNameTopPosition: size.height * 0.092,
-                                                playerNameRightPosition: size.width * 0.005,
-                                                playerNameBoxHeight: size.height * 0.03,
-                                                playerNameBoxWidth: size.width * 0.07,
-                                                playerNumberTopPosition: size.height * 0.11,
-                                                playerNumberRightPosition: size.width * 0.005,
-                                                playerNumberFontSize: size.height * 0.08,
+                                                kragnaWidth: size.width < 850 ? width * 0.35 : size.height * 0.09,
+                                                shirtTopPosition: size.width < 850 ? width * 0.33 : size.height * 0.083,
+                                                shirtRightPosition: size.width < 850 ? width * 0.03 : width * 0.045,
+                                                shirtWidth: size.width < 850 ? width * 0.53 : width * 0.78,
+                                                playerNameTopPosition: size.width < 850 ? width * 0.28 : size.height * 0.09,
+                                                playerNameRightPosition: size.width < 850 ? width * 0.01 : size.width * 0.005,
+                                                playerNameBoxHeight: size.width < 850 ? width * 0.3 : width * 0.3,
+                                                playerNameBoxWidth: size.width < 850 ? width * 0.45 : width * 0.7,
+                                                playerNameFontSize: size.width < 850 ? width * 0.13 : width * 0.18,
+                                                playerNumberTopPosition: size.width < 850 ? width * 0.48 : size.height * 0.12,
+                                                playerNumberRightPosition: size.width < 850 ? width * 0.02 : width * 0.005,
+                                                playerNumberFontSize: size.width < 850 ? width * 0.35 : size.height * 0.08,
                                               )
                                             : InactiveSiluete(
                                                 image: kInactiveSiluete,
                                                 number: "3",
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                detachedPositionTop: size.height * 0.1,
-                                                detachedPositionLeft: size.width * 0.012,
-                                                detachedFontSIze: size.height * 0.032,
-                                              )))
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                                detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                                detachedFontSIze: detachedFontSize,
+                                              ));
+                                  },
+                                ))
                               ],
                             ),
                             flex: 2,
@@ -1940,8 +1913,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Container(
-                                    child: QuickKickSiluete(
+                                Container(child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double width = constraints.maxWidth;
+                                    return QuickKickSiluete(
                                         onPress: () {
                                           if (this._selectedClub != null) {
                                             setState(() {
@@ -1963,7 +1938,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                               GestureDetector(
                                                                   child: Icon(
                                                                     Icons.close,
-                                                                    size: 50.0,
+                                                                    size: bottomSheetIconXSize,
                                                                     color: Color(0xFF9999AC),
                                                                   ),
                                                                   onTap: () => Navigator.pop(context)),
@@ -1974,14 +1949,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 flex: 3,
                                                                 child: Text(
                                                                   "PLAYERS",
-                                                                  style: TextStyle(
-                                                                      fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                  style: TextStyle(fontSize: bottomSheetPlyersLabel, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                  flex: 5,
-                                                                  child: CustomRadio(
-                                                                      parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                              Expanded(flex: 5, child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                             ],
                                                           ),
                                                           Row(
@@ -1994,13 +1965,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Defenders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2018,7 +1986,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2027,9 +1995,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2053,7 +2023,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2073,13 +2043,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Midfilders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2097,7 +2064,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2106,9 +2073,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2132,7 +2101,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2152,13 +2121,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Forwards",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2176,7 +2142,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2185,9 +2151,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2211,7 +2179,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2253,52 +2221,46 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                 playerName: _selectedPlayer4.lastName != null ? _selectedPlayer4.lastName.toUpperCase() : "",
                                                 playerNumber: _selectedPlayer4.number != null ? _selectedPlayer4.number.toString() : "4",
-                                                kragna: _selectedClub.collarColor != null
-                                                    ? getColorFromString(_selectedClub.collarColor)
-                                                    : Color(0xFFFF0000),
-                                                shirtColor: _selectedClub.shirtColor != null
-                                                    ? getColorFromString(_selectedClub.shirtColor)
-                                                    : Color(0xFF243479),
-                                                playerNameColor:
-                                                    _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                playerNumberColor: _selectedClub.numberColor != null
-                                                    ? getColorFromString(_selectedClub.numberColor)
-                                                    : Color(0xFFFF0000),
-                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                    ? getColorFromString(_selectedClub.numBorderColor)
-                                                    : Colors.white,
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                batteryLevelBoxHeight: size.height * 0.1,
-                                                batteryLevelBoxWidth: size.width * 0.04,
-                                                batteryIndicatorHeight: size.height * 0.017,
-                                                batteryIndicatorWidth: size.width * 0.036,
-                                                batteryLevelPositionBottom: size.height * -0.43,
-                                                kragnaTopPosition: size.height * 0.076,
+                                                kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                                batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                                batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                                batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                                batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
+                                                kragnaTopPosition: size.width < 850 ? width * 0.3 : width * 0.46,
                                                 kragnaPositionRight: size.height * 0.007,
-                                                kragnaWidth: size.height * 0.09,
-                                                shirtTopPosition: size.height * 0.084,
-                                                shirtRightPosition: size.width * 0.005,
-                                                shirtWidth: size.width * 0.08,
-                                                playerNameTopPosition: size.height * 0.092,
-                                                playerNameRightPosition: size.width * 0.005,
-                                                playerNameBoxHeight: size.height * 0.03,
-                                                playerNameBoxWidth: size.width * 0.07,
-                                                playerNumberTopPosition: size.height * 0.11,
-                                                playerNumberRightPosition: size.width * 0.005,
-                                                playerNumberFontSize: size.height * 0.08,
+                                                kragnaWidth: size.width < 850 ? width * 0.35 : size.height * 0.09,
+                                                shirtTopPosition: size.width < 850 ? width * 0.33 : size.height * 0.083,
+                                                shirtRightPosition: size.width < 850 ? width * 0.03 : width * 0.045,
+                                                shirtWidth: size.width < 850 ? width * 0.53 : width * 0.78,
+                                                playerNameTopPosition: size.width < 850 ? width * 0.28 : size.height * 0.09,
+                                                playerNameRightPosition: size.width < 850 ? width * 0.01 : size.width * 0.005,
+                                                playerNameBoxHeight: size.width < 850 ? width * 0.3 : width * 0.3,
+                                                playerNameBoxWidth: size.width < 850 ? width * 0.45 : width * 0.7,
+                                                playerNameFontSize: size.width < 850 ? width * 0.13 : width * 0.18,
+                                                playerNumberTopPosition: size.width < 850 ? width * 0.48 : size.height * 0.12,
+                                                playerNumberRightPosition: size.width < 850 ? width * 0.02 : width * 0.005,
+                                                playerNumberFontSize: size.width < 850 ? width * 0.35 : size.height * 0.08,
                                               )
                                             : InactiveSiluete(
                                                 image: kInactiveSiluete,
                                                 number: "4",
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                detachedPositionTop: size.height * 0.1,
-                                                detachedPositionLeft: size.width * 0.012,
-                                                detachedFontSIze: size.height * 0.032,
-                                              )))
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                                detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                                detachedFontSIze: detachedFontSize,
+                                              ));
+                                  },
+                                ))
                               ],
                             ),
                             flex: 2,
@@ -2307,8 +2269,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                             child: Column(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: <Widget>[
-                                Container(
-                                    child: QuickKickSiluete(
+                                Container(child: LayoutBuilder(
+                                  builder: (context, constraints) {
+                                    double width = constraints.maxWidth;
+                                    return QuickKickSiluete(
                                         onPress: () {
                                           if (this._selectedClub != null) {
                                             setState(() {
@@ -2330,7 +2294,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                               GestureDetector(
                                                                   child: Icon(
                                                                     Icons.close,
-                                                                    size: 50.0,
+                                                                    size: bottomSheetIconXSize,
                                                                     color: Color(0xFF9999AC),
                                                                   ),
                                                                   onTap: () => Navigator.pop(context)),
@@ -2341,14 +2305,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                 flex: 3,
                                                                 child: Text(
                                                                   "PLAYERS",
-                                                                  style: TextStyle(
-                                                                      fontSize: 50.0, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
+                                                                  style: TextStyle(fontSize: bottomSheetPlyersLabel, color: Color(0xFF9999AC), fontWeight: FontWeight.bold),
                                                                 ),
                                                               ),
-                                                              Expanded(
-                                                                  flex: 5,
-                                                                  child: CustomRadio(
-                                                                      parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
+                                                              Expanded(flex: 5, child: CustomRadio(parentAction: _updateActiveRadioButton, activeButton: activeRadioButtonInModal))
                                                             ],
                                                           ),
                                                           Row(
@@ -2361,13 +2321,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Defenders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2385,7 +2342,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2394,9 +2351,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2420,7 +2379,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2440,13 +2399,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Midfilders",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2464,7 +2420,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2473,9 +2429,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2499,7 +2457,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2519,13 +2477,10 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                     crossAxisAlignment: CrossAxisAlignment.start,
                                                                     children: <Widget>[
                                                                       Padding(
-                                                                        padding: const EdgeInsets.all(8.0),
+                                                                        padding: EdgeInsets.all(width * 0.02),
                                                                         child: Text(
                                                                           "Forwards",
-                                                                          style: TextStyle(
-                                                                              fontSize: 25.0,
-                                                                              fontFamily: 'BarlowCondensed',
-                                                                              color: Color(0xFF9999AC)),
+                                                                          style: TextStyle(fontSize: width * 0.2, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
                                                                         ),
                                                                       ),
                                                                       FutureBuilder<List<Player>>(
@@ -2543,7 +2498,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                   child: Scrollbar(
                                                                                     child: ListView.separated(
                                                                                         separatorBuilder: (context, index) => SizedBox(
-                                                                                              height: 15.0,
+                                                                                              height: bottomSheetSeparator,
                                                                                             ),
                                                                                         itemCount: snapshot.data.length,
                                                                                         scrollDirection: Axis.vertical,
@@ -2552,9 +2507,11 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           return GestureDetector(
                                                                                             child: ModalItem(
                                                                                                 snapshot.data[index].playerName,
-                                                                                                snapshot.data[index].number != null
-                                                                                                    ? snapshot.data[index].number
-                                                                                                    : 18),
+                                                                                                snapshot.data[index].number != null ? snapshot.data[index].number : 18,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomModalItemSize,
+                                                                                                bottomNumberFontSize,
+                                                                                                bottomModalPlyerNameFontSize),
                                                                                             onTap: () {
                                                                                               setState(() {
                                                                                                 if (activeRadioButtonInModal == 1) {
@@ -2578,7 +2535,7 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                                                           );
                                                                                         }),
                                                                                   ),
-                                                                                  height: 450,
+                                                                                  height: bottomSheetHeight,
                                                                                 );
                                                                               }
                                                                           }
@@ -2620,52 +2577,46 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                                 numAndEmptyIndicatorColor: emptyIndicatorDD,
                                                 playerName: _selectedPlayer5.lastName != null ? _selectedPlayer5.lastName.toUpperCase() : "",
                                                 playerNumber: _selectedPlayer5.number != null ? _selectedPlayer5.number.toString() : "5",
-                                                kragna: _selectedClub.collarColor != null
-                                                    ? getColorFromString(_selectedClub.collarColor)
-                                                    : Color(0xFFFF0000),
-                                                shirtColor: _selectedClub.shirtColor != null
-                                                    ? getColorFromString(_selectedClub.shirtColor)
-                                                    : Color(0xFF243479),
-                                                playerNameColor:
-                                                    _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
-                                                playerNumberColor: _selectedClub.numberColor != null
-                                                    ? getColorFromString(_selectedClub.numberColor)
-                                                    : Color(0xFFFF0000),
-                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null
-                                                    ? getColorFromString(_selectedClub.numBorderColor)
-                                                    : Colors.white,
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                batteryLevelBoxHeight: size.height * 0.1,
-                                                batteryLevelBoxWidth: size.width * 0.04,
-                                                batteryIndicatorHeight: size.height * 0.017,
-                                                batteryIndicatorWidth: size.width * 0.036,
-                                                batteryLevelPositionBottom: size.height * -0.43,
-                                                kragnaTopPosition: size.height * 0.076,
+                                                kragna: _selectedClub.collarColor != null ? getColorFromString(_selectedClub.collarColor) : Color(0xFFFF0000),
+                                                shirtColor: _selectedClub.shirtColor != null ? getColorFromString(_selectedClub.shirtColor) : Color(0xFF243479),
+                                                playerNameColor: _selectedClub.nameColor != null ? getColorFromString(_selectedClub.nameColor) : Colors.white,
+                                                playerNumberColor: _selectedClub.numberColor != null ? getColorFromString(_selectedClub.numberColor) : Color(0xFFFF0000),
+                                                playerNumberStrokeColor: _selectedClub.numBorderColor != null ? getColorFromString(_selectedClub.numBorderColor) : Colors.white,
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                                batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                                batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                                batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                                batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
+                                                kragnaTopPosition: size.width < 850 ? width * 0.3 : width * 0.46,
                                                 kragnaPositionRight: size.height * 0.007,
-                                                kragnaWidth: size.height * 0.09,
-                                                shirtTopPosition: size.height * 0.084,
-                                                shirtRightPosition: size.width * 0.005,
-                                                shirtWidth: size.width * 0.08,
-                                                playerNameTopPosition: size.height * 0.092,
-                                                playerNameRightPosition: size.width * 0.005,
-                                                playerNameBoxHeight: size.height * 0.03,
-                                                playerNameBoxWidth: size.width * 0.07,
-                                                playerNumberTopPosition: size.height * 0.11,
-                                                playerNumberRightPosition: size.width * 0.005,
-                                                playerNumberFontSize: size.height * 0.08,
+                                                kragnaWidth: size.width < 850 ? width * 0.35 : size.height * 0.09,
+                                                shirtTopPosition: size.width < 850 ? width * 0.33 : size.height * 0.083,
+                                                shirtRightPosition: size.width < 850 ? width * 0.03 : width * 0.045,
+                                                shirtWidth: size.width < 850 ? width * 0.53 : width * 0.78,
+                                                playerNameTopPosition: size.width < 850 ? width * 0.28 : size.height * 0.09,
+                                                playerNameRightPosition: size.width < 850 ? width * 0.01 : size.width * 0.005,
+                                                playerNameBoxHeight: size.width < 850 ? width * 0.3 : width * 0.3,
+                                                playerNameBoxWidth: size.width < 850 ? width * 0.45 : width * 0.7,
+                                                playerNameFontSize: size.width < 850 ? width * 0.13 : width * 0.18,
+                                                playerNumberTopPosition: size.width < 850 ? width * 0.48 : size.height * 0.12,
+                                                playerNumberRightPosition: size.width < 850 ? width * 0.02 : width * 0.005,
+                                                playerNumberFontSize: size.width < 850 ? width * 0.35 : size.height * 0.08,
                                               )
                                             : InactiveSiluete(
                                                 image: kInactiveSiluete,
                                                 number: "5",
-                                                silueteSize: size.height * 0.62,
-                                                numberPositionBottom: size.height * -0.22,
-                                                numberFontSize: size.height * 0.06,
-                                                detachedPositionTop: size.height * 0.1,
-                                                detachedPositionLeft: size.width * 0.012,
-                                                detachedFontSIze: size.height * 0.032,
-                                              )))
+                                                silueteSize: silueteSize,
+                                                numberPositionBottom: size.width < 850 ? width * -0.85 : width * -1.1,
+                                                numberFontSize: numberFontSize,
+                                                detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                                detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                                detachedFontSIze: detachedFontSize,
+                                              ));
+                                  },
+                                ))
                               ],
                             ),
                             flex: 2,
@@ -2683,10 +2634,8 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                               Container(
                                 height: size.height * 0.03,
                                 width: width * 0.145,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        left: BorderSide(width: 1, color: Color(0xFF9999AC)),
-                                        bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                decoration:
+                                    BoxDecoration(border: Border(left: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                               ),
                               Container(
                                   child: Row(
@@ -2696,24 +2645,23 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
                                     child: Image.asset(
                                       'images/icons/substitute.png',
                                       height: size.height * 0.04,
+                                      width: width * 0.05,
                                     ),
                                   ),
                                   Padding(
                                     padding: const EdgeInsets.only(right: 8.0),
                                     child: Text(
                                       'tap on player to SUBSTITUTE',
-                                      style: TextStyle(fontSize: size.height * 0.04, color: Color(0xFF9999AC), fontFamily: "BarlowCondensed"),
+                                      style: TextStyle(fontSize: width * 0.035, color: Color(0xFF9999AC), fontFamily: "BarlowCondensed"),
                                     ),
                                   ),
                                 ],
                               )),
                               Container(
                                 height: size.height * 0.03,
-                                width: width * 0.14,
-                                decoration: BoxDecoration(
-                                    border: Border(
-                                        right: BorderSide(width: 1, color: Color(0xFF9999AC)),
-                                        bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
+                                width: width * 0.17,
+                                decoration:
+                                    BoxDecoration(border: Border(right: BorderSide(width: 1, color: Color(0xFF9999AC)), bottom: BorderSide(width: 1, color: Color(0xFF9999AC)))),
                               ),
                             ],
                           );

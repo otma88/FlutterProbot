@@ -132,6 +132,23 @@ class _QuickKickPageState extends State<QuickKickPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    double topScreenPadding = size.width < 850 ? size.width * 0.015 : size.width * 0.020;
+    double backIconSize = size.width < 850 ? size.width * 0.04 : size.width * 0.05;
+    double quickKickFontSize = size.width < 850 ? size.width * 0.04 : size.width * 0.06;
+    double fontSizeSelectDifficulty = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double selectBoxSize = size.width < 850 ? size.width * 0.065 : size.width * 0.08;
+    double selectBoxIconSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double selectBoxFontSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double selectBoxArrowDownSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double buttonPaddingRight = size.width < 850 ? size.width * 0.02 : size.width * 0.035;
+    double buttonPaddingVertical = size.width < 850 ? size.width * 0.018 : size.width * 0.02;
+    double buttonPaddingHorizontal = size.width < 850 ? size.width * 0.03 : size.width * 0.04;
+    double startFontSize = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double labelParams = size.width < 850 ? size.width * 0.02 : size.width * 0.025;
+    double valueParams = size.width < 850 ? size.width * 0.025 : size.width * 0.03;
+    double silueteSize = size.width < 850 ? size.width * 0.3 : size.width * 0.45;
+    double numberFontSize = size.width < 850 ? size.width * 0.03 : size.width * 0.04;
+    double detachedFontSize = size.width < 850 ? size.width * 0.015 : size.width * 0.022;
     return Scaffold(
       body: Row(
         children: <Widget>[
@@ -139,7 +156,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
             width: size.width / 3,
             color: Color(0xFF2D2D3C),
             child: Padding(
-              padding: EdgeInsets.only(right: size.width * 0.02, top: size.height * 0.025, left: size.width * 0.025, bottom: size.height * 0.025),
+              padding: EdgeInsets.only(right: size.width * 0.015, top: topScreenPadding, left: size.width * 0.015, bottom: size.width * 0.015),
               child: Column(
                 children: <Widget>[
                   Row(
@@ -151,7 +168,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         },
                         child: Image.asset(
                           "images/icons/back.png",
-                          height: size.height * 0.07,
+                          height: backIconSize,
                           color: Color(0xFF9999AC),
                         ),
                       ),
@@ -162,18 +179,13 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         width: size.width * 0.21,
                         child: Text(
                           "QUICK KICK",
-                          style: TextStyle(
-                              fontSize: size.height * 0.08,
-                              color: Color(0xFF9999AC),
-                              fontFamily: 'BarlowCondensed',
-                              fontWeight: FontWeight.bold,
-                              height: 0.9),
+                          style: TextStyle(fontSize: quickKickFontSize, color: Color(0xFF9999AC), fontFamily: 'BarlowCondensed', fontWeight: FontWeight.bold, height: 0.9),
                         ),
                       )
                     ],
                   ),
                   SizedBox(
-                    height: size.height * 0.15,
+                    height: size.width < 850 ? size.height * 0.15 : size.height * 0.15,
                   ),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -181,7 +193,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                       Container(
                         child: Text(
                           "Select difficulty:",
-                          style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.03, fontFamily: 'BarlowCondensed'),
+                          style: TextStyle(color: Color(0xFF464655), fontSize: fontSizeSelectDifficulty, fontFamily: 'BarlowCondensed'),
                         ),
                       ),
                       SizedBox(
@@ -191,23 +203,19 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         children: <Widget>[
                           Expanded(
                             child: Container(
-                              height: size.height * 0.12,
+                              height: selectBoxSize,
                               child: Container(
                                   alignment: Alignment.center,
-                                  child: Padding(
-                                      padding: EdgeInsets.only(left: size.width * 0.01),
-                                      child: _difficultyItems(size.height * 0.06, size.height * 0.05))),
-                              decoration: BoxDecoration(
-                                  boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))],
-                                  color: Color(0xFF464655)),
+                                  child: Padding(padding: EdgeInsets.only(left: size.width * 0.01), child: _difficultyItems(selectBoxIconSize, selectBoxFontSize))),
+                              decoration: BoxDecoration(boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 5.0, offset: Offset(5.0, 5.0))], color: Color(0xFF464655)),
                             ),
                           ),
                           Container(
-                            height: size.height * 0.12,
+                            height: selectBoxSize,
                             color: Color(0xFF242432),
                             child: Icon(
                               Icons.keyboard_arrow_down,
-                              size: size.height * 0.05,
+                              size: selectBoxArrowDownSize,
                             ),
                           )
                         ],
@@ -222,20 +230,14 @@ class _QuickKickPageState extends State<QuickKickPage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: <Widget>[
                         Padding(
-                          padding: EdgeInsets.only(right: size.width * 0.035),
+                          padding: EdgeInsets.only(right: buttonPaddingRight),
                           child: Container(
-                            decoration: BoxDecoration(
-                                color: Color(0xFF3FA9F5),
-                                boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
+                            decoration: BoxDecoration(color: Color(0xFF3FA9F5), boxShadow: [BoxShadow(color: Color(0xFF000000), blurRadius: 8.0, offset: Offset(7.0, 7.0))]),
                             child: Padding(
-                              padding: EdgeInsets.symmetric(vertical: size.height * 0.03, horizontal: size.width * 0.04),
+                              padding: EdgeInsets.symmetric(vertical: buttonPaddingVertical, horizontal: buttonPaddingHorizontal),
                               child: Text(
                                 'START',
-                                style: TextStyle(
-                                    fontSize: size.height * 0.05,
-                                    color: Color(0xFF282832),
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: "BarlowCondensed"),
+                                style: TextStyle(fontSize: startFontSize, color: Color(0xFF282832), fontWeight: FontWeight.bold, fontFamily: "BarlowCondensed"),
                               ),
                             ),
                           ),
@@ -256,7 +258,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
             child: Column(
               children: <Widget>[
                 Padding(
-                  padding: EdgeInsets.only(top: size.height * 0.05),
+                  padding: EdgeInsets.only(top: topScreenPadding),
                   child: Row(
                     children: <Widget>[
                       Expanded(
@@ -268,7 +270,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     "Player height:",
-                                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.035, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(color: Color(0xFF464655), fontSize: labelParams, fontFamily: "BarlowCondensed"),
                                   ),
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -280,7 +282,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     labelPlayerHeight,
-                                    style: TextStyle(fontSize: size.height * 0.045, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(fontSize: valueParams, fontFamily: "BarlowCondensed"),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -298,7 +300,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     "Jump height:",
-                                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.035, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(color: Color(0xFF464655), fontSize: labelParams, fontFamily: "BarlowCondensed"),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -310,7 +312,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     labelJumpHeight,
-                                    style: TextStyle(fontSize: size.height * 0.045, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(fontSize: valueParams, fontFamily: "BarlowCondensed"),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -328,7 +330,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     "Jump occurrence:",
-                                    style: TextStyle(color: Color(0xFF464655), fontSize: size.height * 0.035, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(color: Color(0xFF464655), fontSize: labelParams, fontFamily: "BarlowCondensed"),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -340,7 +342,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                 children: <Widget>[
                                   Text(
                                     labelJumpOccurrence,
-                                    style: TextStyle(fontSize: size.height * 0.045, fontFamily: "BarlowCondensed"),
+                                    style: TextStyle(fontSize: valueParams, fontFamily: "BarlowCondensed"),
                                   )
                                 ],
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -364,7 +366,7 @@ class _QuickKickPageState extends State<QuickKickPage> {
                         padding: EdgeInsets.only(bottom: size.height * 0.06),
                         child: Image.asset(
                           'images/icons/batt.png',
-                          height: size.height * 0.05,
+                          height: size.width < 850 ? size.width * 0.02 : size.width * 0.03,
                         ),
                       ),
                       flex: 1,
@@ -372,8 +374,10 @@ class _QuickKickPageState extends State<QuickKickPage> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          Container(
-                              child: QuickKickSiluete(
+                          Container(child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double width = constraints.maxWidth;
+                              return QuickKickSiluete(
                                   onPress: () {
                                     setState(() {
                                       isActiveSiluete1 == false ? isActiveSiluete1 = true : isActiveSiluete1 = false;
@@ -385,25 +389,27 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                           number: "1",
                                           batteryLevel: 1,
                                           numAndEmptyIndicatorColor: emptyIndicatorQK,
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          batteryLevelBoxHeight: size.height * 0.1,
-                                          batteryLevelBoxWidth: size.width * 0.04,
-                                          batteryIndicatorHeight: size.height * 0.017,
-                                          batteryIndicatorWidth: size.width * 0.036,
-                                          batteryLevelPositionBottom: size.height * -0.43,
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                          batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                          batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                          batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                          batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
                                         )
                                       : InactiveSiluete(
                                           image: kInactiveSiluete,
                                           number: "1",
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          detachedPositionTop: size.height * 0.1,
-                                          detachedPositionLeft: size.width * 0.012,
-                                          detachedFontSIze: size.height * 0.032,
-                                        )))
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                          detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                          detachedFontSIze: detachedFontSize,
+                                        ));
+                            },
+                          ))
                         ],
                       ),
                       flex: 2,
@@ -411,8 +417,10 @@ class _QuickKickPageState extends State<QuickKickPage> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          Container(
-                              child: QuickKickSiluete(
+                          Container(child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double width = constraints.maxWidth;
+                              return QuickKickSiluete(
                                   onPress: () {
                                     setState(() {
                                       isActiveSiluete2 == false ? isActiveSiluete2 = true : isActiveSiluete2 = false;
@@ -424,25 +432,27 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                           number: "2",
                                           batteryLevel: 2,
                                           numAndEmptyIndicatorColor: emptyIndicatorQK,
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          batteryLevelBoxHeight: size.height * 0.1,
-                                          batteryLevelBoxWidth: size.width * 0.04,
-                                          batteryIndicatorHeight: size.height * 0.017,
-                                          batteryIndicatorWidth: size.width * 0.036,
-                                          batteryLevelPositionBottom: size.height * -0.43,
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                          batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                          batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                          batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                          batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
                                         )
                                       : InactiveSiluete(
                                           image: kInactiveSiluete,
                                           number: "2",
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          detachedPositionTop: size.height * 0.1,
-                                          detachedPositionLeft: size.width * 0.012,
-                                          detachedFontSIze: size.height * 0.032,
-                                        )))
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                          detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                          detachedFontSIze: detachedFontSize,
+                                        ));
+                            },
+                          ))
                         ],
                       ),
                       flex: 2,
@@ -450,8 +460,10 @@ class _QuickKickPageState extends State<QuickKickPage> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          Container(
-                              child: QuickKickSiluete(
+                          Container(child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double width = constraints.maxWidth;
+                              return QuickKickSiluete(
                                   onPress: () {
                                     setState(() {
                                       isActiveSiluete3 == false ? isActiveSiluete3 = true : isActiveSiluete3 = false;
@@ -463,25 +475,27 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                           number: "3",
                                           batteryLevel: 3,
                                           numAndEmptyIndicatorColor: emptyIndicatorQK,
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          batteryLevelBoxHeight: size.height * 0.1,
-                                          batteryLevelBoxWidth: size.width * 0.04,
-                                          batteryIndicatorHeight: size.height * 0.017,
-                                          batteryIndicatorWidth: size.width * 0.036,
-                                          batteryLevelPositionBottom: size.height * -0.43,
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                          batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                          batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                          batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                          batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
                                         )
                                       : InactiveSiluete(
                                           image: kInactiveSiluete,
                                           number: "3",
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          detachedPositionTop: size.height * 0.1,
-                                          detachedPositionLeft: size.width * 0.012,
-                                          detachedFontSIze: size.height * 0.032,
-                                        )))
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                          detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                          detachedFontSIze: detachedFontSize,
+                                        ));
+                            },
+                          ))
                         ],
                       ),
                       flex: 2,
@@ -489,8 +503,10 @@ class _QuickKickPageState extends State<QuickKickPage> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          Container(
-                              child: QuickKickSiluete(
+                          Container(child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double width = constraints.maxWidth;
+                              return QuickKickSiluete(
                                   onPress: () {
                                     setState(() {
                                       isActiveSiluete4 == false ? isActiveSiluete4 = true : isActiveSiluete4 = false;
@@ -502,25 +518,27 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                           number: "4",
                                           batteryLevel: 4,
                                           numAndEmptyIndicatorColor: emptyIndicatorQK,
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          batteryLevelBoxHeight: size.height * 0.1,
-                                          batteryLevelBoxWidth: size.width * 0.04,
-                                          batteryIndicatorHeight: size.height * 0.017,
-                                          batteryIndicatorWidth: size.width * 0.036,
-                                          batteryLevelPositionBottom: size.height * -0.43,
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                          batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                          batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                          batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                          batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
                                         )
                                       : InactiveSiluete(
                                           image: kInactiveSiluete,
                                           number: "4",
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          detachedPositionTop: size.height * 0.1,
-                                          detachedPositionLeft: size.width * 0.012,
-                                          detachedFontSIze: size.height * 0.032,
-                                        )))
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                          detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                          detachedFontSIze: detachedFontSize,
+                                        ));
+                            },
+                          ))
                         ],
                       ),
                       flex: 2,
@@ -528,8 +546,10 @@ class _QuickKickPageState extends State<QuickKickPage> {
                     Expanded(
                       child: Column(
                         children: <Widget>[
-                          Container(
-                              child: QuickKickSiluete(
+                          Container(child: LayoutBuilder(
+                            builder: (context, constraints) {
+                              double width = constraints.maxWidth;
+                              return QuickKickSiluete(
                                   onPress: () {
                                     setState(() {
                                       isActiveSiluete5 == false ? isActiveSiluete5 = true : isActiveSiluete5 = false;
@@ -541,25 +561,27 @@ class _QuickKickPageState extends State<QuickKickPage> {
                                           number: "5",
                                           batteryLevel: 4,
                                           numAndEmptyIndicatorColor: emptyIndicatorQK,
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          batteryLevelBoxHeight: size.height * 0.1,
-                                          batteryLevelBoxWidth: size.width * 0.04,
-                                          batteryIndicatorHeight: size.height * 0.017,
-                                          batteryIndicatorWidth: size.width * 0.036,
-                                          batteryLevelPositionBottom: size.height * -0.43,
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          batteryLevelBoxHeight: size.width < 850 ? width * 0.47 : width * 0.6,
+                                          batteryLevelBoxWidth: size.width < 850 ? width * 0.30 : width * 0.4,
+                                          batteryIndicatorHeight: size.width < 850 ? width * 0.08 : width * 0.1,
+                                          batteryIndicatorWidth: size.width < 850 ? width * 0.27 : width * 0.35,
+                                          batteryLevelPositionBottom: size.width < 850 ? width * 0.15 : width * 0.25,
                                         )
                                       : InactiveSiluete(
                                           image: kInactiveSiluete,
                                           number: "5",
-                                          silueteSize: size.height * 0.62,
-                                          numberPositionBottom: size.height * -0.17,
-                                          numberFontSize: size.height * 0.06,
-                                          detachedPositionTop: size.height * 0.1,
-                                          detachedPositionLeft: size.width * 0.012,
-                                          detachedFontSIze: size.height * 0.032,
-                                        )))
+                                          silueteSize: silueteSize,
+                                          numberPositionBottom: size.width < 850 ? width * -0.7 : width * -1.1,
+                                          numberFontSize: numberFontSize,
+                                          detachedPositionTop: size.width < 850 ? width * 0.4 : width * 0.6,
+                                          detachedPositionRight: size.width < 850 ? width * 0.01 : width * 0.02,
+                                          detachedFontSIze: detachedFontSize,
+                                        ));
+                            },
+                          ))
                         ],
                       ),
                       flex: 2,

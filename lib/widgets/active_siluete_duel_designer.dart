@@ -31,6 +31,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
   final double playerNameRightPosition;
   final double playerNameBoxHeight;
   final double playerNameBoxWidth;
+  final double playerNameFontSize;
   final double playerNumberTopPosition;
   final double playerNumberRightPosition;
   final double playerNumberFontSize;
@@ -67,7 +68,8 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
       this.playerNameTopPosition,
       this.playerNumberRightPosition,
       this.playerNumberTopPosition,
-      this.playerNumberFontSize});
+      this.playerNumberFontSize,
+      this.playerNameFontSize});
 
   @override
   Widget build(BuildContext context) {
@@ -111,7 +113,7 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                         child: Center(
                             child: Text(
                           playerName,
-                          style: TextStyle(fontFamily: 'BarlowCondensed', color: playerNameColor, fontWeight: FontWeight.bold),
+                          style: TextStyle(fontSize: playerNameFontSize, fontFamily: 'BarlowCondensed', color: playerNameColor, fontWeight: FontWeight.bold),
                         )))),
               )),
           Positioned.fill(
@@ -153,14 +155,13 @@ class ActiveSilueteDuelDesigner extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   number,
-                  style: TextStyle(
-                      color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+                  style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
                 ),
               )),
           Positioned.fill(
             bottom: batteryLevelPositionBottom,
             child: Align(
-              alignment: Alignment.center,
+              alignment: Alignment.bottomCenter,
               child: Container(
                 height: batteryLevelBoxHeight,
                 width: batteryLevelBoxWidth,

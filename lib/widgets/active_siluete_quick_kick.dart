@@ -45,14 +45,13 @@ class ActiveSilueteQuickKick extends StatelessWidget {
                 alignment: Alignment.center,
                 child: Text(
                   number,
-                  style: TextStyle(
-                      color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
+                  style: TextStyle(color: numAndEmptyIndicatorColor, fontSize: numberFontSize, fontWeight: FontWeight.w500, fontFamily: 'BarlowCondensed'),
                 ),
               )),
           Positioned.fill(
             bottom: this.batteryLevelPositionBottom,
             child: Align(
-              alignment: Alignment.center,
+              alignment: Alignment.bottomCenter,
               child: Container(
                 height: batteryLevelBoxHeight,
                 width: batteryLevelBoxWidth,
