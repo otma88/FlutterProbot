@@ -134,65 +134,86 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     return Container(
         child: FutureBuilder<List<League>>(
             future: _leagues,
+            // ignore: missing_return
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Align(
-                  alignment: Alignment.centerLeft,
-                  child: Text(
-                    "Nema podataka",
-                    style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
-                  ),
-                );
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  {
+                    break;
+                  }
+                case ConnectionState.waiting:
+                  {
+                    return CircularProgressIndicator(
+                      backgroundColor: Color(0xFF242432),
+                      valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3FA9F5)),
+                    );
+                  }
+                case ConnectionState.active:
+                  {
+                    break;
+                  }
+                case ConnectionState.done:
+                  {
+                    if (!snapshot.hasData) {
+                      return Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "No data found",
+                          style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                        ),
+                      );
+                    }
+                    return DropdownButton<League>(
+                      hint: Text(
+                        "Choose league",
+                        style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed'),
+                      ),
+                      underline: SizedBox(),
+                      icon: SizedBox(),
+                      items: snapshot.data
+                          .map<DropdownMenuItem<League>>((league) => DropdownMenuItem<League>(
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: <Widget>[
+                                    SvgPicture.network(
+                                      league.flag,
+                                      width: flagSizeWidth,
+                                      height: flagSizeHeight,
+                                    ),
+                                    SizedBox(
+                                      width: 10.0,
+                                    ),
+                                    Text(league.name)
+                                  ],
+                                ),
+                                value: league,
+                              ))
+                          .toList(),
+                      onChanged: (League value) {
+                        setState(() {
+                          isActiveSiluete1 = false;
+                          isActiveSiluete2 = false;
+                          isActiveSiluete3 = false;
+                          isActiveSiluete4 = false;
+                          isActiveSiluete5 = false;
+                          _selectedLeague = value;
+                          _selectedPlayer1 = null;
+                          _selectedPlayer2 = null;
+                          _selectedPlayer3 = null;
+                          _selectedPlayer4 = null;
+                          _selectedPlayer5 = null;
+                          _selectedClub = null;
+                          leagueID = _selectedLeague.id.toString();
+                          _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
+                        });
+                      },
+                      value: _selectedLeague,
+                      isExpanded: true,
+                      elevation: 6,
+                      style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                    );
+                  }
               }
-              return DropdownButton<League>(
-                hint: Text(
-                  "Choose league",
-                  style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed'),
-                ),
-                underline: SizedBox(),
-                icon: SizedBox(),
-                items: snapshot.data
-                    .map<DropdownMenuItem<League>>((league) => DropdownMenuItem<League>(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              SvgPicture.network(
-                                league.flag,
-                                width: flagSizeWidth,
-                                height: flagSizeHeight,
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(league.name)
-                            ],
-                          ),
-                          value: league,
-                        ))
-                    .toList(),
-                onChanged: (League value) {
-                  setState(() {
-                    isActiveSiluete1 = false;
-                    isActiveSiluete2 = false;
-                    isActiveSiluete3 = false;
-                    isActiveSiluete4 = false;
-                    isActiveSiluete5 = false;
-                    _selectedLeague = value;
-                    _selectedPlayer1 = null;
-                    _selectedPlayer2 = null;
-                    _selectedPlayer3 = null;
-                    _selectedPlayer4 = null;
-                    _selectedPlayer5 = null;
-                    _selectedClub = null;
-                    leagueID = _selectedLeague.id.toString();
-                    _clubs = _fetchClubsByLeagueID(http.Client(), leagueID);
-                  });
-                },
-                value: _selectedLeague,
-                isExpanded: true,
-                elevation: 6,
-                style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
-              );
             }));
   }
 
@@ -200,68 +221,88 @@ class _DuelDesignerPageState extends State<DuelDesignerPage> {
     return Container(
         child: FutureBuilder<List<Club>>(
             future: _clubs,
+            // ignore: missing_return
             builder: (context, snapshot) {
-              if (!snapshot.hasData) {
-                return Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text("Nema podataka",
-                        style: TextStyle(
-                          fontSize: chooseLeagueFontSize,
-                          fontFamily: 'BarlowCondensed',
-                          color: Color(0xFF9999AC),
-                        )));
+              switch (snapshot.connectionState) {
+                case ConnectionState.none:
+                  {
+                    break;
+                  }
+                case ConnectionState.waiting:
+                  return CircularProgressIndicator(
+                    backgroundColor: Color(0xFF242432),
+                    valueColor: AlwaysStoppedAnimation<Color>(Color(0xFF3FA9F5)),
+                  );
+                case ConnectionState.active:
+                  {
+                    break;
+                  }
+                case ConnectionState.done:
+                  {
+                    if (!snapshot.hasData) {
+                      return Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text("No data found",
+                              style: TextStyle(
+                                fontSize: chooseLeagueFontSize,
+                                fontFamily: 'BarlowCondensed',
+                                color: Color(0xFF9999AC),
+                              )));
+                    } else {
+                      return DropdownButton<Club>(
+                        hint: Text(
+                          "Choose club",
+                          style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed'),
+                        ),
+                        underline: SizedBox(),
+                        icon: SizedBox(),
+                        items: snapshot.data
+                            .map<DropdownMenuItem<Club>>((club) => DropdownMenuItem<Club>(
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.start,
+                                    children: <Widget>[
+                                      Image.network(
+                                        club.logo,
+                                        width: flagSizeWidth,
+                                        height: flagSizeHeight,
+                                      ),
+                                      SizedBox(
+                                        width: 10.0,
+                                      ),
+                                      Text(club.name)
+                                    ],
+                                  ),
+                                  value: club,
+                                ))
+                            .toList(),
+                        onChanged: (Club value) {
+                          setState(() {
+                            _selectedClub = value;
+                            isActiveSiluete1 = false;
+                            isActiveSiluete2 = false;
+                            isActiveSiluete3 = false;
+                            isActiveSiluete4 = false;
+                            isActiveSiluete5 = false;
+                            _selectedPlayer1 = null;
+                            _selectedPlayer2 = null;
+                            _selectedPlayer3 = null;
+                            _selectedPlayer4 = null;
+                            _selectedPlayer5 = null;
+                            clubID = _selectedClub.id.toString();
+                            _players = _fetchPlayersByClubID(http.Client(), clubID);
+                            _defenders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Defender");
+                            _midfilders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Midfielder");
+                            _forwards = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Attacker");
+                          });
+                        },
+                        value: _selectedClub,
+                        isExpanded: true,
+                        elevation: 6,
+                        style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
+                      );
+                    }
+                  }
               }
-              return DropdownButton<Club>(
-                hint: Text(
-                  "Choose club",
-                  style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed'),
-                ),
-                underline: SizedBox(),
-                icon: SizedBox(),
-                items: snapshot.data
-                    .map<DropdownMenuItem<Club>>((club) => DropdownMenuItem<Club>(
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.start,
-                            children: <Widget>[
-                              Image.network(
-                                club.logo,
-                                width: flagSizeWidth,
-                                height: flagSizeHeight,
-                              ),
-                              SizedBox(
-                                width: 10.0,
-                              ),
-                              Text(club.name)
-                            ],
-                          ),
-                          value: club,
-                        ))
-                    .toList(),
-                onChanged: (Club value) {
-                  setState(() {
-                    _selectedClub = value;
-                    isActiveSiluete1 = false;
-                    isActiveSiluete2 = false;
-                    isActiveSiluete3 = false;
-                    isActiveSiluete4 = false;
-                    isActiveSiluete5 = false;
-                    _selectedPlayer1 = null;
-                    _selectedPlayer2 = null;
-                    _selectedPlayer3 = null;
-                    _selectedPlayer4 = null;
-                    _selectedPlayer5 = null;
-                    clubID = _selectedClub.id.toString();
-                    _players = _fetchPlayersByClubID(http.Client(), clubID);
-                    _defenders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Defender");
-                    _midfilders = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Midfielder");
-                    _forwards = _fetchPlayersByClubIDAndPosition(http.Client(), clubID, "Attacker");
-                  });
-                },
-                value: _selectedClub,
-                isExpanded: true,
-                elevation: 6,
-                style: TextStyle(fontSize: chooseLeagueFontSize, fontFamily: 'BarlowCondensed', color: Color(0xFF9999AC)),
-              );
             }));
   }
 
