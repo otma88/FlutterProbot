@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:probot/screens/new_login.dart';
 import 'package:probot/screens/trainer_mode.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../screens/login.dart';
@@ -33,7 +34,7 @@ class _CheckAuthState extends State<CheckAuth> {
     if (isAuth) {
       child = TrainerMode();
     } else {
-      child = Login();
+      child = NewLogin();
     }
 
     return Scaffold(

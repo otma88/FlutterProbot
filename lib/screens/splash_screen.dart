@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:probot/widgets/check_auth.dart';
 import 'trainer_mode.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MaterialApp(
@@ -20,7 +21,10 @@ class SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.landscapeRight,
+      DeviceOrientation.landscapeLeft,
+    ]);
     loadData();
   }
 
@@ -34,11 +38,13 @@ class SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
     return Container(
       decoration: BoxDecoration(
         image: DecorationImage(image: AssetImage('images/background_logo.png'), fit: BoxFit.cover),
       ),
-      child: Center(
+      child: Padding(
+        padding: EdgeInsets.all(size.height * 0.1),
         child: Image(
           image: AssetImage('images/logo.png'),
         ),
